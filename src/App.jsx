@@ -3,29 +3,48 @@ import FormInput from './components/FormInput';
 
 const universityData = {
   ud: {
-    name: "University of Dubai (UD)",
-    tagline: "Flexible Admissions Track (High School Avg / Internal Placements / EmSAT)",
+    name: "University of Dubai (UD) — Graduate Admissions",
+    tagline: "CAA Standard 6.3 Certified Post-Graduate Pathways (Policy S 6.2)",
     colleges: [
       {
-        name: "College of Engineering and Information Technology",
-        criteria: "Min 80% High School Track average, or valid EmSAT Math (900+), or passing score on UD Institutional Math Placement Exam.",
-        programs: ["BSc in Information Systems Security", "BSc in Electrical Engineering", "BSc in Computer Science"]
+        name: "College of Engineering and Information Technology (CEIT)",
+        criteria: "Requires a recognized Bachelor's degree in a core STEM discipline with a minimum CGPA of 3.0/4.0. Conditional tracks available for CGPAs down to 2.0 (requires Program Director interview). No remedial bridging courses permitted.",
+        programs: [
+          "Master of Science in Data Science (MSDS)",
+          "Master of Science in Cyber Security (MSCS)",
+          "Master's Level Micro-credentials"
+        ]
       },
       {
-        name: "Dubai Business School",
-        criteria: "Min 70% High School track average, or valid EmSAT Math (600+), or passing score on UD Institutional Math Placement Exam.",
-        programs: ["BBA in Accounting", "BBA in Finance", "BBA in Digital Marketing"]
+        name: "Dubai Business School (DBS)",
+        criteria: "Requires a recognized Bachelor's degree (Minimum CGPA 3.0/4.0). Conditional entry down to 2.0 CGPA. Unrelated degrees require passing 2 remedial courses or clearing online/offline proctored challenge exams.",
+        programs: [
+          "Regular MBA & Online MBA",
+          "Global MBA in AI for Business (Requires 3+ Years Work Experience + Interview)",
+          "PhD in Business Administration (Regular & Senior Leadership 15-Year Waiver Route)"
+        ]
+      },
+      {
+        name: "College of Law (COL)",
+        criteria: "Requires a recognized Bachelor's degree in a related discipline. Regular entry requires 3.0 CGPA. Conditional entry at 2.0 CGPA requires passing 3 graduate-level remedial courses.",
+        programs: [
+          "Master of Law (LLM)"
+        ]
       }
     ]
   },
   mbzuai: {
     name: "Mohamed bin Zayed University of Artificial Intelligence",
-    tagline: "Post-Graduate Specialized AI Integration Pathways",
+    tagline: "Post-Graduate Deep Tech AI Research System Integration",
     colleges: [
       {
         name: "School of AI Foundation Systems",
-        criteria: "Target destination environment. Requires completion of a relevant STEM Bachelor track (such as UD Computer Science) with competitive overall CGPA thresholds.",
-        programs: ["MSc in Machine Learning", "MSc in Computer Vision", "MSc in Natural Language Processing"]
+        criteria: "Target competitive destination framework. Requires completion of a verified, highly quantitative STEM qualification framework (such as UD's MSc in Data Science) with optimal background profiles.",
+        programs: [
+          "MSc in Machine Learning",
+          "MSc in Computer Vision",
+          "MSc in Natural Language Processing"
+        ]
       }
     ]
   }
