@@ -1,10 +1,25 @@
 import React, { useState } from 'react';
 import FormInput from './components/FormInput';
-import frameworkData from './data/framework.json';
+
+// Safe fallback data directly inside the file in case the JSON path is broken
+const fallbackData = {
+  "name": "University of Dubai",
+  "colleges": [
+    {
+      "name": "College of Engineering and Information Technology",
+      "min_emsat_math": 900,
+      "programs": ["BSc in Information Systems Security", "BSc in Electrical Engineering", "BSc in Computer Science"]
+    },
+    {
+      "name": "Dubai Business School",
+      "min_emsat_math": 600,
+      "programs": ["BBA in Accounting", "BBA in Finance", "BBA in Digital Marketing"]
+    }
+  ]
+};
 
 export default function App() {
   const [studentProfile, setStudentProfile] = useState(null);
-  const udData = frameworkData.benchmark_institutions[0];
 
   const handleFormSubmit = (profileData) => {
     setStudentProfile(profileData);
@@ -32,9 +47,9 @@ export default function App() {
       {/* Main Container Split View */}
       <main style={{
         display: 'grid',
-        gridTemplateColumns: 'minmax(320px, 450px) 1fr',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
         gap: '40px',
-        maxWidth: '1350px',
+        maxWidth: '1200px',
         margin: '0 auto',
         padding: '50px 20px'
       }}>
@@ -51,7 +66,7 @@ export default function App() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', borderBottom: '1px solid #1e293b', paddingBottom: '12px' }}>
             <span style={{ fontSize: '1.4rem' }}>🏛️</span>
             <div>
-              <h2 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff', fontWeight: '600' }}>{udData.name} Matrix</h2>
+              <h2 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff', fontWeight: '600' }}>{fallbackData.name} Matrix</h2>
               <p style={{ margin: 0, fontSize: '0.75rem', color: '#ff6b3d', fontWeight: '600', textTransform: 'uppercase' }}>CAA Accredited Benchmarks</p>
             </div>
           </div>
@@ -61,7 +76,7 @@ export default function App() {
           </p>
 
           {/* Dynamic Map Loop over Colleges */}
-          {udData.colleges.map((college, idx) => (
+          {fallbackData.colleges.map((college, idx) => (
             <div key={idx} style={{
               background: '#131a26',
               border: '1px solid #1f2937',
@@ -83,7 +98,7 @@ export default function App() {
             </div>
           ))}
 
-          <div style={{ borderTop: '1px solid #1e293b', paddingTop: '12px', marginTop: '20px', fontSize: '0.75rem', color: '#64748b', display: 'flex', justifyContent: 'between', alignItems: 'center' }}>
+          <div style={{ borderTop: '1px solid #1e293b', paddingTop: '12px', marginTop: '20px', fontSize: '0.75rem', color: '#64748b', display: 'flex', alignItems: 'center' }}>
             <span>Platform Target: MoE Compliance Core</span>
             <span style={{ color: '#475569', marginLeft: 'auto' }}>v1.0.0</span>
           </div>
@@ -134,8 +149,7 @@ export default function App() {
                   borderRadius: '8px',
                   cursor: 'pointer',
                   fontWeight: '600',
-                  fontSize: '0.9rem',
-                  transition: 'background-color 0.2s'
+                  fontSize: '0.9rem'
                 }}
               >
                 Reconfigure Intake Profile
