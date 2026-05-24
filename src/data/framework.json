@@ -1,0 +1,63 @@
+{
+    "high_school_streams": {
+        "moe_advanced": {
+            "stream_name": "MoE Advanced Stream",
+            "typical_emsat_min_math": 900,
+            "eligible_paths": [
+                "Engineering",
+                "Computer Science",
+                "Artificial Intelligence",
+                "Health Sciences",
+                "Business"
+            ]
+        },
+        "moe_general": {
+            "stream_name": "MoE General Stream",
+            "typical_emsat_min_math": 700,
+            "eligible_paths": [
+                "Business Administration",
+                "Information Technology",
+                "Law",
+                "Arts & Design",
+                "Social Sciences"
+            ]
+        },
+        "british_alevels": {
+            "stream_name": "British Curriculum (A-Levels)",
+            "eligible_paths": [
+                "Dependent on specific Science/Math A-Level tracks"
+            ]
+        },
+        "american_diploma": {
+            "stream_name": "American High School Diploma",
+            "eligible_paths": [
+                "Dependent on matching AP subject credits"
+            ]
+        }
+    },
+    "sample_institutions": [
+        {
+            "name": "University of Dubai",
+            "colleges": [
+                {
+                    "name": "College of Engineering and Information Technology",
+                    "min_emsat_math": 900,
+                    "programs": [
+                        "BSc in Information Systems Security",
+                        "BSc in Electrical Engineering",
+                        "BSc in Computer Science"
+                    ]
+                },
+                {
+                    "name": "Dubai Business School",
+                    "min_emsat_math": 600,
+                    "programs": [
+                        "BBA in Accounting",
+                        "BBA in Finance",
+                        "BBA in Digital Marketing"
+                    ]
+                }
+            ]
+        }
+    ]
+}

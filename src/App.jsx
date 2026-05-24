@@ -1,122 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState } from 'react';
+import FormInput from './components/FormInput';
+import frameworkData from './data/framework.json';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [studentProfile, setStudentProfile] = useState(null);
+
+  const handleFormSubmit = (profileData) => {
+    setStudentProfile(profileData);
+    console.log("Captured Student Profile Data:", profileData);
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={{ fontFamily: 'Arial, sans-serif', color: '#333', minHeight: '100vh', background: '#fff' }}>
+      <header style={{ background: '#111', color: '#fff', padding: '20px', textAlign: 'center', borderBottom: '4px solid #e0531b' }}>
+        <h1 style={{ margin: 0, fontSize: '2rem', tracking: 'wide' }}>MASAR AI</h1>
+        <p style={{ margin: '5px 0 0 0', color: '#aaa', fontSize: '0.9rem' }}>Beyond Theory. Building Reality.</p>
+      </header>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <main style={{ padding: '40px 20px' }}>
+        {!studentProfile ? (
+          <FormInput onSubmit={handleFormSubmit} />
+        ) : (
+          <div style={{ maxWidth: '600px', margin: 'auto', textAlign: 'center' }}>
+            <div style={{ background: '#e0f7fa', padding: '20px', borderRadius: '8px', border: '1px solid #00acc1' }}>
+              <h3>Profile Successfully Processed!</h3>
+              <p>Ready to feed this data matrix into the K2 Think V2 reasoning core once API access is granted.</p>
+            </div>
+            <button onClick={() => setStudentProfile(null)} style={{ marginTop: '20px', padding: '10px 20px', background: '#333', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+              Reset Profile
+            </button>
+          </div>
+        )}
+      </main>
+    </div>
+  );
 }
-
-export default App
