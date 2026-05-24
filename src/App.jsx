@@ -1,33 +1,77 @@
 import React, { useState } from 'react';
 import FormInput from './components/FormInput';
-import frameworkData from './data/framework.json';
 
 export default function App() {
   const [studentProfile, setStudentProfile] = useState(null);
 
   const handleFormSubmit = (profileData) => {
     setStudentProfile(profileData);
-    console.log("Captured Student Profile Data:", profileData);
   };
 
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', color: '#333', minHeight: '100vh', background: '#fff' }}>
-      <header style={{ background: '#111', color: '#fff', padding: '20px', textAlign: 'center', borderBottom: '4px solid #e0531b' }}>
-        <h1 style={{ margin: 0, fontSize: '2rem', tracking: 'wide' }}>MASAR AI</h1>
-        <p style={{ margin: '5px 0 0 0', color: '#aaa', fontSize: '0.9rem' }}>Beyond Theory. Building Reality.</p>
+    <div style={{ minHeight: '100vh', backgroundColor: '#0b0f19', color: '#f3f4f6' }}>
+
+      {/* Header Grid */}
+      <header style={{
+        background: '#0f172a',
+        padding: '24px 20px',
+        textAlign: 'center',
+        borderBottom: '1px solid #1e293b'
+      }}>
+        <h1 style={{ margin: 0, fontSize: '1.75rem', fontWeight: '700', letterSpacing: '-0.025em', color: '#ffffff' }}>
+          Masar AI <span style={{ color: '#ff6b3d', fontWeight: '400' }}>(مسار)</span>
+        </h1>
+        <p style={{ margin: '6px 0 0 0', color: '#94a3b8', fontSize: '0.95rem', fontWeight: '500' }}>
+          Next-Gen Student Pathway Reasoning Agent
+        </p>
       </header>
 
-      <main style={{ padding: '40px 20px' }}>
+      {/* Main Framework Viewport */}
+      <main style={{ padding: '60px 20px', maxWidth: '1200px', margin: '0 auto' }}>
         {!studentProfile ? (
           <FormInput onSubmit={handleFormSubmit} />
         ) : (
-          <div style={{ maxWidth: '600px', margin: 'auto', textAlign: 'center' }}>
-            <div style={{ background: '#e0f7fa', padding: '20px', borderRadius: '8px', border: '1px solid #00acc1' }}>
-              <h3>Profile Successfully Processed!</h3>
-              <p>Ready to feed this data matrix into the K2 Think V2 reasoning core once API access is granted.</p>
+          <div style={{
+            maxWidth: '500px',
+            margin: '0 auto',
+            textAlign: 'center',
+            background: '#131a26',
+            padding: '32px',
+            borderRadius: '16px',
+            border: '1px solid #1e293b'
+          }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              background: 'rgba(240, 98, 33, 0.1)',
+              color: '#ff6b3d',
+              marginBottom: '16px',
+              fontSize: '1.5rem'
+            }}>
+              ✓
             </div>
-            <button onClick={() => setStudentProfile(null)} style={{ marginTop: '20px', padding: '10px 20px', background: '#333', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-              Reset Profile
+            <h3 style={{ margin: '0 0 8px 0', color: '#ffffff', fontSize: '1.2rem' }}>Matrix Set Successfully</h3>
+            <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.5', margin: '0 0 24px 0' }}>
+              Profile locked down. Ready to route parameters into the K2 Think V2 reasoning API engine upon activation credentials.
+            </p>
+            <button
+              onClick={() => setStudentProfile(null)}
+              style={{
+                padding: '10px 20px',
+                background: '#1f2937',
+                color: '#f3f4f6',
+                border: '1px solid #374151',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontWeight: '500',
+                fontSize: '0.9rem'
+              }}
+            >
+              Modify Matrix Context
             </button>
           </div>
         )}
