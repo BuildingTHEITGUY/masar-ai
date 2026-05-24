@@ -3,47 +3,68 @@ import FormInput from './components/FormInput';
 
 const universityData = {
   ud: {
-    name: "University of Dubai (UD) — Graduate Admissions",
-    tagline: "CAA Standard 6.3 Certified Post-Graduate Pathways (Policy S 6.2)",
-    colleges: [
+    name: "University of Dubai (UD) — Comprehensive Matrix",
+    tagline: "Unified Policy Engine (Undergraduate S6.1 & Graduate S6.2 Frameworks)",
+    sections: [
       {
-        name: "College of Engineering and Information Technology (CEIT)",
-        criteria: "Requires a recognized Bachelor's degree in a core STEM discipline with a minimum CGPA of 3.0/4.0. Conditional tracks available for CGPAs down to 2.0 (requires Program Director interview). No remedial bridging courses permitted.",
-        programs: [
-          "Master of Science in Data Science (MSDS)",
-          "Master of Science in Cyber Security (MSCS)",
-          "Master's Level Micro-credentials"
+        title: "College of Engineering & Information Technology (CEIT)",
+        items: [
+          {
+            level: "Undergraduate Programs",
+            criteria: "Requires an 80% minimum score in high school Mathematics (or passing the UD MPT), 80% in Physics, and 80% in Chemistry/Biology. Conditional entries allow up to 12 credits alongside remedial coursework.",
+            programs: ["BSc in Computer Science", "BSc in Computer Engineering", "BSc in Electrical Engineering", "BSc in Computing and Information Systems"]
+          },
+          {
+            level: "Graduate Programs (Master's Level)",
+            criteria: "Requires an accredited Bachelor's degree in a core STEM discipline with a minimum CGPA of 3.0/4.0. Conditional tracks available down to 2.0 CGPA following a Program Director interview. Bridging/remedial courses are not permitted.",
+            programs: ["Master of Science in Data Science (MSDS)", "Master of Science in Cyber Security (MSCS)"]
+          }
         ]
       },
       {
-        name: "Dubai Business School (DBS)",
-        criteria: "Requires a recognized Bachelor's degree (Minimum CGPA 3.0/4.0). Conditional entry down to 2.0 CGPA. Unrelated degrees require passing 2 remedial courses or clearing online/offline proctored challenge exams.",
-        programs: [
-          "Regular MBA & Online MBA",
-          "Global MBA in AI for Business (Requires 3+ Years Work Experience + Interview)",
-          "PhD in Business Administration (Regular & Senior Leadership 15-Year Waiver Route)"
+        title: "Dubai Business School (DBS)",
+        items: [
+          {
+            level: "Undergraduate Programs",
+            criteria: "Requires standard high school completion. Direct English entry requires an 80% minimum in MoE English or clearing the institutional EPT exam.",
+            programs: ["BBA in Accounting", "BBA in Finance", "BBA in Digital Marketing", "BBA in Logistics and Operations Management"]
+          },
+          {
+            level: "Graduate Programs (Master's & PhD)",
+            criteria: "Master's requires a minimum 3.0/4.0 CGPA. Unrelated disciplines must pass 2 remedial courses or clear challenge exams. Global MBA in AI requires 3+ years of post-bachelor experience and an interview.",
+            programs: ["Regular MBA & Online MBA", "Global MBA in AI for Business", "PhD in Business Administration"]
+          }
         ]
       },
       {
-        name: "College of Law (COL)",
-        criteria: "Requires a recognized Bachelor's degree in a related discipline. Regular entry requires 3.0 CGPA. Conditional entry at 2.0 CGPA requires passing 3 graduate-level remedial courses.",
-        programs: [
-          "Master of Law (LLM)"
+        title: "College of Law (COL)",
+        items: [
+          {
+            level: "Undergraduate Programs",
+            criteria: "Dual-Degree Track with University of London (UoL). Requires a 70%+ in high school Math or passing MPT. Complete 30 CH at UD in Year 1 with a 2.0 CGPA, and provide a valid 6.0 IELTS Academic score.",
+            programs: ["Bachelor of Law (LLB)"]
+          },
+          {
+            level: "Graduate Programs (Master's Level)",
+            criteria: "Requires a recognized Bachelor's degree in law or related discipline with a minimum 3.0/4.0 CGPA. Conditional entry down to 2.0 CGPA available (requires 3 graduate remedial courses).",
+            programs: ["Master of Law (LLM)"]
+          }
         ]
       }
     ]
   },
   mbzuai: {
-    name: "Mohamed bin Zayed University of Artificial Intelligence",
-    tagline: "Post-Graduate Deep Tech AI Research System Integration",
-    colleges: [
+    name: "Mohamed bin Zayed University of AI Pathways",
+    tagline: "Post-Graduate Deep Tech AI Research Integration",
+    sections: [
       {
-        name: "School of AI Foundation Systems",
-        criteria: "Target competitive destination framework. Requires completion of a verified, highly quantitative STEM qualification framework (such as UD's MSc in Data Science) with optimal background profiles.",
-        programs: [
-          "MSc in Machine Learning",
-          "MSc in Computer Vision",
-          "MSc in Natural Language Processing"
+        title: "School of AI Foundation Systems",
+        items: [
+          {
+            level: "Advanced Research Tracks",
+            criteria: "Target destination framework. Evaluates quantitative background preparation. Ideal progression vectors include completing a STEM Bachelor or Master's track at UD with optimal academic performance data profiles.",
+            programs: ["MSc in Machine Learning", "MSc in Computer Vision", "MSc in Natural Language Processing"]
+          }
         ]
       }
     ]
@@ -61,7 +82,7 @@ export default function App() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#0b0f19', color: '#f3f4f6' }}>
 
-      {/* Premium Header Architecture */}
+      {/* Header Architecture */}
       <header style={{
         background: '#0f172a',
         padding: '24px 20px',
@@ -77,7 +98,7 @@ export default function App() {
         </p>
       </header>
 
-      {/* Dynamic Main Workspace Container Layout */}
+      {/* Main Container Split View */}
       <main style={{
         display: 'grid',
         gridTemplateColumns: '1fr minmax(320px, 480px)',
@@ -87,7 +108,7 @@ export default function App() {
         padding: '50px 20px'
       }}>
 
-        {/* LEFT COLUMN: THE INTEL SPOTLIGHT */}
+        {/* LEFT COLUMN: THE PRIMARY INTERACTIVE WORKSPACE */}
         <section style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start' }}>
           {!studentProfile ? (
             <FormInput onSubmit={handleFormSubmit} />
@@ -137,7 +158,7 @@ export default function App() {
           )}
         </section>
 
-        {/* RIGHT COLUMN: INSTITUTIONAL BENCHMARK DIRECTORY */}
+        {/* RIGHT COLUMN: UNIFIED INSTITUTIONAL INDEX */}
         <section style={{
           background: '#0f172a',
           border: '1px solid #1e293b',
@@ -150,10 +171,10 @@ export default function App() {
             Institutional Matrix Index
           </h3>
           <p style={{ margin: '0 0 20px 0', fontSize: '0.8rem', color: '#64748b' }}>
-            Select verified destination frameworks to analyze admission routing engines.
+            Toggle target institutions to evaluate multi-tier program criteria tracking.
           </p>
 
-          {/* Tab Selector System */}
+          {/* Selector Tabs */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '20px' }}>
             <button
               onClick={() => setActiveTab('ud')}
@@ -185,38 +206,42 @@ export default function App() {
                 cursor: 'pointer'
               }}
             >
-              MBZUAI Core
+              MBZUAI Index
             </button>
           </div>
 
-          {/* Active View Engine */}
+          {/* Active Framework Mapping Loop */}
           <div style={{ borderTop: '1px solid #1e293b', paddingTop: '16px' }}>
             <h4 style={{ margin: '0 0 4px 0', fontSize: '0.95rem', color: '#ffffff', fontWeight: '600' }}>
               {universityData[activeTab].name}
             </h4>
-            <p style={{ margin: '0 0 16px 0', fontSize: '0.75rem', color: '#ff6b3d', fontWeight: '500' }}>
+            <p style={{ margin: '0 0 20px 0', fontSize: '0.75rem', color: '#ff6b3d', fontWeight: '500' }}>
               {universityData[activeTab].tagline}
             </p>
 
-            {universityData[activeTab].colleges.map((college, idx) => (
-              <div key={idx} style={{
-                background: '#131a26',
-                border: '1px solid #1e293b',
-                borderRadius: '8px',
-                padding: '14px',
-                marginBottom: '12px'
-              }}>
-                <h5 style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: '#f1f5f9', fontWeight: '600' }}>
-                  {college.name}
+            {universityData[activeTab].sections.map((sec, sIdx) => (
+              <div key={sIdx} style={{ marginBottom: '24px', borderBottom: '1px dashed #1e293b', paddingBottom: '16px' }}>
+                <h5 style={{ margin: '0 0 12px 0', color: '#ffffff', fontSize: '0.9rem', fontWeight: '700', borderLeft: '3px solid #ff6b3d', paddingLeft: '8px' }}>
+                  {sec.title}
                 </h5>
-                <p style={{ margin: '0 0 10px 0', fontSize: '0.75rem', color: '#94a3b8', lineHeight: '1.4', background: '#0f172a', padding: '8px', borderRadius: '4px', borderLeft: '2px solid #ff6b3d' }}>
-                  <strong>Admission Criteria Update:</strong> {college.criteria}
-                </p>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.75rem', color: '#cbd5e1', lineHeight: '1.5' }}>
-                  {college.programs.map((prog, pIdx) => (
-                    <li key={pIdx} style={{ marginBottom: '2px' }}>{prog}</li>
-                  ))}
-                </ul>
+
+                {sec.items.map((item, iIdx) => (
+                  <div key={iIdx} style={{ background: '#131a26', padding: '12px', borderRadius: '8px', border: '1px solid #1e293b', marginBottom: '10px' }}>
+                    <span style={{ fontSize: '0.7rem', color: '#ff6b3d', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '4px' }}>
+                      {item.level}
+                    </span>
+                    <p style={{ margin: '0 0 10px 0', fontSize: '0.75rem', color: '#94a3b8', lineHeight: '1.4' }}>
+                      {item.criteria}
+                    </p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                      {item.programs.map((prog, pIdx) => (
+                        <span key={pIdx} style={{ fontSize: '0.7rem', background: '#0f172a', color: '#cbd5e1', padding: '4px 8px', borderRadius: '4px', border: '1px solid #1e293b' }}>
+                          {prog}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
