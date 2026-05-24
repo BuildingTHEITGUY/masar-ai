@@ -1,25 +1,39 @@
 import React, { useState } from 'react';
 import FormInput from './components/FormInput';
 
-// Safe fallback data directly inside the file in case the JSON path is broken
-const fallbackData = {
-  "name": "University of Dubai",
-  "colleges": [
-    {
-      "name": "College of Engineering and Information Technology",
-      "min_emsat_math": 900,
-      "programs": ["BSc in Information Systems Security", "BSc in Electrical Engineering", "BSc in Computer Science"]
-    },
-    {
-      "name": "Dubai Business School",
-      "min_emsat_math": 600,
-      "programs": ["BBA in Accounting", "BBA in Finance", "BBA in Digital Marketing"]
-    }
-  ]
+const universityData = {
+  ud: {
+    name: "University of Dubai (UD)",
+    tagline: "Flexible Admissions Track (High School Avg / Internal Placements / EmSAT)",
+    colleges: [
+      {
+        name: "College of Engineering and Information Technology",
+        criteria: "Min 80% High School Track average, or valid EmSAT Math (900+), or passing score on UD Institutional Math Placement Exam.",
+        programs: ["BSc in Information Systems Security", "BSc in Electrical Engineering", "BSc in Computer Science"]
+      },
+      {
+        name: "Dubai Business School",
+        criteria: "Min 70% High School track average, or valid EmSAT Math (600+), or passing score on UD Institutional Math Placement Exam.",
+        programs: ["BBA in Accounting", "BBA in Finance", "BBA in Digital Marketing"]
+      }
+    ]
+  },
+  mbzuai: {
+    name: "Mohamed bin Zayed University of Artificial Intelligence",
+    tagline: "Post-Graduate Specialized AI Integration Pathways",
+    colleges: [
+      {
+        name: "School of AI Foundation Systems",
+        criteria: "Target destination environment. Requires completion of a relevant STEM Bachelor track (such as UD Computer Science) with competitive overall CGPA thresholds.",
+        programs: ["MSc in Machine Learning", "MSc in Computer Vision", "MSc in Natural Language Processing"]
+      }
+    ]
+  }
 };
 
 export default function App() {
   const [studentProfile, setStudentProfile] = useState(null);
+  const [activeTab, setActiveTab] = useState('ud');
 
   const handleFormSubmit = (profileData) => {
     setStudentProfile(profileData);
@@ -28,96 +42,44 @@ export default function App() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#0b0f19', color: '#f3f4f6' }}>
 
-      {/* Header Bar */}
+      {/* Premium Header Architecture */}
       <header style={{
         background: '#0f172a',
-        padding: '20px',
+        padding: '24px 20px',
         textAlign: 'center',
         borderBottom: '1px solid #1e293b',
         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
       }}>
-        <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: '700', letterSpacing: '-0.025em', color: '#ffffff' }}>
+        <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: '800', color: '#ffffff' }}>
           Masar AI <span style={{ color: '#ff6b3d', fontWeight: '400' }}>(مسار)</span>
         </h1>
-        <p style={{ margin: '4px 0 0 0', color: '#94a3b8', fontSize: '0.9rem', fontWeight: '500' }}>
+        <p style={{ margin: '6px 0 0 0', color: '#94a3b8', fontSize: '0.95rem', fontWeight: '500' }}>
           Next-Gen Student Pathway Reasoning Agent
         </p>
       </header>
 
-      {/* Main Container Split View */}
+      {/* Dynamic Main Workspace Container Layout */}
       <main style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+        gridTemplateColumns: '1fr minmax(320px, 480px)',
         gap: '40px',
-        maxWidth: '1200px',
+        maxWidth: '1400px',
         margin: '0 auto',
         padding: '50px 20px'
       }}>
 
-        {/* Left Column: Embedded Academic Framework Hub */}
-        <section style={{
-          background: '#0f172a',
-          border: '1px solid #1e293b',
-          borderRadius: '16px',
-          padding: '24px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
-          height: 'fit-content'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', borderBottom: '1px solid #1e293b', paddingBottom: '12px' }}>
-            <span style={{ fontSize: '1.4rem' }}>🏛️</span>
-            <div>
-              <h2 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff', fontWeight: '600' }}>{fallbackData.name} Matrix</h2>
-              <p style={{ margin: 0, fontSize: '0.75rem', color: '#ff6b3d', fontWeight: '600', textTransform: 'uppercase' }}>CAA Accredited Benchmarks</p>
-            </div>
-          </div>
-
-          <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: '1.5', marginBottom: '20px' }}>
-            Live integration mapping for institutional admissions processing systems. Powered by MBZUAI K2 Think V2 reasoning logic models.
-          </p>
-
-          {/* Dynamic Map Loop over Colleges */}
-          {fallbackData.colleges.map((college, idx) => (
-            <div key={idx} style={{
-              background: '#131a26',
-              border: '1px solid #1f2937',
-              borderRadius: '10px',
-              padding: '16px',
-              marginBottom: '16px'
-            }}>
-              <h4 style={{ margin: '0 0 10px 0', fontSize: '0.9rem', color: '#f3f4f6', fontWeight: '600' }}>
-                {college.name}
-              </h4>
-              <div style={{ display: 'inline-block', fontSize: '0.75rem', background: 'rgba(224, 83, 27, 0.15)', color: '#ff6b3d', padding: '4px 8px', borderRadius: '4px', fontWeight: '600', marginBottom: '12px' }}>
-                Minimum EmSAT Math: {college.min_emsat_math}
-              </div>
-              <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.8rem', color: '#94a3b8', lineHeight: '1.6' }}>
-                {college.programs.map((prog, pIdx) => (
-                  <li key={pIdx} style={{ marginBottom: '4px' }}>{prog}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          <div style={{ borderTop: '1px solid #1e293b', paddingTop: '12px', marginTop: '20px', fontSize: '0.75rem', color: '#64748b', display: 'flex', alignItems: 'center' }}>
-            <span>Platform Target: MoE Compliance Core</span>
-            <span style={{ color: '#475569', marginLeft: 'auto' }}>v1.0.0</span>
-          </div>
-        </section>
-
-        {/* Right Column: Interactive Profile Configuration Panel */}
+        {/* LEFT COLUMN: THE INTEL SPOTLIGHT */}
         <section style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start' }}>
           {!studentProfile ? (
             <FormInput onSubmit={handleFormSubmit} />
           ) : (
             <div style={{
               width: '100%',
-              maxWidth: '480px',
-              margin: '0 auto',
-              background: '#131a26',
-              padding: '40px 32px',
+              background: '#1e293b',
+              padding: '40px',
               borderRadius: '16px',
-              border: '1px solid #1e293b',
-              boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
+              border: '1px solid #334155',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
               textAlign: 'center'
             }}>
               <div style={{
@@ -132,20 +94,18 @@ export default function App() {
                 marginBottom: '20px',
                 fontSize: '1.8rem',
                 fontWeight: 'bold'
-              }}>
-                ✓
-              </div>
-              <h3 style={{ margin: '0 0 10px 0', color: '#ffffff', fontSize: '1.3rem', fontWeight: '600' }}>Matrix Configured</h3>
-              <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.6', margin: '0 0 30px 0' }}>
-                Data telemetry matched with high school stream metrics. Ready to initiate streaming token reasoning pipelines via MBZUAI K2 Think infrastructure.
+              }}>✓</div>
+              <h3 style={{ margin: '0 0 10px 0', color: '#ffffff', fontSize: '1.4rem', fontWeight: '700' }}>Telemetry Logged</h3>
+              <p style={{ color: '#94a3b8', fontSize: '0.95rem', lineHeight: '1.6', margin: '0 0 32px 0' }}>
+                Profile coordinates captured. Ready to route parameters into the K2 Think V2 long chain-of-thought orchestration matrices.
               </p>
               <button
                 onClick={() => setStudentProfile(null)}
                 style={{
                   padding: '12px 24px',
-                  background: '#1f2937',
-                  color: '#f3f4f6',
-                  border: '1px solid #374151',
+                  background: '#0f172a',
+                  color: '#f8fafc',
+                  border: '1px solid #334155',
                   borderRadius: '8px',
                   cursor: 'pointer',
                   fontWeight: '600',
@@ -156,6 +116,91 @@ export default function App() {
               </button>
             </div>
           )}
+        </section>
+
+        {/* RIGHT COLUMN: INSTITUTIONAL BENCHMARK DIRECTORY */}
+        <section style={{
+          background: '#0f172a',
+          border: '1px solid #1e293b',
+          borderRadius: '16px',
+          padding: '24px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+          height: 'fit-content'
+        }}>
+          <h3 style={{ margin: '0 0 4px 0', fontSize: '1rem', fontWeight: '700', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Institutional Matrix Index
+          </h3>
+          <p style={{ margin: '0 0 20px 0', fontSize: '0.8rem', color: '#64748b' }}>
+            Select verified destination frameworks to analyze admission routing engines.
+          </p>
+
+          {/* Tab Selector System */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '20px' }}>
+            <button
+              onClick={() => setActiveTab('ud')}
+              style={{
+                padding: '10px',
+                borderRadius: '6px',
+                border: '1px solid',
+                borderColor: activeTab === 'ud' ? '#ff6b3d' : '#1e293b',
+                backgroundColor: activeTab === 'ud' ? 'rgba(255, 107, 61, 0.1)' : '#111827',
+                color: activeTab === 'ud' ? '#ff6b3d' : '#94a3b8',
+                fontWeight: '600',
+                fontSize: '0.8rem',
+                cursor: 'pointer'
+              }}
+            >
+              University of Dubai
+            </button>
+            <button
+              onClick={() => setActiveTab('mbzuai')}
+              style={{
+                padding: '10px',
+                borderRadius: '6px',
+                border: '1px solid',
+                borderColor: activeTab === 'mbzuai' ? '#ff6b3d' : '#1e293b',
+                backgroundColor: activeTab === 'mbzuai' ? 'rgba(255, 107, 61, 0.1)' : '#111827',
+                color: activeTab === 'mbzuai' ? '#ff6b3d' : '#94a3b8',
+                fontWeight: '600',
+                fontSize: '0.8rem',
+                cursor: 'pointer'
+              }}
+            >
+              MBZUAI Core
+            </button>
+          </div>
+
+          {/* Active View Engine */}
+          <div style={{ borderTop: '1px solid #1e293b', paddingTop: '16px' }}>
+            <h4 style={{ margin: '0 0 4px 0', fontSize: '0.95rem', color: '#ffffff', fontWeight: '600' }}>
+              {universityData[activeTab].name}
+            </h4>
+            <p style={{ margin: '0 0 16px 0', fontSize: '0.75rem', color: '#ff6b3d', fontWeight: '500' }}>
+              {universityData[activeTab].tagline}
+            </p>
+
+            {universityData[activeTab].colleges.map((college, idx) => (
+              <div key={idx} style={{
+                background: '#131a26',
+                border: '1px solid #1e293b',
+                borderRadius: '8px',
+                padding: '14px',
+                marginBottom: '12px'
+              }}>
+                <h5 style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: '#f1f5f9', fontWeight: '600' }}>
+                  {college.name}
+                </h5>
+                <p style={{ margin: '0 0 10px 0', fontSize: '0.75rem', color: '#94a3b8', lineHeight: '1.4', background: '#0f172a', padding: '8px', borderRadius: '4px', borderLeft: '2px solid #ff6b3d' }}>
+                  <strong>Admission Criteria Update:</strong> {college.criteria}
+                </p>
+                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.75rem', color: '#cbd5e1', lineHeight: '1.5' }}>
+                  {college.programs.map((prog, pIdx) => (
+                    <li key={pIdx} style={{ marginBottom: '2px' }}>{prog}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </section>
 
       </main>
