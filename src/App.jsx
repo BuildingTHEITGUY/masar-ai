@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import FormInput from './components/FormInput';
+import LandingChoice from './components/LandingChoice';
+import ExploreWizard from './components/ExploreWizard';
+import HowMasarWorksSidebar from './components/HowMasarWorksSidebar';
 import K2CounselorPanel from './components/K2CounselorPanel';
 import programs from './data/programs.json';
 import universities from './data/universities.json';
@@ -85,6 +88,7 @@ function MatchCard({ match, studentProfile, variant = 'match' }) {
 }
 
 export default function App() {
+  const [flowPhase, setFlowPhase] = useState('landing');
   const [studentProfile, setStudentProfile] = useState(null);
   const [activeTab, setActiveTab] = useState('dubai');
   const [sidebarTrack, setSidebarTrack] = useState('law');
@@ -93,6 +97,15 @@ export default function App() {
   const [resolvedTrack, setResolvedTrack] = useState(null);
   const [matchError, setMatchError] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const resetSession = () => {
+    setStudentProfile(null);
+    setMatchingResults([]);
+    setAlternativeResults([]);
+    setResolvedTrack(null);
+    setMatchError(null);
+    setFlowPhase('landing');
+  };
 
   const handleFormSubmit = (profileData) => {
     setStudentProfile(profileData);
@@ -138,7 +151,7 @@ export default function App() {
           Masar AI <span style={{ color: '#ff6b3d', fontWeight: '400' }}>(مسار)</span>
         </h1>
         <p style={{ margin: '6px 0 0 0', color: '#94a3b8', fontSize: '0.95rem', fontWeight: '500' }}>
-          Next-Gen Student Pathway Reasoning Agent
+          Your UAE pathway after high school
         </p>
       </header>
 
@@ -195,7 +208,20 @@ export default function App() {
           </div>
 
           {!studentProfile ? (
-            <FormInput onSubmit={handleFormSubmit} />
+            <>
+              {flowPhase === 'landing' && (
+                <LandingChoice
+                  onExplore={() => setFlowPhase('explore')}
+                  onDirect={() => setFlowPhase('direct')}
+                />
+              )}
+              {flowPhase === 'explore' && (
+                <ExploreWizard onSubmit={handleFormSubmit} onBack={() => setFlowPhase('landing')} />
+              )}
+              {flowPhase === 'direct' && (
+                <FormInput onSubmit={handleFormSubmit} onBack={() => setFlowPhase('landing')} />
+              )}
+            </>
           ) : (
             <div
               style={{
@@ -219,9 +245,12 @@ export default function App() {
               >
                 <div>
                   <h3 style={{ margin: 0, color: '#ffffff', fontSize: '1.25rem', fontWeight: '700' }}>
-                    Personalized Institutional Alignment Matrix
+                    Universities that fit you
                   </h3>
                   <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#94a3b8' }}>
+                    {studentProfile.discoveryMode && (
+                      <span style={{ color: '#38bdf8', marginRight: '6px' }}>Explore mode ·</span>
+                    )}
                     {resolvedTrack
                       ? `${TRACK_LABELS[resolvedTrack]} · ${studentProfile.emirate === 'all' ? 'All Emirates' : studentProfile.emirate} · ${studentProfile.stream.replace(/_/g, ' ')}`
                       : 'Processing…'}
@@ -229,13 +258,7 @@ export default function App() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => {
-                    setStudentProfile(null);
-                    setMatchingResults([]);
-                    setAlternativeResults([]);
-                    setResolvedTrack(null);
-                    setMatchError(null);
-                  }}
+                  onClick={resetSession}
                   style={{
                     padding: '8px 14px',
                     background: '#1f2937',
@@ -247,7 +270,7 @@ export default function App() {
                     fontWeight: '600',
                   }}
                 >
-                  New Query
+                  New pathway
                 </button>
               </div>
 
@@ -348,6 +371,10 @@ export default function App() {
             height: 'fit-content',
           }}
         >
+          {!studentProfile ? (
+            <HowMasarWorksSidebar showExploreHint={flowPhase === 'landing'} />
+          ) : (
+            <>
           <h3
             style={{
               margin: '0 0 4px 0',
@@ -454,6 +481,8 @@ export default function App() {
               ))
             )}
           </div>
+            </>
+          )}
         </section>
       </main>
     </div>

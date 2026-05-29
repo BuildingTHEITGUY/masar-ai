@@ -45,6 +45,7 @@ STUDENT PROFILE (authoritative — do not contradict):
 - Overall average: ${profile.highSchoolAvg}%
 - EmSAT Math: ${profile.emsatMath != null ? profile.emsatMath : 'not provided'}
 - Additional interests: ${profile.interest || 'none'}
+- Discovery mode: ${profile.discoveryMode ? 'yes — student used Explore wizard; explain why their chosen track fits their stated interests' : 'no — student picked field directly'}
 
 VERIFIED PROGRAM MATCHES (only discuss these institutions):
 ${matchBlock}
