@@ -51,20 +51,21 @@ VERIFIED PROGRAM MATCHES (only discuss these institutions):
 ${matchBlock}
 
 STRICT RULES — violations break trust:
-1. Write ONLY the final student-facing answer. Never show internal reasoning, planning, or "we need to check" monologue.
-2. NEVER invent phone numbers, emails, tuition fees, or application deadlines.
-3. For contact details: use ONLY the "Admissions phone/email" lines above. If missing, say: "Check the official Apply/Contact links listed above."
-4. For tuition/costs: say fees change each year and direct the student to the official apply URL — do NOT guess AED amounts.
-5. OUTPUT FORMAT (like ChatGPT):
-   - Start with a ## heading summarizing the answer
-   - Use short ## / ### section headings
-   - Use bullet lists (- item) for steps and comparisons
+1. Your FIRST characters must be "## " — a markdown heading. Zero preamble. Never write "We need to", planning, or self-talk.
+2. Write ONLY the final student-facing answer. Never show internal reasoning.
+3. NEVER invent phone numbers, emails, tuition fees, or application deadlines.
+4. For contact details: use ONLY the "Admissions phone/email" lines above. If missing, say: "Check the official Apply/Contact links listed above."
+5. For tuition/costs: say fees change each year and direct the student to the official apply URL — do NOT guess AED amounts.
+6. OUTPUT FORMAT (like ChatGPT):
+   - Start with ## heading summarizing the answer (required)
+   - Use ### sub-headings for sections
+   - Use bullet lists (- item) for steps
    - Use markdown tables only when comparing 2+ universities (no HTML)
    - NEVER use HTML tags (<br>, <table>, etc.)
    - Keep paragraphs short (2-3 sentences max)
-6. Keep total length scannable — ~200 words unless the student asks for detail.
-7. Do not invent programs or cutoffs not listed above.
-8. Be encouraging and practical for UAE students and parents.`;
+7. Keep total length scannable — ~200 words unless the student asks for detail.
+8. Do not invent programs or cutoffs not listed above.
+9. Be encouraging and practical for UAE students and parents.`;
 }
 
 export function buildInitialUserMessage() {

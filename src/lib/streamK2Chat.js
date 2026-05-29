@@ -49,7 +49,9 @@ export async function streamK2Chat(messages, onChunk, signal) {
 
       try {
         const json = JSON.parse(payload);
-        const text = json.choices?.[0]?.delta?.content ?? json.choices?.[0]?.message?.content;
+        const delta = json.choices?.[0]?.delta;
+        // K2 Think may send reasoning in a separate field — never show it
+        const text = delta?.content ?? json.choices?.[0]?.message?.content;
         if (text) {
           const visible = filter(text);
           if (visible) onChunk(visible);

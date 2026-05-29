@@ -2,90 +2,56 @@ const THINK_CLOSE = '<\/redacted_thinking>';
 const THINK_OPEN = '<think>';
 const LEGACY_THINK_CLOSE = '<\/think>';
 const LEGACY_THINK_OPEN = '<' + 'think' + '>';
-const THINKING_HINTS = ['The user asks:', 'We need to answer', 'We have a list of matches', 'Okay, the user', "Now let's answer"];
 
-export function createK2StreamFilter() {
-  let carry = '';
-  let inThinking = false;
-  let sawCloseTag = false;
+/** Substrings that indicate K2 internal planning (plain text, no tags) */
+const REASONING_MARKERS = [
+  'We need to produce',
+  'We need to answer',
+  'We need to discuss',
+  'We need to give',
+  'We need to ensure',
+  'We need to incorporate',
+  'We need to be careful',
+  'We need to output',
+  'We need to use',
+  'We need to keep',
+  'We must not',
+  'We must ensure',
+  'We must follow',
+  'We must be careful',
+  'We must only',
+  'We must incorporate',
+  'We have a list of matches',
+  'We have 10 institutions',
+  'The user asks',
+  'The user wants',
+  'Okay, the user',
+  "Now let's answer",
+  "Now let's write",
+  "Now let's produce",
+  "Let's design",
+  "Let's try",
+  "Let's plan",
+  "Let's count",
+  "Ok, let's",
+  'Word count',
+  'But we need',
+  'But instructions say',
+  'Make sure we',
+  'Plan:',
+  'Outline:',
+  'Alright.',
+  'Alright,',
+  'Potential best fit',
+  'Better to have',
+  'To be safe',
+  'For streaming',
+];
 
-  const closeTags = [THINK_CLOSE, LEGACY_THINK_CLOSE];
+const REASONING_LINE = /^(We need to|We must|We have|We can|We should|We also|We may|The user|They want|But we|But need|Make sure|Now let|Ok,|Okay,|Let's |Let us|Plan:|Outline:|Word count|Alright|Potential |Better to |To be safe|For hackathon|If we |Probably |Might |Could |Would |Need to |Must not|Should we|Can we|Do not |Don't |Does the|Is the |Are we|Will we|Hmm|Wait\.|Actually,|However,|Therefore,|Thus,|So we |So let's|All right|Good luck – you)/i;
 
-  return function filterChunk(chunk) {
-    if (sawCloseTag) {
-      return stripArtifacts(chunk);
-    }
-
-    carry += chunk;
-    let visible = '';
-
-    while (carry.length > 0) {
-      if (!inThinking) {
-        const openIdx = Math.min(
-          ...[THINK_OPEN, LEGACY_THINK_OPEN].map((t) => {
-            const i = carry.indexOf(t);
-            return i === -1 ? Infinity : i;
-          })
-        );
-        const closeIdx = Math.min(
-          ...closeTags.map((t) => {
-            const i = carry.indexOf(t);
-            return i === -1 ? Infinity : i;
-          })
-        );
-
-        if (openIdx < Infinity && (closeIdx === Infinity || openIdx < closeIdx)) {
-          visible += carry.slice(0, openIdx);
-          const tag = carry.slice(openIdx).startsWith(LEGACY_THINK_OPEN) ? LEGACY_THINK_OPEN : THINK_OPEN;
-          carry = carry.slice(openIdx + tag.length);
-          inThinking = true;
-          continue;
-        }
-
-        if (closeIdx < Infinity) {
-          const tag = carry.slice(closeIdx).startsWith(LEGACY_THINK_CLOSE) ? LEGACY_THINK_CLOSE : THINK_CLOSE;
-          carry = carry.slice(closeIdx + tag.length).replace(/^\s+/, '');
-          sawCloseTag = true;
-          inThinking = false;
-          continue;
-        }
-
-        if (
-          THINKING_HINTS.some((h) => carry.includes(h)) &&
-          !carry.trimStart().startsWith('**') &&
-          !carry.trimStart().startsWith('#')
-        ) {
-          inThinking = true;
-          carry = '';
-          break;
-        }
-
-        visible += carry;
-        carry = '';
-        break;
-      }
-
-      const closeIdx = Math.min(
-        ...closeTags.map((t) => {
-          const i = carry.indexOf(t);
-          return i === -1 ? Infinity : i;
-        })
-      );
-
-      if (closeIdx === Infinity) {
-        carry = '';
-        break;
-      }
-
-      const tag = carry.slice(closeIdx).startsWith(LEGACY_THINK_CLOSE) ? LEGACY_THINK_CLOSE : THINK_CLOSE;
-      carry = carry.slice(closeIdx + tag.length).replace(/^\s+/, '');
-      inThinking = false;
-      sawCloseTag = true;
-    }
-
-    return stripArtifacts(visible);
-  };
-}
+/** First markdown heading — primary answer boundary */
+const HEADING_LINE = /^#{1,3}\s+\S/;
 
 function stripArtifacts(text) {
   return text
@@ -98,32 +64,160 @@ function stripArtifacts(text) {
     .replace(/<\/?redacted_thinking>/gi, '');
 }
 
-export function sanitizeK2Final(text) {
+export function containsReasoning(text) {
+  if (!text) return false;
+  const sample = text.slice(0, 1200);
+  return REASONING_MARKERS.some((m) => sample.includes(m)) || REASONING_LINE.test(sample.trim());
+}
+
+/** Index of first ## / ### heading suitable as answer start */
+export function findAnswerStartIndex(text) {
+  if (!text) return -1;
+
+  const lines = text.split('\n');
+  let offset = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (HEADING_LINE.test(trimmed)) {
+      const before = text.slice(0, offset).trim();
+      if (i === 0 || containsReasoning(before) || before.length > 80) {
+        return offset + lines[i].search(/\S/);
+      }
+    }
+    offset += lines[i].length + 1;
+  }
+
+  return -1;
+}
+
+function trimLeadingReasoningLines(text) {
+  const lines = text.split('\n');
+  let start = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (!trimmed) continue;
+    if (HEADING_LINE.test(trimmed)) {
+      start = i;
+      break;
+    }
+    if (REASONING_LINE.test(trimmed) || REASONING_MARKERS.some((m) => trimmed.includes(m))) {
+      continue;
+    }
+    if (containsReasoning(lines.slice(0, i).join('\n'))) {
+      continue;
+    }
+    start = i;
+    break;
+  }
+
+  return lines.slice(start).join('\n');
+}
+
+/** Extract student-facing answer only */
+export function extractStudentAnswer(text) {
   if (!text) return '';
 
-  let cleaned = text;
+  let cleaned = stripArtifacts(text);
 
   for (const closeTag of [THINK_CLOSE, LEGACY_THINK_CLOSE]) {
     if (cleaned.includes(closeTag)) {
       cleaned = cleaned.split(closeTag).pop() ?? '';
-      break;
     }
   }
 
   for (const openTag of [THINK_OPEN, LEGACY_THINK_OPEN]) {
-    if (cleaned.includes(openTag)) {
-      cleaned = cleaned.split(openTag).pop() ?? cleaned;
+    if (cleaned.includes(openTag) && !cleaned.includes(THINK_CLOSE) && !cleaned.includes(LEGACY_THINK_CLOSE)) {
+      cleaned = '';
     }
   }
 
-  if (THINKING_HINTS.some((h) => cleaned.includes(h)) && cleaned.includes('**')) {
-    const answerStart = cleaned.search(/\*\*[^*]+\*\*/);
-    if (answerStart > 200) cleaned = cleaned.slice(answerStart);
+  cleaned = cleaned.replace(/<br\s*\/?>/gi, '\n').trim();
+
+  const headingIdx = findAnswerStartIndex(cleaned);
+  if (headingIdx > 0) {
+    cleaned = cleaned.slice(headingIdx).trim();
+  } else if (containsReasoning(cleaned)) {
+    cleaned = trimLeadingReasoningLines(cleaned);
   }
 
-  return stripArtifacts(cleaned)
-    .replace(/<br\s*\/?>/gi, '\n')
-    .trim();
+  if (containsReasoning(cleaned.split('\n')[0] ?? '')) {
+    const retryIdx = findAnswerStartIndex(cleaned);
+    if (retryIdx >= 0) cleaned = cleaned.slice(retryIdx).trim();
+  }
+
+  return cleaned.trim();
+}
+
+export function sanitizeK2Final(text) {
+  return extractStudentAnswer(text);
+}
+
+/**
+ * Stream filter: buffer until first ## heading or think-tag close, then pass through.
+ */
+export function createK2StreamFilter() {
+  let buffer = '';
+  let phase = 'waiting';
+
+  return function filterChunk(chunk) {
+    if (phase === 'answer') {
+      return stripArtifacts(chunk);
+    }
+
+    buffer += chunk;
+
+    for (const closeTag of [THINK_CLOSE, LEGACY_THINK_CLOSE]) {
+      if (buffer.includes(closeTag)) {
+        const after = buffer.split(closeTag).pop() ?? '';
+        buffer = '';
+        phase = 'answer';
+        return extractStudentAnswer(after);
+      }
+    }
+
+    if (buffer.includes(THINK_OPEN) || buffer.includes(LEGACY_THINK_OPEN)) {
+      const openIdx = Math.min(
+        ...[THINK_OPEN, LEGACY_THINK_OPEN]
+          .map((t) => {
+            const i = buffer.indexOf(t);
+            return i === -1 ? Infinity : i;
+          })
+          .filter((i) => i < Infinity)
+      );
+      if (openIdx < Infinity && openIdx > 0) {
+        buffer = buffer.slice(0, openIdx);
+      }
+      if (buffer.includes(THINK_OPEN) || buffer.includes(LEGACY_THINK_OPEN)) {
+        return '';
+      }
+    }
+
+    const answerIdx = findAnswerStartIndex(buffer);
+    if (answerIdx >= 0) {
+      const before = buffer.slice(0, answerIdx);
+      if (answerIdx === 0 || containsReasoning(before) || before.trim().length > 60) {
+        const out = buffer.slice(answerIdx);
+        buffer = '';
+        phase = 'answer';
+        return stripArtifacts(out);
+      }
+    }
+
+    if (containsReasoning(buffer) && buffer.length > 400 && answerIdx === -1) {
+      return '';
+    }
+
+    if (!containsReasoning(buffer) && HEADING_LINE.test(buffer.trim())) {
+      phase = 'answer';
+      const out = buffer;
+      buffer = '';
+      return stripArtifacts(out);
+    }
+
+    return '';
+  };
 }
 
 function parseTableRow(line) {
@@ -137,7 +231,6 @@ function isTableSeparator(line) {
   return /^\|[\s\-:|]+\|$/.test(line.trim());
 }
 
-/** Parse markdown into structured blocks for ChatGPT-style rendering */
 export function parseK2Blocks(text) {
   const lines = sanitizeK2Final(text).split('\n');
   const blocks = [];
@@ -211,7 +304,6 @@ export function parseK2Blocks(text) {
   return blocks;
 }
 
-/** @deprecated use parseK2Blocks */
 export function formatK2Message(text) {
   return parseK2Blocks(text).map((b) => ({ ...b, key: b.key ?? 0 }));
 }
