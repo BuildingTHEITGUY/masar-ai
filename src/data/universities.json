@@ -1,0 +1,30 @@
+[
+  {
+    "id": "ud",
+    "name": "University of Dubai",
+    "shortName": "UD",
+    "url": "https://ud.ac.ae",
+    "emirate": "dubai"
+  },
+  {
+    "id": "uos",
+    "name": "University of Sharjah",
+    "shortName": "UOS",
+    "url": "https://www.sharjah.ac.ae",
+    "emirate": "sharjah"
+  },
+  {
+    "id": "uaeu",
+    "name": "United Arab Emirates University",
+    "shortName": "UAEU",
+    "url": "https://www.uaeu.ac.ae",
+    "emirate": "abudhabi"
+  },
+  {
+    "id": "mbzuai",
+    "name": "Mohamed bin Zayed University of Artificial Intelligence",
+    "shortName": "MBZUAI",
+    "url": "https://mbzuai.ac.ae",
+    "emirate": "abudhabi"
+  }
+]
