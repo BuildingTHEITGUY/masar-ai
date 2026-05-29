@@ -76,6 +76,15 @@ const REASONING_MARKERS = [
   "That's around",
   'Structure:',
   'Will output:',
+  'We must embed',
+  'Now produce answer',
+  'Now produce.',
+  'Now output exactly',
+  "Let's draft",
+  'So under each best fit',
+  'Check the others',
+  'Encourage.',
+  'For other institutions',
 ];
 
 /** Lines echoed from our prompt that K2 repeats while planning */
@@ -96,7 +105,7 @@ const PROMPT_ECHO_MARKERS = [
 ];
 
 const REASONING_LINE =
-  /^(We need to|We must|We have|We can|We should|We also|We may|The user|They want|They also|But we|But need|But the|Make sure|Now let|Now we|Ok,|Okay,|Let's |Let us|Plan:|Outline:|Word count|Alright|Potential |Better to |To be safe|For hackathon|If we |Probably |Might |Could |Would |Need to |Must not|Should we|Can we|Do not |Don't |Does the|Is the |Are we|Will we|Hmm|Wait\.|Actually,|However,|Therefore,|Thus,|So we |So let's|All right|Good luck|Given that|We should|We could|Check for|Check that|One more|Will produce|I will format|Will output|Structure:|Running total|That's around|That seems|For next steps:|For contact details:|For tuition|All have thresholds|Specifically:|Practical next steps:|Conditional flags:|Best fits:|Not verified|Official sites listed)/i;
+  /^(We need to|We must|We have|We can|We should|We also|We may|The user|They want|They also|But we|But need|But the|Make sure|Now let|Now we|Ok,|Okay,|Let's |Let us|Plan:|Outline:|Word count|Alright|Potential |Better to |To be safe|For hackathon|If we |Probably |Might |Could |Would |Need to |Must not|Should we|Can we|Do not |Don't |Does the|Is the |Are we|Will we|Hmm|Wait\.|Actually,|However,|Therefore,|Thus,|So we |So let's|All right|Good luck|Given that|We should|We could|Check for|Check that|One more|Will produce|I will format|Will output|Structure:|Running total|That's around|That seems|For next steps:|For contact details:|For tuition|All have thresholds|Specifically:|Practical next steps:|Conditional flags:|Best fits:|Not verified|Official sites listed|Now produce|Now output|Encourage\.|We must embed|So under each)/i;
 
 const PROMPT_ECHO_LINE = new RegExp(
   `^(${PROMPT_ECHO_MARKERS.map((m) => m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`,
@@ -107,11 +116,12 @@ const PROMPT_ECHO_LINE = new RegExp(
 const HEADING_LINE = /^#{1,3}\s+\S/;
 
 /** Plain student-answer title without # prefix */
-const PLAIN_ANSWER_TITLE = /^Your .+ (Matches|Path|Options|Universities|Programs)/i;
+const PLAIN_ANSWER_TITLE =
+  /^Your .+ (Matches|Path|Options|Universities|Programs|Track|Overview)/i;
 
 /** Section titles K2 sometimes emits without ### */
 const PLAIN_SECTION_TITLE =
-  /^(Best Fit Programs|Conditional Admission Flags|Practical Next Steps|Why Business .+|Why .+ (Aligns|Fits|Matches))/i;
+  /^(Best Fit Programs?|Best Fit|Conditional Admission Flags|Conditional Flags|Practical Next Steps|Why Business .+|Why .+ (Aligns|Fits|Matches))/i;
 
 /** Markers immediately before the final formatted answer */
 const FINAL_ANSWER_MARKERS = [
@@ -120,6 +130,8 @@ const FINAL_ANSWER_MARKERS = [
   /I will format (?:as|the answer)[^\n]*/gi,
   /following the guidelines\s*/gi,
   /Now we need to produce final answer[^\n]*/gi,
+  /Now produce\.?\s*/gi,
+  /Now output exactly[^\n]*/gi,
 ];
 
 function stripArtifacts(text) {
@@ -359,7 +371,10 @@ function ensureMarkdownHeadings(text) {
   if (lines.length === 0) return text;
 
   const first = lines[0].trim();
-  if (!HEADING_LINE.test(first) && PLAIN_ANSWER_TITLE.test(first)) {
+  if (
+    !HEADING_LINE.test(first) &&
+    (PLAIN_ANSWER_TITLE.test(first) || /^Your .+ Overview/i.test(first))
+  ) {
     const indent = lines[0].match(/^\s*/)?.[0] ?? '';
     lines[0] = `${indent}## ${first}`;
   }
@@ -462,6 +477,98 @@ function isTableSeparator(line) {
   return /^\|[\s\-:|]+\|$/.test(line.trim());
 }
 
+export function detectSectionKind(title) {
+  const t = (title || '').toLowerCase();
+  if (/best fit|top pick|recommended/.test(t)) return 'best-fit';
+  if (/conditional|flag|requirement|gap|watch/.test(t)) return 'conditional';
+  if (/next step|action|apply|what to do/.test(t)) return 'steps';
+  if (/why .+ (fit|align|match)|overview/.test(t)) return 'overview';
+  return 'default';
+}
+
+export function isUniHeaderBullet(text) {
+  if (!text) return false;
+  return (
+    /[–—-]\s*\S/.test(text) &&
+    /university|college|institute|school|\([A-Z]{2,}\)/i.test(text)
+  );
+}
+
+export function splitUniHeader(text) {
+  const parts = text.split(/\s*[–—-]\s*/);
+  if (parts.length >= 2) {
+    return { name: parts[0].trim(), program: parts.slice(1).join(' – ').trim() };
+  }
+  return { name: text.trim(), program: '' };
+}
+
+export function groupBlocksIntoSections(blocks) {
+  let title = null;
+  const sections = [];
+  let current = null;
+  let preSection = [];
+
+  for (const block of blocks) {
+    if (block.type === 'heading' && block.level <= 2) {
+      title = block;
+      continue;
+    }
+
+    if (block.type === 'heading' && block.level >= 3) {
+      if (current) sections.push(current);
+      else if (preSection.length) {
+        sections.push({ heading: null, items: preSection, kind: 'overview' });
+        preSection = [];
+      }
+      current = {
+        heading: block,
+        items: [],
+        kind: detectSectionKind(block.text),
+      };
+      continue;
+    }
+
+    if (current) current.items.push(block);
+    else preSection.push(block);
+  }
+
+  if (current) sections.push(current);
+  else if (preSection.length) {
+    sections.push({ heading: null, items: preSection, kind: 'overview' });
+  }
+
+  return { title, sections };
+}
+
+export function groupBulletsIntoUniCards(items) {
+  const cards = [];
+  let current = null;
+
+  for (const item of items) {
+    if (item.type !== 'bullet') {
+      if (current) {
+        cards.push(current);
+        current = null;
+      }
+      cards.push({ type: 'block', block: item });
+      continue;
+    }
+
+    if (isUniHeaderBullet(item.text)) {
+      if (current) cards.push(current);
+      const { name, program } = splitUniHeader(item.text);
+      current = { type: 'uni', name, program, details: [] };
+    } else if (current?.type === 'uni') {
+      current.details.push(item.text);
+    } else {
+      cards.push({ type: 'bullet', text: item.text });
+    }
+  }
+
+  if (current) cards.push(current);
+  return cards;
+}
+
 export function parseK2Blocks(text) {
   const lines = sanitizeK2Final(text).split('\n');
   const blocks = [];
@@ -489,6 +596,15 @@ export function parseK2Blocks(text) {
         text: mdHeading[2].replace(/\*\*/g, ''),
         key: `h-${i}`,
       });
+      i++;
+      continue;
+    }
+
+    if (
+      (PLAIN_ANSWER_TITLE.test(trimmed) || /^Your .+ Overview/i.test(trimmed)) &&
+      trimmed.length < 120
+    ) {
+      blocks.push({ type: 'heading', level: 2, text: trimmed, key: `th-${i}` });
       i++;
       continue;
     }
