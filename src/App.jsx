@@ -7,11 +7,89 @@ import { matchPrograms, programsByEmirate } from './lib/matchPrograms';
 
 const TRACK_LABELS = { law: 'Law', tech: 'Technology', business: 'Business' };
 
+function MatchCard({ match, studentProfile, variant = 'match' }) {
+  const borderColor =
+    variant === 'alternative' ? '#f59e0b' : match.isUnderScore ? '#ef4444' : '#10b981';
+
+  return (
+    <div
+      style={{
+        background: '#1e293b',
+        padding: '24px',
+        borderRadius: '12px',
+        borderLeft: `4px solid ${borderColor}`,
+      }}
+    >
+      {variant === 'alternative' && (
+        <div
+          style={{
+            marginBottom: '10px',
+            padding: '8px 12px',
+            background: 'rgba(245, 158, 11, 0.1)',
+            border: '1px solid #f59e0b',
+            borderRadius: '6px',
+            fontSize: '0.78rem',
+            color: '#fcd34d',
+          }}
+        >
+          <strong>Curriculum note:</strong> This program typically requires Advanced Stream, A-Levels, or a
+          foundation pathway — not a direct match for your current MoE General profile.
+        </div>
+      )}
+      <span
+        style={{
+          fontSize: '0.75rem',
+          fontWeight: '700',
+          color: '#ff6b3d',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
+        }}
+      >
+        {match.emirate} · {match.track}
+      </span>
+      <h4 style={{ margin: '4px 0 12px 0', fontSize: '1.4rem', fontWeight: '800' }}>
+        <a href={match.url} target="_blank" rel="noreferrer" style={{ color: '#ffffff', textDecoration: 'underline' }}>
+          {match.uniName}
+        </a>
+      </h4>
+      <div style={{ marginBottom: '14px' }}>
+        <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#94a3b8', display: 'block', marginBottom: '2px' }}>
+          Target degree program
+        </span>
+        <strong style={{ fontSize: '1.05rem', color: '#38bdf8', fontWeight: '700' }}>{match.programName}</strong>
+      </div>
+      <div>
+        <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>
+          Admission criteria
+        </span>
+        <p style={{ margin: 0, fontSize: '0.9rem', color: '#cbd5e1', lineHeight: '1.5' }}>{match.criteriaText}</p>
+      </div>
+      {match.isUnderScore && variant === 'match' && (
+        <div
+          style={{
+            marginTop: '16px',
+            padding: '10px 14px',
+            background: 'rgba(239, 68, 68, 0.1)',
+            border: '1px solid #ef4444',
+            borderRadius: '6px',
+            fontSize: '0.8rem',
+            color: '#fca5a5',
+          }}
+        >
+          <strong>Conditional track:</strong> Your average ({studentProfile.highSchoolAvg}%) is below the typical
+          index of {match.minOverallPercent}% for this program.
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function App() {
   const [studentProfile, setStudentProfile] = useState(null);
   const [activeTab, setActiveTab] = useState('dubai');
   const [sidebarTrack, setSidebarTrack] = useState('law');
   const [matchingResults, setMatchingResults] = useState([]);
+  const [alternativeResults, setAlternativeResults] = useState([]);
   const [resolvedTrack, setResolvedTrack] = useState(null);
   const [matchError, setMatchError] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -23,7 +101,7 @@ export default function App() {
     setIsProcessing(true);
 
     setTimeout(() => {
-      const { track, matches, error } = matchPrograms(programs, universities, {
+      const { track, matches, alternatives, error } = matchPrograms(programs, universities, {
         emirate: profileData.emirate,
         highSchoolAvg: profileData.highSchoolAvg,
         stream: profileData.stream,
@@ -36,6 +114,7 @@ export default function App() {
       setResolvedTrack(track);
       setMatchError(error);
       setMatchingResults(matches);
+      setAlternativeResults(alternatives);
       setIsProcessing(false);
     }, 600);
   };
@@ -153,6 +232,7 @@ export default function App() {
                   onClick={() => {
                     setStudentProfile(null);
                     setMatchingResults([]);
+                    setAlternativeResults([]);
                     setResolvedTrack(null);
                     setMatchError(null);
                   }}
@@ -189,7 +269,7 @@ export default function App() {
                 >
                   Could not determine your track. Select Law, Technology, or Business above.
                 </div>
-              ) : matchingResults.length === 0 ? (
+              ) : matchingResults.length === 0 && alternativeResults.length === 0 ? (
                 <div
                   style={{
                     color: '#ff6b3d',
@@ -201,98 +281,53 @@ export default function App() {
                     textAlign: 'center',
                   }}
                 >
-                  No undergraduate {TRACK_LABELS[resolvedTrack]?.toLowerCase()} programs found for this emirate and
-                  curriculum in the knowledge base. Try &quot;All Emirates&quot; or add more rows to{' '}
+                  No undergraduate {TRACK_LABELS[resolvedTrack]?.toLowerCase()} programs catalogued for this emirate yet.
+                  Try &quot;All Emirates&quot; or expand{' '}
                   <code style={{ color: '#fbbf24' }}>src/data/programs.json</code>.
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  {matchingResults.map((match) => (
+                  {matchingResults.length === 0 && alternativeResults.length > 0 && (
                     <div
-                      key={match.id}
                       style={{
-                        background: '#1e293b',
-                        padding: '24px',
-                        borderRadius: '12px',
-                        borderLeft: match.isUnderScore ? '4px solid #ef4444' : '4px solid #10b981',
+                        padding: '14px 16px',
+                        background: 'rgba(245, 158, 11, 0.08)',
+                        border: '1px solid #f59e0b',
+                        borderRadius: '8px',
+                        fontSize: '0.85rem',
+                        color: '#fcd34d',
+                        lineHeight: 1.5,
                       }}
                     >
-                      <span
-                        style={{
-                          fontSize: '0.75rem',
-                          fontWeight: '700',
-                          color: '#ff6b3d',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                        }}
-                      >
-                        {match.emirate} · {match.track}
-                      </span>
-                      <h4 style={{ margin: '4px 0 12px 0', fontSize: '1.4rem', fontWeight: '800' }}>
-                        <a
-                          href={match.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          style={{ color: '#ffffff', textDecoration: 'underline' }}
-                        >
-                          {match.uniName}
-                        </a>
-                      </h4>
-                      <div style={{ marginBottom: '14px' }}>
-                        <span
-                          style={{
-                            fontSize: '0.75rem',
-                            fontWeight: '600',
-                            color: '#94a3b8',
-                            display: 'block',
-                            marginBottom: '2px',
-                          }}
-                        >
-                          Target degree program
-                        </span>
-                        <strong style={{ fontSize: '1.05rem', color: '#38bdf8', fontWeight: '700' }}>
-                          {match.programName}
-                        </strong>
-                      </div>
-                      <div>
-                        <span
-                          style={{
-                            fontSize: '0.75rem',
-                            fontWeight: '600',
-                            color: '#94a3b8',
-                            display: 'block',
-                            marginBottom: '4px',
-                          }}
-                        >
-                          Admission criteria
-                        </span>
-                        <p style={{ margin: 0, fontSize: '0.9rem', color: '#cbd5e1', lineHeight: '1.5' }}>
-                          {match.criteriaText}
-                        </p>
-                      </div>
-                      {match.isUnderScore && (
-                        <div
-                          style={{
-                            marginTop: '16px',
-                            padding: '10px 14px',
-                            background: 'rgba(239, 68, 68, 0.1)',
-                            border: '1px solid #ef4444',
-                            borderRadius: '6px',
-                            fontSize: '0.8rem',
-                            color: '#fca5a5',
-                          }}
-                        >
-                          <strong>Conditional track:</strong> Your average ({studentProfile.highSchoolAvg}%) is below
-                          the typical index of {match.minOverallPercent}% for this program.
-                        </div>
-                      )}
+                      No direct matches for your <strong>curriculum stream</strong> in this emirate. Below are related
+                      programs that usually need Advanced Stream, foundation year, or placement — still useful to explore.
                     </div>
+                  )}
+
+                  {matchingResults.map((match) => (
+                    <MatchCard key={match.id} match={match} studentProfile={studentProfile} />
                   ))}
 
+                  {alternativeResults.length > 0 && matchingResults.length > 0 && (
+                    <>
+                      <h4 style={{ margin: '8px 0 0', color: '#f59e0b', fontSize: '0.9rem', fontWeight: '700' }}>
+                        Also in this emirate (may need Advanced Stream or foundation)
+                      </h4>
+                      {alternativeResults.map((match) => (
+                        <MatchCard key={match.id} match={match} studentProfile={studentProfile} variant="alternative" />
+                      ))}
+                    </>
+                  )}
+
+                  {matchingResults.length === 0 &&
+                    alternativeResults.map((match) => (
+                      <MatchCard key={match.id} match={match} studentProfile={studentProfile} variant="alternative" />
+                    ))}
+
                   <K2CounselorPanel
-                    key={`k2-${studentProfile.highSchoolAvg}-${matchingResults.map((m) => m.id).join(',')}`}
+                    key={`k2-${studentProfile.highSchoolAvg}-${[...matchingResults, ...alternativeResults].map((m) => m.id).join(',')}`}
                     studentProfile={studentProfile}
-                    matchingResults={matchingResults}
+                    matchingResults={[...matchingResults, ...alternativeResults]}
                     resolvedTrack={resolvedTrack}
                   />
                 </div>

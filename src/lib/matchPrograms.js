@@ -4,7 +4,7 @@ const TRACK_KEYWORDS = {
   tech: ['tech', 'computer', 'cyber', 'engineer', 'ai', 'data', 'software', 'it', 'security'],
 };
 
-function curriculumMatches(accepted, studentCurriculum) {
+export function curriculumMatches(accepted, studentCurriculum) {
   if (!accepted?.length) return true;
   return accepted.includes(studentCurriculum);
 }
@@ -20,6 +20,31 @@ export function resolveTrack({ track, interest = '' }) {
   return null;
 }
 
+function enrichMatch(p, uniById, highSchoolAvg, emsatMath) {
+  const uni = uniById[p.universityId];
+  const belowOverall = highSchoolAvg < p.minOverallPercent;
+  const belowEmsat =
+    p.emsatMathMin != null && (emsatMath == null || emsatMath < p.emsatMathMin);
+  return {
+    ...p,
+    uniName: uni ? `${uni.name} (${uni.shortName})` : p.universityId,
+    url: uni?.url ?? p.sourceUrl,
+    isUnderScore: belowOverall,
+    isConditional: belowOverall || belowEmsat,
+    fitScore: highSchoolAvg - p.minOverallPercent,
+  };
+}
+
+function baseFilter(programs, { track, emirate, degreeLevel }) {
+  return programs.filter(
+    (p) =>
+      p.active &&
+      p.degreeLevel === degreeLevel &&
+      p.track === track &&
+      (emirate === 'all' || p.emirate === emirate)
+  );
+}
+
 export function matchPrograms(programs, universities, profile) {
   const {
     emirate = 'all',
@@ -33,37 +58,28 @@ export function matchPrograms(programs, universities, profile) {
 
   const track = resolveTrack({ track: explicitTrack, interest });
   if (!track) {
-    return { track: null, matches: [], error: 'TRACK_UNRESOLVED' };
+    return { track: null, matches: [], alternatives: [], error: 'TRACK_UNRESOLVED' };
   }
 
   const uniById = Object.fromEntries(universities.map((u) => [u.id, u]));
+  const pool = baseFilter(programs, { track, emirate, degreeLevel });
 
-  const matches = programs
-    .filter((p) => p.active)
-    .filter((p) => p.degreeLevel === degreeLevel)
-    .filter((p) => p.track === track)
-    .filter((p) => emirate === 'all' || p.emirate === emirate)
+  const matches = pool
     .filter((p) => curriculumMatches(p.acceptedCurricula, curriculum))
-    .map((p) => {
-      const uni = uniById[p.universityId];
-      const belowOverall = highSchoolAvg < p.minOverallPercent;
-      const belowEmsat =
-        p.emsatMathMin != null && (emsatMath == null || emsatMath < p.emsatMathMin);
-      return {
-        ...p,
-        uniName: uni ? `${uni.name} (${uni.shortName})` : p.universityId,
-        url: uni?.url ?? p.sourceUrl,
-        isUnderScore: belowOverall,
-        isConditional: belowOverall || belowEmsat,
-        fitScore: highSchoolAvg - p.minOverallPercent,
-      };
-    })
+    .map((p) => enrichMatch(p, uniById, highSchoolAvg, emsatMath))
     .sort((a, b) => b.fitScore - a.fitScore);
 
-  return { track, matches, error: null };
+  const alternatives = pool
+    .filter((p) => !curriculumMatches(p.acceptedCurricula, curriculum))
+    .map((p) => ({
+      ...enrichMatch(p, uniById, highSchoolAvg, emsatMath),
+      curriculumMismatch: true,
+    }))
+    .sort((a, b) => b.fitScore - a.fitScore);
+
+  return { track, matches, alternatives, error: null };
 }
 
-/** Group active undergrad programs by emirate for the reference sidebar */
 export function programsByEmirate(programs, emirate) {
   const rows = programs.filter(
     (p) => p.active && p.degreeLevel === 'undergraduate' && p.emirate === emirate
