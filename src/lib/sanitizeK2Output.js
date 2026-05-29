@@ -2,19 +2,18 @@ const THINK_CLOSE = '<\/redacted_thinking>';
 const THINK_OPEN = '<think>';
 const LEGACY_THINK_CLOSE = '<\/think>';
 const LEGACY_THINK_OPEN = '<' + 'think' + '>';
-const THINKING_HINTS = ['The user asks:', 'We need to answer', 'We have a list of matches', 'Okay, the user'];
+const THINKING_HINTS = ['The user asks:', 'We need to answer', 'We have a list of matches', 'Okay, the user', "Now let's answer"];
 
-/**
- * Filters K2-Think-v2 stream: hides chain-of-thought until </think>.
- */
 export function createK2StreamFilter() {
   let carry = '';
   let inThinking = false;
   let sawCloseTag = false;
 
+  const closeTags = [THINK_CLOSE, LEGACY_THINK_CLOSE];
+
   return function filterChunk(chunk) {
     if (sawCloseTag) {
-      return chunk.replaceAll(THINK_OPEN, '').replaceAll(THINK_CLOSE, '');
+      return stripArtifacts(chunk);
     }
 
     carry += chunk;
@@ -22,25 +21,36 @@ export function createK2StreamFilter() {
 
     while (carry.length > 0) {
       if (!inThinking) {
-        const openIdx = carry.indexOf(THINK_OPEN);
-        const closeIdx = carry.indexOf(THINK_CLOSE);
+        const openIdx = Math.min(
+          ...[THINK_OPEN, LEGACY_THINK_OPEN].map((t) => {
+            const i = carry.indexOf(t);
+            return i === -1 ? Infinity : i;
+          })
+        );
+        const closeIdx = Math.min(
+          ...closeTags.map((t) => {
+            const i = carry.indexOf(t);
+            return i === -1 ? Infinity : i;
+          })
+        );
 
-        if (openIdx >= 0 && (closeIdx === -1 || openIdx < closeIdx)) {
+        if (openIdx < Infinity && (closeIdx === Infinity || openIdx < closeIdx)) {
           visible += carry.slice(0, openIdx);
-          carry = carry.slice(openIdx + THINK_OPEN.length);
+          const tag = carry.slice(openIdx).startsWith(LEGACY_THINK_OPEN) ? LEGACY_THINK_OPEN : THINK_OPEN;
+          carry = carry.slice(openIdx + tag.length);
           inThinking = true;
           continue;
         }
 
-        if (closeIdx >= 0 && !carry.slice(0, closeIdx).includes(THINK_OPEN)) {
-          carry = carry.slice(closeIdx + THINK_CLOSE.length).replace(/^\s+/, '');
+        if (closeIdx < Infinity) {
+          const tag = carry.slice(closeIdx).startsWith(LEGACY_THINK_CLOSE) ? LEGACY_THINK_CLOSE : THINK_CLOSE;
+          carry = carry.slice(closeIdx + tag.length).replace(/^\s+/, '');
           sawCloseTag = true;
           inThinking = false;
           continue;
         }
 
         if (
-          closeIdx === -1 &&
           THINKING_HINTS.some((h) => carry.includes(h)) &&
           !carry.trimStart().startsWith('**') &&
           !carry.trimStart().startsWith('#')
@@ -55,19 +65,37 @@ export function createK2StreamFilter() {
         break;
       }
 
-      const closeIdx = carry.indexOf(THINK_CLOSE);
-      if (closeIdx === -1) {
+      const closeIdx = Math.min(
+        ...closeTags.map((t) => {
+          const i = carry.indexOf(t);
+          return i === -1 ? Infinity : i;
+        })
+      );
+
+      if (closeIdx === Infinity) {
         carry = '';
         break;
       }
 
-      carry = carry.slice(closeIdx + THINK_CLOSE.length).replace(/^\s+/, '');
+      const tag = carry.slice(closeIdx).startsWith(LEGACY_THINK_CLOSE) ? LEGACY_THINK_CLOSE : THINK_CLOSE;
+      carry = carry.slice(closeIdx + tag.length).replace(/^\s+/, '');
       inThinking = false;
       sawCloseTag = true;
     }
 
-    return visible.replaceAll(THINK_OPEN, '').replaceAll(THINK_CLOSE, '');
+    return stripArtifacts(visible);
   };
+}
+
+function stripArtifacts(text) {
+  return text
+    .replaceAll(THINK_OPEN, '')
+    .replaceAll(THINK_CLOSE, '')
+    .replaceAll(LEGACY_THINK_OPEN, '')
+    .replaceAll(LEGACY_THINK_CLOSE, '')
+    .replace(/^Now let's answer\.?\s*/i, '')
+    .replace(/<\/?think>/gi, '')
+    .replace(/<\/?redacted_thinking>/gi, '');
 }
 
 export function sanitizeK2Final(text) {
@@ -93,47 +121,113 @@ export function sanitizeK2Final(text) {
     if (answerStart > 200) cleaned = cleaned.slice(answerStart);
   }
 
-  return cleaned
-    .replaceAll(THINK_OPEN, '')
-    .replaceAll(THINK_CLOSE, '')
-    .replaceAll(LEGACY_THINK_OPEN, '')
-    .replaceAll(LEGACY_THINK_CLOSE, '')
+  return stripArtifacts(cleaned)
+    .replace(/<br\s*\/?>/gi, '\n')
     .trim();
 }
 
-/** Lightweight markdown for chat bubbles (bold, links, lists) */
-export function formatK2Message(text) {
-  const lines = sanitizeK2Final(text).split('\n');
-  return lines.map((line, i) => {
-    const trimmed = line.trim();
-    if (!trimmed) return { key: i, type: 'break' };
+function parseTableRow(line) {
+  return line
+    .split('|')
+    .slice(1, -1)
+    .map((cell) => cell.trim());
+}
 
-    const heading = trimmed.match(/^#{1,3}\s+(.+)$/);
-    if (heading) {
-      return { key: i, type: 'heading', text: heading[1] };
+function isTableSeparator(line) {
+  return /^\|[\s\-:|]+\|$/.test(line.trim());
+}
+
+/** Parse markdown into structured blocks for ChatGPT-style rendering */
+export function parseK2Blocks(text) {
+  const lines = sanitizeK2Final(text).split('\n');
+  const blocks = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const trimmed = lines[i].trim();
+
+    if (!trimmed) {
+      i++;
+      continue;
+    }
+
+    if (/^-{3,}$/.test(trimmed)) {
+      blocks.push({ type: 'hr', key: `hr-${i}` });
+      i++;
+      continue;
+    }
+
+    const mdHeading = trimmed.match(/^(#{1,3})\s+(.+)$/);
+    if (mdHeading) {
+      blocks.push({
+        type: 'heading',
+        level: mdHeading[1].length,
+        text: mdHeading[2].replace(/\*\*/g, ''),
+        key: `h-${i}`,
+      });
+      i++;
+      continue;
+    }
+
+    const boldHeading = trimmed.match(/^\*\*([^*]+)\*\*:?\s*$/);
+    if (boldHeading) {
+      blocks.push({ type: 'heading', level: 2, text: boldHeading[1], key: `bh-${i}` });
+      i++;
+      continue;
     }
 
     if (trimmed.startsWith('|') && trimmed.includes('|')) {
-      return { key: i, type: 'table-row', text: trimmed };
+      const tableLines = [];
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        tableLines.push(lines[i].trim());
+        i++;
+      }
+      const dataLines = tableLines.filter((l) => !isTableSeparator(l));
+      if (dataLines.length >= 1) {
+        const headers = parseTableRow(dataLines[0]);
+        const rows = dataLines.slice(1).map(parseTableRow);
+        blocks.push({ type: 'table', headers, rows, key: `tbl-${i}` });
+      }
+      continue;
     }
 
-    if (/^[-*•]\s/.test(trimmed) || /^\d+\.\s/.test(trimmed)) {
-      return { key: i, type: 'list', text: trimmed.replace(/^[-*•]\s|^\d+\.\s/, '') };
+    const ordered = trimmed.match(/^(\d+)\.\s+(.+)$/);
+    if (ordered) {
+      blocks.push({ type: 'ordered', text: ordered[2], index: ordered[1], key: `ol-${i}` });
+      i++;
+      continue;
     }
 
-    return { key: i, type: 'paragraph', text: trimmed };
-  });
+    if (/^[-*•]\s/.test(trimmed)) {
+      blocks.push({ type: 'bullet', text: trimmed.replace(/^[-*•]\s/, ''), key: `ul-${i}` });
+      i++;
+      continue;
+    }
+
+    blocks.push({ type: 'paragraph', text: trimmed, key: `p-${i}` });
+    i++;
+  }
+
+  return blocks;
+}
+
+/** @deprecated use parseK2Blocks */
+export function formatK2Message(text) {
+  return parseK2Blocks(text).map((b) => ({ ...b, key: b.key ?? 0 }));
 }
 
 export function renderInlineMarkdown(text) {
+  if (!text) return [];
+
+  const normalized = text.replace(/<br\s*\/?>/gi, ' ').trim();
   const parts = [];
-  const regex = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s)]+)/g;
+  const regex = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s|<]+)/g;
   let last = 0;
   let match;
 
-  while ((match = regex.exec(text)) !== null) {
+  while ((match = regex.exec(normalized)) !== null) {
     if (match.index > last) {
-      parts.push({ type: 'text', value: text.slice(last, match.index) });
+      parts.push({ type: 'text', value: normalized.slice(last, match.index) });
     }
     const token = match[0];
     if (token.startsWith('**')) {
@@ -147,8 +241,8 @@ export function renderInlineMarkdown(text) {
     last = match.index + token.length;
   }
 
-  if (last < text.length) {
-    parts.push({ type: 'text', value: text.slice(last) });
+  if (last < normalized.length) {
+    parts.push({ type: 'text', value: normalized.slice(last) });
   }
 
   return parts;

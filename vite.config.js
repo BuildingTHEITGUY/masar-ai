@@ -8,4 +8,10 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] })
   ],
+  server: {
+    // Run `npx vercel dev` in another terminal so /api/chat works locally
+    proxy: {
+      '/api': { target: 'http://127.0.0.1:3000', changeOrigin: true },
+    },
+  },
 })
