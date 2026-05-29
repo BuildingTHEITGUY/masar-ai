@@ -1,8 +1,8 @@
+import { createK2StreamFilter, sanitizeK2Final } from './sanitizeK2Output';
+
 /**
  * Streams tokens from POST /api/chat (Vercel edge → K2 Think).
- * @param {Array<{role: string, content: string}>} messages
- * @param {(chunk: string) => void} onChunk
- * @param {AbortSignal} [signal]
+ * Chain-of-thought is stripped before reaching the UI.
  */
 export async function streamK2Chat(messages, onChunk, signal) {
   const response = await fetch('/api/chat', {
@@ -30,6 +30,7 @@ export async function streamK2Chat(messages, onChunk, signal) {
 
   const decoder = new TextDecoder();
   let buffer = '';
+  const filter = createK2StreamFilter();
 
   while (true) {
     const { done, value } = await reader.read();
@@ -49,10 +50,15 @@ export async function streamK2Chat(messages, onChunk, signal) {
       try {
         const json = JSON.parse(payload);
         const text = json.choices?.[0]?.delta?.content ?? json.choices?.[0]?.message?.content;
-        if (text) onChunk(text);
+        if (text) {
+          const visible = filter(text);
+          if (visible) onChunk(visible);
+        }
       } catch {
         /* skip malformed SSE lines */
       }
     }
   }
 }
+
+export { sanitizeK2Final };

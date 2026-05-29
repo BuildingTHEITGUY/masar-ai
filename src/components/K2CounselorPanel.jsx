@@ -1,6 +1,57 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
+import universities from '../data/universities.json';
 import { buildSystemPrompt, buildInitialUserMessage } from '../lib/buildK2Context';
-import { streamK2Chat } from '../lib/streamK2Chat';
+import { streamK2Chat, sanitizeK2Final } from '../lib/streamK2Chat';
+import K2MessageContent from './K2MessageContent';
+
+function VerifiedContacts({ matchingResults }) {
+  const contacts = useMemo(() => {
+    const seen = new Set();
+    return matchingResults
+      .map((m) => universities.find((u) => u.id === m.universityId))
+      .filter(Boolean)
+      .filter((u) => {
+        if (seen.has(u.id)) return false;
+        seen.add(u.id);
+        return u.admissionsPhone || u.admissionsEmail || u.applyUrl;
+      });
+  }, [matchingResults]);
+
+  if (contacts.length === 0) return null;
+
+  return (
+    <div
+      style={{
+        marginBottom: '12px',
+        padding: '12px 14px',
+        background: 'rgba(16, 185, 129, 0.08)',
+        border: '1px solid #10b981',
+        borderRadius: '8px',
+      }}
+    >
+      <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#10b981', marginBottom: '8px', letterSpacing: '0.06em' }}>
+        VERIFIED CONTACTS (from Masar database — not AI-generated)
+      </div>
+      {contacts.map((u) => (
+        <div key={u.id} style={{ marginBottom: contacts.length > 1 ? '10px' : 0, fontSize: '0.82rem', lineHeight: 1.6 }}>
+          <strong style={{ color: '#f1f5f9' }}>{u.name}</strong>
+          <div style={{ color: '#cbd5e1' }}>
+            {u.applyUrl && (
+              <div>
+                Apply:{' '}
+                <a href={u.applyUrl} target="_blank" rel="noreferrer" style={{ color: '#38bdf8' }}>
+                  {u.applyUrl}
+                </a>
+              </div>
+            )}
+            {u.admissionsPhone && <div>Phone: {u.admissionsPhone}</div>}
+            {u.admissionsEmail && <div>Email: {u.admissionsEmail}</div>}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function K2CounselorPanel({ studentProfile, matchingResults, resolvedTrack }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,11 +82,16 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
         apiMessages,
         (chunk) => {
           accumulated += chunk;
-          setStreamingText(accumulated);
+          setStreamingText(sanitizeK2Final(accumulated));
         },
         controller.signal
       );
-      setMessages((prev) => [...prev, { role: 'assistant', content: accumulated }]);
+      const finalText = sanitizeK2Final(accumulated);
+      if (!finalText.trim()) {
+        setError('K2 returned an empty answer. Try asking again, or use the verified contacts above.');
+      } else {
+        setMessages((prev) => [...prev, { role: 'assistant', content: finalText }]);
+      }
       setStreamingText('');
     } catch (err) {
       if (err.name !== 'AbortError') {
@@ -75,14 +131,6 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
     await runK2(apiMessages);
   };
 
-  const panelStyle = {
-    marginTop: '8px',
-    background: '#0f172a',
-    border: '1px solid #334155',
-    borderRadius: '12px',
-    overflow: 'hidden',
-  };
-
   if (!isOpen) {
     return (
       <button
@@ -112,7 +160,15 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
   }
 
   return (
-    <div style={panelStyle}>
+    <div
+      style={{
+        marginTop: '8px',
+        background: '#0f172a',
+        border: '1px solid #334155',
+        borderRadius: '12px',
+        overflow: 'hidden',
+      }}
+    >
       <div
         style={{
           padding: '12px 16px',
@@ -128,7 +184,7 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
             K2 THINK V2 COUNSELOR
           </span>
           <p style={{ margin: '2px 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>
-            Ask follow-ups about your matches — answers stay tied to your results.
+            Verified contacts shown below. AI explains your matches — it will not invent phone numbers.
           </p>
         </div>
         <button
@@ -140,14 +196,7 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
             setStreamingText('');
             setError(null);
           }}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#64748b',
-            cursor: 'pointer',
-            fontSize: '1.2rem',
-            lineHeight: 1,
-          }}
+          style={{ background: 'transparent', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '1.2rem' }}
           aria-label="Close counselor"
         >
           ×
@@ -156,36 +205,44 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
 
       <div
         style={{
-          maxHeight: '320px',
+          maxHeight: '440px',
           overflowY: 'auto',
           padding: '16px',
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
+          background: '#0b0f19',
         }}
       >
+        <VerifiedContacts matchingResults={matchingResults} />
+
         {messages.map((msg, idx) => (
           <div
             key={idx}
             style={{
               alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-              maxWidth: '92%',
-              padding: '10px 14px',
-              borderRadius: '10px',
-              background: msg.role === 'user' ? 'rgba(255, 107, 61, 0.15)' : '#1e293b',
-              border: `1px solid ${msg.role === 'user' ? 'rgba(255,107,61,0.3)' : '#334155'}`,
-              fontSize: '0.88rem',
-              lineHeight: 1.55,
-              color: '#e2e8f0',
-              whiteSpace: 'pre-wrap',
+              maxWidth: '96%',
+              padding: '14px 16px',
+              borderRadius: '12px',
+              background: msg.role === 'user' ? 'rgba(255, 107, 61, 0.12)' : '#1e293b',
+              border: `1px solid ${msg.role === 'user' ? 'rgba(255,107,61,0.35)' : '#475569'}`,
+              fontSize: '0.92rem',
+              lineHeight: 1.65,
             }}
           >
-            {msg.role === 'user' && (
-              <span style={{ fontSize: '0.65rem', color: '#ff6b3d', fontWeight: '700', display: 'block', marginBottom: '4px' }}>
-                YOU
-              </span>
-            )}
-            {msg.content}
+            <span
+              style={{
+                fontSize: '0.65rem',
+                fontWeight: '700',
+                display: 'block',
+                marginBottom: '8px',
+                color: msg.role === 'user' ? '#ff6b3d' : '#38bdf8',
+                letterSpacing: '0.06em',
+              }}
+            >
+              {msg.role === 'user' ? 'YOU' : 'K2 COUNSELOR'}
+            </span>
+            <K2MessageContent text={msg.content} role={msg.role} />
           </div>
         ))}
 
@@ -193,28 +250,26 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
           <div
             style={{
               alignSelf: 'flex-start',
-              maxWidth: '92%',
-              padding: '10px 14px',
-              borderRadius: '10px',
+              maxWidth: '96%',
+              padding: '14px 16px',
+              borderRadius: '12px',
               background: '#1e293b',
               border: '1px solid #38bdf8',
-              fontSize: '0.88rem',
-              lineHeight: 1.55,
-              color: '#e2e8f0',
-              whiteSpace: 'pre-wrap',
+              fontSize: '0.92rem',
+              lineHeight: 1.65,
             }}
           >
-            <span style={{ fontSize: '0.65rem', color: '#38bdf8', fontWeight: '700', display: 'block', marginBottom: '4px' }}>
-              K2 THINK
+            <span style={{ fontSize: '0.65rem', color: '#38bdf8', fontWeight: '700', display: 'block', marginBottom: '8px' }}>
+              K2 COUNSELOR
             </span>
-            {streamingText}
+            <K2MessageContent text={streamingText} role="assistant" />
             <span style={{ opacity: 0.5 }}>▌</span>
           </div>
         )}
 
         {isStreaming && !streamingText && (
           <p style={{ color: '#64748b', fontSize: '0.85rem', margin: 0, textAlign: 'center' }}>
-            Reasoning over your pathway matrix…
+            Preparing your answer (reasoning hidden)…
           </p>
         )}
 
@@ -238,18 +293,13 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
 
       <form
         onSubmit={sendFollowUp}
-        style={{
-          padding: '12px 16px',
-          borderTop: '1px solid #1e293b',
-          display: 'flex',
-          gap: '8px',
-        }}
+        style={{ padding: '12px 16px', borderTop: '1px solid #1e293b', display: 'flex', gap: '8px' }}
       >
         <input
           type="text"
           value={followUp}
           onChange={(e) => setFollowUp(e.target.value)}
-          placeholder="e.g. Which option is best if I want to work in Dubai courts?"
+          placeholder="e.g. How do I apply? (use verified contacts above for phone/email)"
           disabled={isStreaming}
           style={{
             flex: 1,

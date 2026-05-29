@@ -1,6 +1,16 @@
 [
-  { "id": "ud", "name": "University of Dubai", "shortName": "UD", "url": "https://ud.ac.ae", "emirate": "dubai" },
-  { "id": "aud", "name": "American University in Dubai", "shortName": "AUD", "url": "https://www.aud.edu", "emirate": "dubai" },
+  {
+    "id": "ud",
+    "name": "University of Dubai",
+    "shortName": "UD",
+    "url": "https://ud.ac.ae",
+    "applyUrl": "https://ud.ac.ae/ud-admission/",
+    "contactUrl": "https://ud.ac.ae/contact/",
+    "admissionsPhone": "+971 4 556 6872",
+    "admissionsEmail": "swarsame@ud.ac.ae",
+    "emirate": "dubai"
+  },
+  { "id": "aud", "name": "American University in Dubai", "shortName": "AUD", "url": "https://www.aud.edu", "applyUrl": "https://www.aud.edu/admissions", "contactUrl": "https://www.aud.edu/contact", "emirate": "dubai" },
   { "id": "hw-dubai", "name": "Heriot-Watt University Dubai", "shortName": "HW Dubai", "url": "https://www.hw.ac.uk/dubai", "emirate": "dubai" },
   { "id": "middlesex-dubai", "name": "Middlesex University Dubai", "shortName": "Middlesex", "url": "https://www.mdx.ac.ae", "emirate": "dubai" },
   { "id": "uowd", "name": "University of Wollongong in Dubai", "shortName": "UOWD", "url": "https://www.uowdubai.ac.ae", "emirate": "dubai" },
@@ -10,12 +20,12 @@
   { "id": "buid", "name": "British University in Dubai", "shortName": "BUiD", "url": "https://www.buid.ac.ae", "emirate": "dubai" },
   { "id": "hct", "name": "Higher Colleges of Technology", "shortName": "HCT", "url": "https://www.hct.ac.ae", "emirate": "dubai" },
   { "id": "zayed", "name": "Zayed University", "shortName": "ZU", "url": "https://www.zu.ac.ae", "emirate": "dubai" },
-  { "id": "uaeu", "name": "United Arab Emirates University", "shortName": "UAEU", "url": "https://www.uaeu.ac.ae", "emirate": "abudhabi" },
+  { "id": "uaeu", "name": "United Arab Emirates University", "shortName": "UAEU", "url": "https://www.uaeu.ac.ae", "applyUrl": "https://www.uaeu.ac.ae/en/admissions", "contactUrl": "https://www.uaeu.ac.ae/en/contact", "emirate": "abudhabi" },
   { "id": "adu", "name": "Abu Dhabi University", "shortName": "ADU", "url": "https://www.adu.ac.ae", "emirate": "abudhabi" },
   { "id": "khalifa", "name": "Khalifa University", "shortName": "KU", "url": "https://www.ku.ac.ae", "emirate": "abudhabi" },
   { "id": "hct-ad", "name": "Higher Colleges of Technology — Abu Dhabi", "shortName": "HCT AD", "url": "https://www.hct.ac.ae", "emirate": "abudhabi" },
   { "id": "mbzuai", "name": "Mohamed bin Zayed University of AI", "shortName": "MBZUAI", "url": "https://mbzuai.ac.ae", "emirate": "abudhabi" },
-  { "id": "uos", "name": "University of Sharjah", "shortName": "UOS", "url": "https://www.sharjah.ac.ae", "emirate": "sharjah" },
+  { "id": "uos", "name": "University of Sharjah", "shortName": "UOS", "url": "https://www.sharjah.ac.ae", "applyUrl": "https://www.sharjah.ac.ae/en/academics/admissions", "contactUrl": "https://www.sharjah.ac.ae/en/contact", "emirate": "sharjah" },
   { "id": "aus", "name": "American University of Sharjah", "shortName": "AUS", "url": "https://www.aus.edu", "emirate": "sharjah" },
   { "id": "ajman", "name": "Ajman University", "shortName": "AU", "url": "https://www.ajman.ac.ae", "emirate": "sharjah" },
   { "id": "skyline", "name": "Skyline University College", "shortName": "SUC", "url": "https://www.skylineuniversity.ac.ae", "emirate": "sharjah" }

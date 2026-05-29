@@ -1,3 +1,5 @@
+import universities from '../data/universities.json';
+
 const STREAM_LABELS = {
   moe_advanced: 'UAE MoE Advanced Stream',
   moe_general: 'UAE MoE General Stream',
@@ -6,6 +8,18 @@ const STREAM_LABELS = {
 };
 
 const TRACK_LABELS = { law: 'Law', tech: 'Technology & Engineering', business: 'Business' };
+
+function contactBlockForMatch(m) {
+  const uni = universities.find((u) => u.id === m.universityId);
+  if (!uni) return `   Official site: ${m.url}`;
+
+  const lines = [`   Official site: ${uni.url}`];
+  if (uni.applyUrl) lines.push(`   Apply online: ${uni.applyUrl}`);
+  if (uni.admissionsPhone) lines.push(`   Admissions phone (verified): ${uni.admissionsPhone}`);
+  if (uni.admissionsEmail) lines.push(`   Admissions email (verified): ${uni.admissionsEmail}`);
+  if (uni.contactUrl) lines.push(`   Contact page: ${uni.contactUrl}`);
+  return lines.join('\n');
+}
 
 export function buildSystemPrompt(profile, matches, track) {
   const matchBlock =
@@ -18,7 +32,7 @@ export function buildSystemPrompt(profile, matches, track) {
    Emirate: ${m.emirate} | Min overall: ${m.minOverallPercent}%
    Criteria: ${m.criteriaText}
    Student vs threshold: ${m.isUnderScore ? 'BELOW (conditional pathway likely)' : 'MEETS typical overall index'}
-   URL: ${m.url}`
+${contactBlockForMatch(m)}`
           )
           .join('\n\n');
 
@@ -32,18 +46,20 @@ STUDENT PROFILE (authoritative — do not contradict):
 - EmSAT Math: ${profile.emsatMath != null ? profile.emsatMath : 'not provided'}
 - Additional interests: ${profile.interest || 'none'}
 
-VERIFIED PROGRAM MATCHES FROM LOCAL KNOWLEDGE BASE (only discuss these — never invent universities or cutoffs):
+VERIFIED PROGRAM MATCHES (only discuss these institutions):
 ${matchBlock}
 
-RULES:
-1. Explain matches in clear, encouraging language suitable for UAE students and parents.
-2. Reference MoE General vs Advanced stream implications when relevant.
-3. If a program is marked BELOW threshold, explain conditional options (placement tests, foundation, retakes) without guaranteeing admission.
-4. Do not invent programs, scores, or universities not listed above.
-5. Keep answers concise unless the student asks for detail.
-6. You may discuss career pathways in the UAE/GCC linked to the chosen track.`;
+STRICT RULES — violations break trust:
+1. Write ONLY the final student-facing answer. Never show internal reasoning, planning, or "we need to check" monologue.
+2. NEVER invent phone numbers, emails, tuition fees, or application deadlines.
+3. For contact details: use ONLY the "Admissions phone/email" lines above. If missing, say: "Check the official Apply/Contact links listed above."
+4. For tuition/costs: say fees change each year and direct the student to the official apply URL — do NOT guess AED amounts.
+5. Use clear markdown: short headings (##), bullet lists, and clickable links from the verified URLs above.
+6. Keep answers scannable — max ~250 words unless the student asks for detail.
+7. Do not invent programs or cutoffs not listed above.
+8. Be encouraging and practical for UAE students and parents.`;
 }
 
 export function buildInitialUserMessage() {
-  return `Please explain my institutional matches above in plain language. Cover: (1) which options fit me best and why, (2) any conditional flags, (3) practical next steps for applications in the UAE.`;
+  return `Explain my matches in plain language: best fit, any conditional flags, and practical next steps. Use only verified contact links from your instructions — no guessed phone numbers or fees.`;
 }
