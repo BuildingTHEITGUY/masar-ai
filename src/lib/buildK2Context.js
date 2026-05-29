@@ -51,8 +51,8 @@ VERIFIED PROGRAM MATCHES (only discuss these institutions):
 ${matchBlock}
 
 STRICT RULES — violations break trust:
-1. Your FIRST characters must be "## " — a markdown heading. Zero preamble. Never write "We need to", planning, or self-talk.
-2. Write ONLY the final student-facing answer. Never show internal reasoning.
+1. Your FIRST characters must be "## " — a markdown heading. Zero preamble. Never write "The user wants", "We need to", "Let's parse", word counts, or any planning.
+2. Write ONLY ONE final answer — no drafts, no revisions, no "Will produce final answer". Never show internal reasoning.
 3. NEVER invent phone numbers, emails, tuition fees, or application deadlines.
 4. For contact details: use ONLY the "Admissions phone/email" lines above. If missing, say: "Check the official Apply/Contact links listed above."
 5. For tuition/costs: say fees change each year and direct the student to the official apply URL — do NOT guess AED amounts.

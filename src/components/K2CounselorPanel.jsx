@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import universities from '../data/universities.json';
 import { buildSystemPrompt, buildInitialUserMessage } from '../lib/buildK2Context';
-import { streamK2Chat, sanitizeK2Final } from '../lib/streamK2Chat';
+import { streamK2Chat } from '../lib/streamK2Chat';
 import K2MessageContent from './K2MessageContent';
 
 function VerifiedContacts({ matchingResults }) {
@@ -76,17 +76,14 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
     setStreamingText('');
     setError(null);
 
-    let accumulated = '';
     try {
-      await streamK2Chat(
+      const finalText = await streamK2Chat(
         apiMessages,
-        (chunk) => {
-          accumulated += chunk;
-          setStreamingText(sanitizeK2Final(accumulated));
+        (sanitized) => {
+          setStreamingText(sanitized);
         },
         controller.signal
       );
-      const finalText = sanitizeK2Final(accumulated);
       if (!finalText.trim()) {
         setError('K2 returned an empty answer. Try asking again, or use the verified contacts above.');
       } else {

@@ -1,4 +1,4 @@
-import { createK2StreamFilter, sanitizeK2Final } from './sanitizeK2Output';
+import { sanitizeK2Final } from './sanitizeK2Output';
 
 /**
  * Streams tokens from POST /api/chat (Vercel edge → K2 Think).
@@ -29,16 +29,16 @@ export async function streamK2Chat(messages, onChunk, signal) {
   }
 
   const decoder = new TextDecoder();
-  let buffer = '';
-  const filter = createK2StreamFilter();
+  let sseBuffer = '';
+  let rawAccumulated = '';
 
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
 
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split('\n');
-    buffer = lines.pop() || '';
+    sseBuffer += decoder.decode(value, { stream: true });
+    const lines = sseBuffer.split('\n');
+    sseBuffer = lines.pop() || '';
 
     for (const line of lines) {
       const trimmed = line.trim();
@@ -53,7 +53,8 @@ export async function streamK2Chat(messages, onChunk, signal) {
         // K2 Think may send reasoning in a separate field — never show it
         const text = delta?.content ?? json.choices?.[0]?.message?.content;
         if (text) {
-          const visible = filter(text);
+          rawAccumulated += text;
+          const visible = sanitizeK2Final(rawAccumulated);
           if (visible) onChunk(visible);
         }
       } catch {
@@ -61,6 +62,8 @@ export async function streamK2Chat(messages, onChunk, signal) {
       }
     }
   }
+
+  return sanitizeK2Final(rawAccumulated);
 }
 
 export { sanitizeK2Final };
