@@ -495,6 +495,36 @@
     "active": true
   },
   {
+    "id": "mbzuai-bsc-ai-business",
+    "universityId": "mbzuai",
+    "emirate": "abudhabi",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "Undergraduate Division",
+    "programName": "BSc in Artificial Intelligence (Business)",
+    "criteriaText": "Elite holistic review — strong academics, leadership, competitions (STEM, business, arts/athletics). English: IELTS Academic 6.5, TOEFL iBT 90, PTE 60, or Cambridge C1 180. Regular Decision deadline: 30 April 2026. 85% indicative minimum — not guaranteed admission.",
+    "minOverallPercent": 85,
+    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "emsatMathMin": null,
+    "sourceUrl": "https://mbzuai.ac.ae/study/undergraduate-program/",
+    "active": true
+  },
+  {
+    "id": "mbzuai-bsc-ai-engineering",
+    "universityId": "mbzuai",
+    "emirate": "abudhabi",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "Undergraduate Division",
+    "programName": "BSc in Artificial Intelligence (Engineering)",
+    "criteriaText": "Elite holistic review — future engineers/researchers; coding/STEM experience beneficial. English: IELTS Academic 6.5, TOEFL iBT 90, PTE 60, or Cambridge C1 180. Regular Decision deadline: 30 April 2026. 85% indicative minimum — not guaranteed admission.",
+    "minOverallPercent": 85,
+    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "emsatMathMin": null,
+    "sourceUrl": "https://mbzuai.ac.ae/study/undergraduate-program/",
+    "active": true
+  },
+  {
     "id": "uos-llb-ar",
     "universityId": "uos",
     "emirate": "sharjah",

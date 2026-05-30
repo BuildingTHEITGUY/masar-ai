@@ -24,7 +24,16 @@
   { "id": "adu", "name": "Abu Dhabi University", "shortName": "ADU", "url": "https://www.adu.ac.ae", "emirate": "abudhabi" },
   { "id": "khalifa", "name": "Khalifa University", "shortName": "KU", "url": "https://www.ku.ac.ae", "emirate": "abudhabi" },
   { "id": "hct-ad", "name": "Higher Colleges of Technology — Abu Dhabi", "shortName": "HCT AD", "url": "https://www.hct.ac.ae", "emirate": "abudhabi" },
-  { "id": "mbzuai", "name": "Mohamed bin Zayed University of AI", "shortName": "MBZUAI", "url": "https://mbzuai.ac.ae", "emirate": "abudhabi" },
+  {
+    "id": "mbzuai",
+    "name": "Mohamed bin Zayed University of AI",
+    "shortName": "MBZUAI",
+    "url": "https://mbzuai.ac.ae",
+    "applyUrl": "https://mbzuai.ac.ae/study/undergraduate-program/",
+    "contactUrl": "https://mbzuai.ac.ae/study/undergraduate-program/",
+    "admissionsEmail": "ug.admission@mbzuai.ac.ae",
+    "emirate": "abudhabi"
+  },
   { "id": "uos", "name": "University of Sharjah", "shortName": "UOS", "url": "https://www.sharjah.ac.ae", "applyUrl": "https://www.sharjah.ac.ae/en/academics/admissions", "contactUrl": "https://www.sharjah.ac.ae/en/contact", "emirate": "sharjah" },
   { "id": "aus", "name": "American University of Sharjah", "shortName": "AUS", "url": "https://www.aus.edu", "emirate": "sharjah" },
   { "id": "ajman", "name": "Ajman University", "shortName": "AU", "url": "https://www.ajman.ac.ae", "emirate": "sharjah" },
