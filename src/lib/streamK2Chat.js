@@ -20,6 +20,11 @@ export async function streamK2Chat(messages, onChunk, signal) {
     } catch {
       /* ignore */
     }
+    if (response.status === 504) {
+      throw new Error(
+        'K2 took too long to respond (gateway timeout). Please try again — follow-up questions are faster than the first explanation.'
+      );
+    }
     throw new Error(detail || `K2 request failed (${response.status})`);
   }
 
