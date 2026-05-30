@@ -441,7 +441,40 @@ export function extractStudentAnswer(text) {
     cleaned = ensureMarkdownHeadings(cleaned);
   }
 
-  return cleaned.trim();
+  cleaned = cleaned.trim();
+  if (!cleaned && text.trim().length > 50) {
+    return extractFallbackAnswer(text);
+  }
+
+  return cleaned;
+}
+
+/** When aggressive stripping empties output, keep the last ## block from raw text */
+function extractFallbackAnswer(raw) {
+  const normalized = normalizeGluedHeadings(stripArtifacts(raw)).replace(/<br\s*\/?>/gi, '\n').trim();
+  if (!normalized) return '';
+
+  const lastIdx = findLastAnswerBlockStart(normalized);
+  if (lastIdx >= 0) {
+    const slice = ensureMarkdownHeadings(normalized.slice(lastIdx).trim());
+    if (slice.length > 20) return slice;
+  }
+
+  const headingParts = normalized.split(/(?=^#{1,3}\s+\S)/m).filter(Boolean);
+  for (let i = headingParts.length - 1; i >= 0; i--) {
+    const part = ensureMarkdownHeadings(headingParts[i].trim());
+    if (part.length > 25 && !containsReasoning(part)) return part;
+  }
+
+  const paragraphs = normalized.split(/\n\s*\n/).filter((p) => p.trim().length > 40);
+  if (paragraphs.length > 0) {
+    const last = paragraphs[paragraphs.length - 1].trim();
+    if (!isReasoningLine(last.split('\n')[0]?.trim() ?? '')) {
+      return last.startsWith('#') ? last : `## Answer\n\n${last}`;
+    }
+  }
+
+  return '';
 }
 
 export function sanitizeK2Final(text) {
@@ -569,8 +602,10 @@ export function groupBulletsIntoUniCards(items) {
   return cards;
 }
 
-export function parseK2Blocks(text) {
-  const lines = sanitizeK2Final(text).split('\n');
+export function parseK2Blocks(text, options = {}) {
+  const { alreadySanitized = false } = options;
+  const source = alreadySanitized ? (text ?? '') : sanitizeK2Final(text);
+  const lines = source.split('\n');
   const blocks = [];
   let i = 0;
 
@@ -660,6 +695,13 @@ export function parseK2Blocks(text) {
   }
 
   return blocks;
+}
+
+/** True if sanitized text will render at least one visible block */
+export function k2ContentIsRenderable(text, alreadySanitized = false) {
+  const source = alreadySanitized ? (text ?? '').trim() : sanitizeK2Final(text).trim();
+  if (!source) return false;
+  return parseK2Blocks(source, { alreadySanitized: true }).length > 0;
 }
 
 export function formatK2Message(text) {

@@ -1,7 +1,7 @@
 import { sanitizeK2Final } from './sanitizeK2Output';
 
 /**
- * Streams tokens from POST /api/chat (Vercel edge → K2 Think).
+ * Streams tokens from POST /api/chat (Vercel → K2 Think).
  * Chain-of-thought is stripped before reaching the UI.
  */
 export async function streamK2Chat(messages, onChunk, signal) {
@@ -31,6 +31,7 @@ export async function streamK2Chat(messages, onChunk, signal) {
   const decoder = new TextDecoder();
   let sseBuffer = '';
   let rawAccumulated = '';
+  let reasoningChars = 0;
 
   while (true) {
     const { done, value } = await reader.read();
@@ -50,7 +51,14 @@ export async function streamK2Chat(messages, onChunk, signal) {
       try {
         const json = JSON.parse(payload);
         const delta = json.choices?.[0]?.delta;
-        // K2 Think may send reasoning in a separate field — never show it
+
+        if (delta?.reasoning_content) {
+          reasoningChars += delta.reasoning_content.length;
+          if (import.meta.env?.DEV) {
+            console.debug('[K2] reasoning chunk chars:', delta.reasoning_content.length, 'total:', reasoningChars);
+          }
+        }
+
         const text = delta?.content ?? json.choices?.[0]?.message?.content;
         if (text) {
           rawAccumulated += text;
@@ -61,6 +69,10 @@ export async function streamK2Chat(messages, onChunk, signal) {
         /* skip malformed SSE lines */
       }
     }
+  }
+
+  if (import.meta.env?.DEV && reasoningChars > 0) {
+    console.debug('[K2] stream complete — content chars:', rawAccumulated.length, 'reasoning chars:', reasoningChars);
   }
 
   return sanitizeK2Final(rawAccumulated);

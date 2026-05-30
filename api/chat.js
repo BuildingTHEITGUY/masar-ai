@@ -1,9 +1,9 @@
 export const config = {
-    runtime: 'edge', // Uses high-speed Vercel Edge network for instant streaming
+    runtime: 'nodejs',
+    maxDuration: 60,
 };
 
 export default async function handler(req) {
-    // Guardrail: Only allow secure POST requests
     if (req.method !== 'POST') {
         return new Response('Method Not Allowed', { status: 405 });
     }
@@ -11,14 +11,12 @@ export default async function handler(req) {
     try {
         const incomingData = await req.json();
 
-        // Securely pull the key on the server-side only
         const serverApiKey = process.env.K2_API_KEY;
 
         if (!serverApiKey) {
             return new Response(JSON.stringify({ error: "Server API Key configuration missing." }), { status: 500 });
         }
 
-        // Call the external MBZUAI API securely from our server
         const response = await fetch('https://api.k2think.ai/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -29,11 +27,17 @@ export default async function handler(req) {
             body: JSON.stringify({
                 model: "MBZUAI-IFM/K2-Think-v2",
                 messages: incomingData.messages,
-                stream: true
+                stream: true,
+                max_tokens: 800,
+                temperature: 0.3,
             })
         });
 
-        // Pipe the real-time text token stream straight back to the student's browser
+        if (!response.ok) {
+            const errText = await response.text();
+            return new Response(JSON.stringify({ error: errText || response.statusText }), { status: response.status });
+        }
+
         return new Response(response.body, {
             headers: {
                 'Content-Type': 'text/event-stream',

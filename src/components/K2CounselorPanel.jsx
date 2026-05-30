@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import universities from '../data/universities.json';
-import { buildSystemPrompt, buildInitialUserMessage } from '../lib/buildK2Context';
+import { buildSystemPrompt, buildInitialUserMessage, buildFollowUpSystemPrompt } from '../lib/buildK2Context';
 import { streamK2Chat } from '../lib/streamK2Chat';
+import { k2ContentIsRenderable } from '../lib/sanitizeK2Output';
 import K2MessageContent from './K2MessageContent';
 
 function VerifiedContacts({ matchingResults }) {
@@ -84,10 +85,13 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
         },
         controller.signal
       );
-      if (!finalText.trim()) {
-        setError('K2 returned an empty answer. Try asking again, or use the verified contacts above.');
+      const trimmed = finalText.trim();
+      if (!trimmed || !k2ContentIsRenderable(trimmed, true)) {
+        setError(
+          'K2 returned an empty or unreadable answer. Try a specific question like "Tell me about MBZUAI BSc AI" or use the verified contacts above.'
+        );
       } else {
-        setMessages((prev) => [...prev, { role: 'assistant', content: finalText }]);
+        setMessages((prev) => [...prev, { role: 'assistant', content: trimmed }]);
       }
       setStreamingText('');
     } catch (err) {
@@ -117,13 +121,12 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
     if (!text || isStreaming) return;
 
     setFollowUp('');
-    const system = buildSystemPrompt(studentProfile, matchingResults, resolvedTrack);
-    const nextMessages = [...messages, { role: 'user', content: text }];
-    setMessages(nextMessages);
+    const system = buildFollowUpSystemPrompt(studentProfile, matchingResults, resolvedTrack, text);
+    setMessages((prev) => [...prev, { role: 'user', content: text }]);
 
     const apiMessages = [
       { role: 'system', content: system },
-      ...nextMessages.map((m) => ({ role: m.role, content: m.content })),
+      { role: 'user', content: text },
     ];
     await runK2(apiMessages);
   };

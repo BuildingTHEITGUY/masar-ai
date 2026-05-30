@@ -314,7 +314,7 @@ export default function K2MessageContent({ text, role }) {
     return <p className="k2-user-text">{text}</p>;
   }
 
-  const blocks = parseK2Blocks(text);
+  const blocks = parseK2Blocks(text, { alreadySanitized: true });
   const { title, sections } = groupBlocksIntoSections(blocks);
 
   if (sections.length === 0) {
