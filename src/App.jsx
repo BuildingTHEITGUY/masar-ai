@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormInput from './components/FormInput';
 import LandingChoice from './components/LandingChoice';
 import ExploreWizard from './components/ExploreWizard';
@@ -9,6 +9,107 @@ import universities from './data/universities.json';
 import { matchPrograms, programsByEmirate } from './lib/matchPrograms';
 
 const TRACK_LABELS = { law: 'Law', tech: 'Technology', business: 'Business' };
+
+function useCompactHeader(breakpoint = 768) {
+  const [compact, setCompact] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < breakpoint
+  );
+
+  useEffect(() => {
+    const onResize = () => setCompact(window.innerWidth < breakpoint);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [breakpoint]);
+
+  return compact;
+}
+
+function SponsorLogoPlaceholder({ emoji, label, color }) {
+  return (
+    <div
+      style={{
+        height: '40px',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '0 14px',
+        borderRadius: '8px',
+        border: `1px solid ${color}40`,
+        background: `linear-gradient(135deg, ${color}14 0%, rgba(15, 23, 42, 0.6) 100%)`,
+        boxShadow: `0 0 12px ${color}18`,
+        fontSize: '0.72rem',
+        fontWeight: 700,
+        letterSpacing: '0.05em',
+        color,
+        whiteSpace: 'nowrap',
+      }}
+      aria-label={`${label} sponsor logo placeholder`}
+    >
+      {emoji} {label}
+    </div>
+  );
+}
+
+function AppHeader() {
+  const compact = useCompactHeader();
+
+  return (
+    <header
+      style={{
+        background: '#0f172a',
+        borderBottom: '1px solid #1e293b',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: compact ? 'center' : 'space-between',
+        flexDirection: compact ? 'column' : 'row',
+        gap: compact ? '16px' : '12px',
+        padding: compact ? '16px 20px' : '16px 40px',
+      }}
+    >
+      <div
+        style={{
+          flex: compact ? undefined : '1 1 0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: compact ? 'center' : 'flex-start',
+          minWidth: compact ? undefined : '140px',
+        }}
+      >
+        <SponsorLogoPlaceholder emoji="🧠" label="K2 THINK" color="#34d399" />
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          flex: compact ? undefined : '0 1 auto',
+        }}
+      >
+        <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: '800', color: '#ffffff' }}>
+          Masar AI <span style={{ color: '#ff6b3d', fontWeight: '400' }}>(مسار)</span>
+        </h1>
+        <p style={{ margin: '6px 0 0 0', color: '#94a3b8', fontSize: '0.95rem', fontWeight: '500' }}>
+          Your UAE pathway after high school
+        </p>
+        <UaeHeaderBadge />
+      </div>
+
+      <div
+        style={{
+          flex: compact ? undefined : '1 1 0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: compact ? 'center' : 'flex-end',
+          minWidth: compact ? undefined : '140px',
+        }}
+      >
+        <SponsorLogoPlaceholder emoji="🤖" label="MBZUAI IFM" color="#ff6b3d" />
+      </div>
+    </header>
+  );
+}
 
 function UaeHeaderBadge() {
   return (
@@ -35,15 +136,7 @@ function UaeHeaderBadge() {
           lineHeight: 1.4,
         }}
       >
-        Built in the UAE{' '}
-        <span role="img" aria-label="United Arab Emirates flag" style={{ fontSize: '0.95rem' }}>
-          🇦🇪
-        </span>{' '}
-        with{' '}
-        <span style={{ color: '#ff6b3d' }} aria-hidden>
-          ❤️
-        </span>{' '}
-        for the Next Gen of Talent
+        {'Built in the UAE 🇦🇪 with ❤️ for the Next Gen of Talent'}
       </span>
     </div>
   );
@@ -306,22 +399,7 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#0b0f19', color: '#f3f4f6' }}>
-      <header
-        style={{
-          background: '#0f172a',
-          padding: '24px 20px',
-          textAlign: 'center',
-          borderBottom: '1px solid #1e293b',
-        }}
-      >
-        <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: '800', color: '#ffffff' }}>
-          Masar AI <span style={{ color: '#ff6b3d', fontWeight: '400' }}>(مسار)</span>
-        </h1>
-        <p style={{ margin: '6px 0 0 0', color: '#94a3b8', fontSize: '0.95rem', fontWeight: '500' }}>
-          Your UAE pathway after high school
-        </p>
-        <UaeHeaderBadge />
-      </header>
+      <AppHeader />
 
       <main
         style={{

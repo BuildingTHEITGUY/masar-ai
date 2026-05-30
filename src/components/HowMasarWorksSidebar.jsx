@@ -2,10 +2,10 @@ import React from 'react';
 
 export default function HowMasarWorksSidebar({ showExploreHint }) {
   const steps = [
-    { n: '1', title: 'Tell us about you', desc: 'Curriculum, grades & location' },
-    { n: '2', title: 'Explore directions', desc: 'Discover majors that fit your interests' },
-    { n: '3', title: 'See real programs', desc: 'Accredited UAE universities from our database' },
-    { n: '4', title: 'Ask K2 counselor', desc: 'Get explanations & follow-up help' },
+    { n: '1', title: 'Tell Us About You', desc: 'Curriculum, Grades & Location' },
+    { n: '2', title: 'Explore Directions', desc: 'Discover Majors That Fit Your Interests' },
+    { n: '3', title: 'See Real Programs', desc: 'Accredited UAE Universities From Our Database' },
+    { n: '4', title: 'Ask K2 Counselor', desc: 'Get Explanations & Follow-Up Help' },
   ];
 
   return (
@@ -19,7 +19,7 @@ export default function HowMasarWorksSidebar({ showExploreHint }) {
           letterSpacing: '0.04em',
         }}
       >
-        How Masar works
+        How Masar Works
       </h3>
       <p style={{ margin: '0 0 20px 0', fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5 }}>
         Built for UAE high school graduates — MoE, British, American & EmSAT aware.
@@ -38,7 +38,7 @@ export default function HowMasarWorksSidebar({ showExploreHint }) {
             lineHeight: 1.5,
           }}
         >
-          <strong>New here?</strong> Choose <em>I&apos;m not sure yet</em> — most students start with Explore mode.
+          <strong>New here?</strong> Choose &apos;I&apos;m not sure yet&apos; — most students start with Explore mode.
         </div>
       )}
 

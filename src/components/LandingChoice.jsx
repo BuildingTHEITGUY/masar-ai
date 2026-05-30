@@ -19,7 +19,7 @@ export default function LandingChoice({ onExplore, onDirect }) {
         curriculum, and interests.
       </p>
       <p style={{ color: '#64748b', fontSize: '0.8rem', margin: '0 0 28px 0' }}>
-        مسارك الجامعي — your pathway after school
+        مسارك الجامعي — Your Pathway After School
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -40,7 +40,7 @@ export default function LandingChoice({ onExplore, onDirect }) {
             I&apos;m not sure yet — help me explore
           </strong>
           <span style={{ color: '#94a3b8', fontSize: '0.85rem', lineHeight: 1.5 }}>
-            Short quiz → suggested majors → universities that match you
+            Short Quiz → Suggested Majors → Personalized University Matching
           </span>
         </button>
 
