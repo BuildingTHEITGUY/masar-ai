@@ -10,6 +10,173 @@ import { matchPrograms, programsByEmirate } from './lib/matchPrograms';
 
 const TRACK_LABELS = { law: 'Law', tech: 'Technology', business: 'Business' };
 
+function UaeHeaderBadge() {
+  return (
+    <div
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '6px',
+        marginTop: '12px',
+        padding: '7px 16px',
+        borderRadius: '999px',
+        border: '1px solid rgba(148, 163, 184, 0.2)',
+        background: 'linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.35) 100%)',
+        boxShadow: '0 1px 12px rgba(0, 0, 0, 0.25)',
+      }}
+    >
+      <span
+        style={{
+          fontSize: '0.8rem',
+          color: '#94a3b8',
+          fontWeight: 500,
+          letterSpacing: '0.02em',
+          lineHeight: 1.4,
+        }}
+      >
+        Built in the UAE{' '}
+        <span role="img" aria-label="United Arab Emirates flag" style={{ fontSize: '0.95rem' }}>
+          🇦🇪
+        </span>{' '}
+        with{' '}
+        <span style={{ color: '#ff6b3d' }} aria-hidden>
+          ❤️
+        </span>{' '}
+        for the Next Gen of Talent
+      </span>
+    </div>
+  );
+}
+
+function InstitutionalFooter() {
+  return (
+    <footer
+      style={{
+        background: '#0f172a',
+        borderTop: '1px solid #1e293b',
+        padding: '30px 20px',
+        marginTop: '60px',
+        textAlign: 'center',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '1100px',
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '28px 40px',
+        }}
+      >
+        <div
+          style={{
+            flex: '1 1 300px',
+            maxWidth: '480px',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            style={{
+              padding: '18px 22px',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 107, 61, 0.35)',
+              background: 'linear-gradient(145deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%)',
+              boxShadow: '0 0 24px rgba(255, 107, 61, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.04)',
+              textAlign: 'center',
+              width: '100%',
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: '#64748b',
+              }}
+            >
+              UAE National Initiative
+            </p>
+            <p
+              style={{
+                margin: '8px 0 0',
+                fontSize: '1.15rem',
+                fontWeight: 800,
+                letterSpacing: '0.06em',
+                lineHeight: 1.25,
+                color: '#ffffff',
+              }}
+            >
+              MAKE IT IN THE{' '}
+              <span style={{ color: '#ff6b3d' }}>EMIRATES</span>
+            </p>
+            <p
+              style={{
+                margin: '10px 0 0',
+                fontSize: '0.78rem',
+                color: '#94a3b8',
+                lineHeight: 1.5,
+                fontWeight: 500,
+              }}
+            >
+              National Talent Accelerator Node
+              <span style={{ color: '#64748b' }}> · </span>
+              <span style={{ color: '#fbbf24', fontWeight: 600 }}>Vision 2031</span> Alignment
+            </p>
+          </div>
+        </div>
+
+        <div
+          style={{
+            flex: '1 1 260px',
+            maxWidth: '420px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <p
+            style={{
+              margin: 0,
+              color: '#64748b',
+              fontSize: '0.8rem',
+              lineHeight: 1.65,
+              fontWeight: 500,
+              maxWidth: '360px',
+            }}
+          >
+            Proudly engineered in Dubai, UAE{' '}
+            <span role="img" aria-label="United Arab Emirates flag">
+              🇦🇪
+            </span>
+            <br />
+            <span style={{ color: '#475569', fontSize: '0.75rem' }}>
+              Designed for Zero-Trust Data Sovereignty
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <p
+        style={{
+          margin: '22px 0 0',
+          fontSize: '0.7rem',
+          color: '#475569',
+          letterSpacing: '0.04em',
+        }}
+      >
+        Masar AI · مسار — Empowering UAE graduates to find their university pathway
+      </p>
+    </footer>
+  );
+}
+
 function MatchCard({ match, studentProfile, variant = 'match' }) {
   const borderColor =
     variant === 'alternative' ? '#f59e0b' : match.isUnderScore ? '#ef4444' : '#10b981';
@@ -153,6 +320,7 @@ export default function App() {
         <p style={{ margin: '6px 0 0 0', color: '#94a3b8', fontSize: '0.95rem', fontWeight: '500' }}>
           Your UAE pathway after high school
         </p>
+        <UaeHeaderBadge />
       </header>
 
       <main
@@ -485,6 +653,8 @@ export default function App() {
           )}
         </section>
       </main>
+
+      <InstitutionalFooter />
     </div>
   );
 }
