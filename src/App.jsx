@@ -24,29 +24,49 @@ function useCompactHeader(breakpoint = 768) {
   return compact;
 }
 
-function SponsorLogoPlaceholder({ emoji, label, color }) {
-  return (
-    <div
+const SPONSOR_LOGOS = {
+  k2: { src: '/sponsors/k2-think.png', alt: 'K2 Think', href: 'https://k2think.ai' },
+  mbzuai: {
+    src: '/sponsors/mbzuai.png',
+    alt: 'Mohamed bin Zayed University of Artificial Intelligence',
+    href: 'https://mbzuai.ac.ae',
+  },
+};
+
+function SponsorLogo({ src, alt, href, maxHeight = 40, maxWidth }) {
+  const img = (
+    <img
+      src={src}
+      alt={alt}
       style={{
-        height: '40px',
+        height: `${maxHeight}px`,
+        width: 'auto',
+        maxWidth: maxWidth ? `${maxWidth}px` : '100%',
+        objectFit: 'contain',
+        display: 'block',
+      }}
+    />
+  );
+
+  if (!href) return img;
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer noopener"
+      style={{
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '0 14px',
-        borderRadius: '8px',
-        border: `1px solid ${color}40`,
-        background: `linear-gradient(135deg, ${color}14 0%, rgba(15, 23, 42, 0.6) 100%)`,
-        boxShadow: `0 0 12px ${color}18`,
-        fontSize: '0.72rem',
-        fontWeight: 700,
-        letterSpacing: '0.05em',
-        color,
-        whiteSpace: 'nowrap',
+        height: `${maxHeight}px`,
+        maxWidth: maxWidth ? `${maxWidth}px` : undefined,
+        textDecoration: 'none',
       }}
-      aria-label={`${label} sponsor logo placeholder`}
+      aria-label={alt}
     >
-      {emoji} {label}
-    </div>
+      {img}
+    </a>
   );
 }
 
@@ -75,7 +95,13 @@ function AppHeader() {
           minWidth: compact ? undefined : '140px',
         }}
       >
-        <SponsorLogoPlaceholder emoji="🧠" label="K2 THINK" color="#34d399" />
+        <SponsorLogo
+          src={SPONSOR_LOGOS.k2.src}
+          alt={SPONSOR_LOGOS.k2.alt}
+          href={SPONSOR_LOGOS.k2.href}
+          maxHeight={compact ? 36 : 40}
+          maxWidth={compact ? 120 : 140}
+        />
       </div>
 
       <div
@@ -102,10 +128,16 @@ function AppHeader() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: compact ? 'center' : 'flex-end',
-          minWidth: compact ? undefined : '140px',
+          minWidth: compact ? undefined : '200px',
         }}
       >
-        <SponsorLogoPlaceholder emoji="🤖" label="MBZUAI IFM" color="#ff6b3d" />
+        <SponsorLogo
+          src={SPONSOR_LOGOS.mbzuai.src}
+          alt={SPONSOR_LOGOS.mbzuai.alt}
+          href={SPONSOR_LOGOS.mbzuai.href}
+          maxHeight={compact ? 36 : 40}
+          maxWidth={compact ? 160 : 220}
+        />
       </div>
     </header>
   );
