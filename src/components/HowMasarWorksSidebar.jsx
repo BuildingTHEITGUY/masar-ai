@@ -22,7 +22,7 @@ export default function HowMasarWorksSidebar({ showExploreHint }) {
         How Masar Works
       </h3>
       <p style={{ margin: '0 0 20px 0', fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5 }}>
-        Built for UAE high school graduates — MoE, British, American & EmSAT aware.
+        Built for UAE High School Graduates — MoE, British, American & EmSAT Aware.
       </p>
 
       {showExploreHint && (
@@ -38,7 +38,7 @@ export default function HowMasarWorksSidebar({ showExploreHint }) {
             lineHeight: 1.5,
           }}
         >
-          <strong>New here?</strong> Choose &apos;I&apos;m not sure yet&apos; — most students start with Explore mode.
+          <strong>New here?</strong> Choose &apos;I&apos;m not sure yet&apos; — most students start with Explore Mode.
         </div>
       )}
 
@@ -76,7 +76,7 @@ export default function HowMasarWorksSidebar({ showExploreHint }) {
           MoE General vs Advanced
         </h4>
         <p style={{ margin: 0, fontSize: '0.78rem', color: '#64748b', lineHeight: 1.55 }}>
-          <strong style={{ color: '#cbd5e1' }}>General</strong> — wider access to business, IT & law paths.{' '}
+          <strong style={{ color: '#cbd5e1' }}>General</strong> — wider access to Business, IT & Law paths.{' '}
           <strong style={{ color: '#cbd5e1' }}>Advanced</strong> — opens competitive engineering & STEM programs.
           Masar flags when a foundation year may be needed.
         </p>

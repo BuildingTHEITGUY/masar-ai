@@ -117,7 +117,7 @@ function AppHeader() {
           Masar AI <span style={{ color: '#ff6b3d', fontWeight: '400' }}>(مسار)</span>
         </h1>
         <p style={{ margin: '6px 0 0 0', color: '#94a3b8', fontSize: '0.95rem', fontWeight: '500' }}>
-          Your UAE pathway after high school
+          Your UAE Pathway After High School
         </p>
         <UaeHeaderBadge />
       </div>
@@ -166,9 +166,22 @@ function UaeHeaderBadge() {
           fontWeight: 500,
           letterSpacing: '0.02em',
           lineHeight: 1.4,
+          fontFamily: "'Segoe UI', system-ui, 'Segoe UI Emoji', sans-serif",
         }}
       >
-        {'Built in the UAE 🇦🇪 with ❤️ for the Next Gen of Talent'}
+        Built in the UAE{' '}
+        <img
+          src="/flags/uae.svg"
+          alt="UAE flag"
+          style={{
+            height: '14px',
+            width: 'auto',
+            verticalAlign: 'middle',
+            marginLeft: '2px',
+            marginRight: '2px',
+          }}
+        />{' '}
+        with ❤️ for the Next Gen of Talent
       </span>
     </div>
   );
@@ -467,8 +480,8 @@ export default function App() {
                 }}
               />
               <span style={{ fontSize: '0.85rem', color: '#cbd5e1', fontWeight: '500' }}>
-                K2-Think-V2 Processing Engine:{' '}
-                <strong style={{ color: '#10b981' }}>ONLINE</strong>
+                K2 Think V2 Processing Engine:{' '}
+                <strong style={{ color: '#10b981' }}>Online</strong>
               </span>
             </div>
             <div
