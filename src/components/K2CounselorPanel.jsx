@@ -205,7 +205,7 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
 
       <div
         style={{
-          maxHeight: '520px',
+          maxHeight: '560px',
           overflowY: 'auto',
           padding: '16px',
           display: 'flex',

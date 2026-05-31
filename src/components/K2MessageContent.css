@@ -125,17 +125,51 @@
 }
 
 /* Comparison table */
+.k2-table-scroll {
+  margin: 0.5rem 0 0.65rem;
+  position: relative;
+}
+
+.k2-table-caption {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.k2-table-scroll-hint {
+  display: none;
+  margin-top: 0.35rem;
+  font-size: 0.68rem;
+  color: #64748b;
+  text-align: right;
+}
+
 .k2-table-wrap {
   overflow-x: auto;
-  margin: 0.5rem 0 0.65rem;
   border-radius: 8px;
   border: 1px solid #334155;
   background: #0b0f19;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #334155 #0b0f19;
+}
+
+.k2-table-wrap::-webkit-scrollbar {
+  height: 6px;
+}
+
+.k2-table-wrap::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
 }
 
 .k2-table-wrap--compare {
   border-color: rgba(56, 189, 248, 0.25);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.04) 0%, #0b0f19 100%);
 }
 
 .k2-table {
@@ -145,9 +179,14 @@
   min-width: 520px;
 }
 
+.k2-table--compare {
+  table-layout: fixed;
+  min-width: 640px;
+}
+
 .k2-table th {
   text-align: left;
-  padding: 0.6rem 0.7rem;
+  padding: 0.6rem 0.75rem;
   background: #1e293b;
   color: #94a3b8;
   font-weight: 700;
@@ -156,14 +195,18 @@
   letter-spacing: 0.05em;
   border-bottom: 1px solid #334155;
   white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .k2-table td {
-  padding: 0.65rem 0.7rem;
+  padding: 0.7rem 0.75rem;
   border-bottom: 1px solid #1e293b;
   color: #e2e8f0;
   vertical-align: top;
-  line-height: 1.45;
+  line-height: 1.5;
+  word-break: break-word;
 }
 
 .k2-table tbody tr:last-child td {
@@ -174,29 +217,43 @@
   background: rgba(255, 255, 255, 0.02);
 }
 
-.k2-table tbody tr:hover td {
-  background: rgba(56, 189, 248, 0.05);
+.k2-table--compare tbody tr:hover td {
+  background: rgba(56, 189, 248, 0.06);
 }
 
 .k2-col-uni {
   font-weight: 600;
   color: #f8fafc;
-  min-width: 120px;
+  min-width: 7.5rem;
+  width: 20%;
+}
+
+.k2-col-program {
+  color: #bae6fd;
+  min-width: 8rem;
+  width: 24%;
+}
+
+.k2-col-fit {
+  min-width: 9rem;
+  width: 34%;
 }
 
 .k2-col-contact {
-  min-width: 140px;
+  min-width: 7rem;
+  width: 22%;
 }
 
 .k2-table-contact {
   display: inline-block;
-  padding: 0.25rem 0.45rem;
+  padding: 0.3rem 0.5rem;
   border-radius: 6px;
   background: rgba(16, 185, 129, 0.1);
   border: 1px solid rgba(16, 185, 129, 0.25);
   font-size: 0.78rem;
   color: #a7f3d0;
-  line-height: 1.4;
+  line-height: 1.45;
+  max-width: 100%;
 }
 
 /* University cards (fallback when K2 uses bullets instead of table) */
@@ -401,13 +458,74 @@
   margin: 0.85rem 0;
 }
 
-@media (max-width: 640px) {
-  .k2-table {
-    min-width: 100%;
-    font-size: 0.78rem;
+@media (max-width: 720px) {
+  .k2-table-scroll-hint {
+    display: block;
   }
+}
 
+@media (max-width: 640px) {
   .k2-answer-title {
     font-size: 1rem;
+  }
+
+  /* Stack comparison rows as cards on mobile */
+  .k2-table-wrap--compare .k2-table--compare {
+    min-width: 0;
+    table-layout: auto;
+  }
+
+  .k2-table-wrap--compare .k2-table thead {
+    display: none;
+  }
+
+  .k2-table-wrap--compare .k2-table tbody tr {
+    display: block;
+    margin-bottom: 0.65rem;
+    padding: 0.65rem 0.7rem;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 8px;
+    background: rgba(15, 23, 42, 0.6);
+  }
+
+  .k2-table-wrap--compare .k2-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .k2-table-wrap--compare .k2-table td {
+    display: block;
+    width: 100% !important;
+    padding: 0.35rem 0;
+    border-bottom: none;
+    background: transparent !important;
+  }
+
+  .k2-table-wrap--compare .k2-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    margin-bottom: 0.15rem;
+  }
+
+  .k2-table-wrap--compare .k2-col-uni {
+    font-size: 0.92rem;
+    padding-top: 0;
+  }
+
+  .k2-table-wrap--compare .k2-col-uni::before {
+    display: none;
+  }
+
+  .k2-table-scroll-hint {
+    display: none;
+  }
+
+  .k2-table:not(.k2-table--compare) {
+    min-width: 100%;
+    font-size: 0.78rem;
   }
 }

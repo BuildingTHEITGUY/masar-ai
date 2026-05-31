@@ -90,47 +90,78 @@ function UniCard({ name, program, details }) {
   );
 }
 
+function columnClassForHeader(header, index) {
+  const h = (header || '').toLowerCase();
+  if (/university|institution|school|college/.test(h)) return 'k2-col-uni';
+  if (/program|degree|major|course|track/.test(h)) return 'k2-col-program';
+  if (/why|fit|reason|match|strength/.test(h)) return 'k2-col-fit';
+  if (/contact|email|phone|link|apply/.test(h)) return 'k2-col-contact';
+  if (index === 0) return 'k2-col-uni';
+  if (index === 1) return 'k2-col-program';
+  if (index === 2) return 'k2-col-fit';
+  if (index === 3) return 'k2-col-contact';
+  return '';
+}
+
 function MarkdownTable({ headers, rows, variant = 'default' }) {
-  const contactCol = headers.findIndex((h) => /contact/i.test(h));
+  const isCompare = variant === 'compare';
+  const contactCol = headers.findIndex((h) => /contact|apply|email|phone/i.test(h));
 
   return (
-    <div className={`k2-table-wrap k2-table-wrap--${variant}`}>
-      <table className="k2-table">
-        <thead>
-          <tr>
-            {headers.map((h, i) => (
-              <th key={i} className={i === 0 ? 'k2-col-uni' : undefined}>
-                <Inline text={h} />
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, ri) => (
-            <tr key={ri}>
-              {row.map((cell, ci) => (
-                <td
-                  key={ci}
-                  className={[
-                    ci === 0 ? 'k2-col-uni' : '',
-                    ci === contactCol ? 'k2-col-contact' : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                >
-                  {ci === contactCol && cell ? (
-                    <span className="k2-table-contact">
-                      <Inline text={cell} />
-                    </span>
-                  ) : (
-                    <Inline text={cell} />
-                  )}
-                </td>
+    <div className={`k2-table-scroll k2-table-scroll--${variant}`}>
+      {isCompare && rows.length > 0 && (
+        <p className="k2-table-caption" id="k2-compare-caption">
+          Top {rows.length} best-fit {rows.length === 1 ? 'match' : 'matches'} from your Masar results
+        </p>
+      )}
+      <div className={`k2-table-wrap k2-table-wrap--${variant}`}>
+        <table
+          className={`k2-table${isCompare ? ' k2-table--compare' : ''}`}
+          aria-describedby={isCompare ? 'k2-compare-caption' : undefined}
+        >
+          <thead>
+            <tr>
+              {headers.map((h, i) => (
+                <th key={i} className={columnClassForHeader(h, i)} scope="col">
+                  <Inline text={h} />
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row, ri) => (
+              <tr key={ri}>
+                {headers.map((header, ci) => {
+                  const cell = row[ci] ?? '';
+                  const colClass = columnClassForHeader(header, ci);
+                  const isContact = ci === contactCol || colClass === 'k2-col-contact';
+
+                  return (
+                    <td
+                      key={ci}
+                      className={colClass}
+                      data-label={header}
+                    >
+                      {isContact && cell ? (
+                        <span className="k2-table-contact">
+                          <Inline text={cell} />
+                        </span>
+                      ) : (
+                        <Inline text={cell} />
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {isCompare && headers.length > 2 && (
+        <span className="k2-table-scroll-hint" aria-hidden="true">
+          Scroll sideways for full table →
+        </span>
+      )}
     </div>
   );
 }

@@ -46,8 +46,8 @@ export default async function handler(req) {
             });
         }
 
-        // Match K2 onboarding curl exactly — extra params (max_tokens, temperature)
-        // can cause "No LLM found" on some IFM key tiers.
+        // Body must match K2 onboarding curl — do not add max_tokens/temperature
+        // (some IFM keys reject them with "No LLM found for model_name").
         const response = await fetch('https://api.k2think.ai/v1/chat/completions', {
             method: 'POST',
             headers: {
