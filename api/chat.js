@@ -10,13 +10,42 @@ export default async function handler(req) {
     try {
         const incomingData = await req.json();
 
-        const serverApiKey = process.env.K2_API_KEY;
+        let serverApiKey = (process.env.K2_API_KEY || '').trim();
+
+        if (serverApiKey.toLowerCase().startsWith('bearer ')) {
+            serverApiKey = serverApiKey.slice(7).trim();
+        }
+        if (serverApiKey.startsWith('{') && serverApiKey.endsWith('}')) {
+            serverApiKey = serverApiKey.slice(1, -1).trim();
+        }
+        if (
+            (serverApiKey.startsWith('"') && serverApiKey.endsWith('"')) ||
+            (serverApiKey.startsWith("'") && serverApiKey.endsWith("'"))
+        ) {
+            serverApiKey = serverApiKey.slice(1, -1).trim();
+        }
+
+        // TEMPORARY DEBUG — remove this whole block after testing
+        if (incomingData?.debug === true) {
+            return new Response(
+                JSON.stringify({
+                    keyLength: serverApiKey.length,
+                    keyStart: serverApiKey.slice(0, 4),
+                    keyEnd: serverApiKey.slice(-4),
+                    hasBearerPrefix: (process.env.K2_API_KEY || '').toLowerCase().startsWith('bearer '),
+                    hasQuotes:
+                        (process.env.K2_API_KEY || '').startsWith('"') ||
+                        (process.env.K2_API_KEY || '').startsWith("'"),
+                }),
+                { headers: { 'Content-Type': 'application/json' } }
+            );
+        }
 
         if (!serverApiKey) {
-            return new Response(JSON.stringify({ error: 'Server API Key configuration missing.' }), {
-                status: 500,
-                headers: { 'Content-Type': 'application/json' },
-            });
+            return new Response(
+                JSON.stringify({ error: 'Server API Key configuration missing or empty.' }),
+                { status: 500, headers: { 'Content-Type': 'application/json' } }
+            );
         }
 
         const response = await fetch('https://api.k2think.ai/v1/chat/completions', {
