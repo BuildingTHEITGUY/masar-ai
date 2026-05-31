@@ -16,7 +16,18 @@ export async function streamK2Chat(messages, onChunk, signal) {
     let detail = response.statusText;
     try {
       const err = await response.json();
-      detail = err.error || detail;
+      let raw = err.error ?? err.detail ?? detail;
+      if (typeof raw === 'string') {
+        try {
+          const nested = JSON.parse(raw);
+          raw = nested?.error?.message || nested?.detail || raw;
+        } catch {
+          /* plain string */
+        }
+      } else if (raw && typeof raw === 'object' && raw.message) {
+        raw = raw.message;
+      }
+      detail = raw || detail;
     } catch {
       /* ignore */
     }
