@@ -145,6 +145,10 @@ function SelectCard({ selected, onClick, emoji, label, showBehavioralBadge }) {
       type="button"
       onClick={onClick}
       style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        gap: showBehavioralBadge ? '10px' : '0',
         padding: '14px 16px',
         borderRadius: '10px',
         border: `2px solid ${selected ? '#38bdf8' : '#334155'}`,
@@ -154,30 +158,35 @@ function SelectCard({ selected, onClick, emoji, label, showBehavioralBadge }) {
         color: '#e2e8f0',
         fontSize: '0.88rem',
         lineHeight: 1.45,
-        position: 'relative',
+        width: '100%',
+        boxSizing: 'border-box',
       }}
     >
+      <span style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+        <span style={{ flexShrink: 0, lineHeight: 1.35 }} aria-hidden>
+          {emoji}
+        </span>
+        <span style={{ flex: 1, minWidth: 0 }}>{label}</span>
+      </span>
       {showBehavioralBadge && (
         <span
           style={{
-            position: 'absolute',
-            top: '8px',
-            right: '10px',
-            fontSize: '0.58rem',
+            alignSelf: 'flex-start',
+            fontSize: '0.62rem',
             fontWeight: 700,
-            letterSpacing: '0.04em',
+            letterSpacing: '0.05em',
             textTransform: 'uppercase',
             color: '#38bdf8',
-            background: 'rgba(56, 189, 248, 0.15)',
-            padding: '2px 6px',
+            background: 'rgba(56, 189, 248, 0.12)',
+            border: '1px solid rgba(56, 189, 248, 0.35)',
+            padding: '3px 8px',
             borderRadius: '4px',
+            lineHeight: 1.2,
           }}
         >
-          + Step 2.5
+          Includes Step 2.5 quiz
         </span>
       )}
-      <span style={{ marginRight: '8px' }}>{emoji}</span>
-      {label}
     </button>
   );
 }
