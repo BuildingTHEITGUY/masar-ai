@@ -4,7 +4,16 @@
  */
 
 /** Interest IDs that route to Step 2.5 instead of Step 3 */
-export const BEHAVIORAL_TRIGGER_INTERESTS = ['building', 'creative', 'science'];
+export const BEHAVIORAL_TRIGGER_INTERESTS = [
+  'building',
+  'creative',
+  'science',
+  'computers',
+];
+
+export function interestTriggersBehavioral(interestId) {
+  return BEHAVIORAL_TRIGGER_INTERESTS.includes(interestId);
+}
 
 export const ENGINEERING_QUIZ = {
   branch: 'engineering',
@@ -37,6 +46,38 @@ export const ENGINEERING_QUIZ = {
       label: 'The aerodynamics, flight mechanics, and advanced aviation tracking.',
       subTracks: ['aviation'],
       primarySubTrack: 'aviation',
+    },
+  ],
+};
+
+export const TECH_DIGITAL_QUIZ = {
+  branch: 'tech_digital',
+  header: 'Step 2.5 — What kind of digital work excites you?',
+  question: 'When you imagine your ideal tech career in the UAE, what do you picture yourself doing most?',
+  options: [
+    {
+      id: 'computer_science',
+      label: 'Building apps, software, and solving problems with code.',
+      subTracks: ['computer_science'],
+      primarySubTrack: 'computer_science',
+    },
+    {
+      id: 'cybersecurity',
+      label: 'Protecting networks, stopping cyber threats, and securing data.',
+      subTracks: ['cybersecurity'],
+      primarySubTrack: 'cybersecurity',
+    },
+    {
+      id: 'ai_systems',
+      label: 'AI, machine learning, and intelligent systems (UAE national priority).',
+      subTracks: ['ai_systems'],
+      primarySubTrack: 'ai_systems',
+    },
+    {
+      id: 'data_science',
+      label: 'Data analytics, statistics, and turning numbers into decisions.',
+      subTracks: ['data_science'],
+      primarySubTrack: 'data_science',
     },
   ],
 };
@@ -258,6 +299,54 @@ export const SUB_TRACK_CATALOG = {
     careers: 'Law prep, policy, academia, ethics & compliance (often via further study)',
     isTheoretical: true,
   },
+  computer_science: {
+    id: 'computer_science',
+    label: 'Computer Science',
+    displayTitle: 'BSc in Computer Science',
+    holland: 'I–R',
+    track: 'tech',
+    accent: '#38bdf8',
+    category: 'tech',
+    degrees: 'Computer Science, Software Engineering, Information Systems',
+    careers: 'Software developer, product engineer, startup tech roles in UAE',
+    isTheoretical: false,
+  },
+  cybersecurity: {
+    id: 'cybersecurity',
+    label: 'Cybersecurity',
+    displayTitle: 'BSc in Cybersecurity',
+    holland: 'I–C',
+    track: 'tech',
+    accent: '#38bdf8',
+    category: 'tech',
+    degrees: 'Cybersecurity, Information Security, Digital Forensics',
+    careers: 'SOC analyst, security engineer, government & finance cyber roles',
+    isTheoretical: false,
+  },
+  ai_systems: {
+    id: 'ai_systems',
+    label: 'Artificial Intelligence',
+    displayTitle: 'BSc in Artificial Intelligence',
+    holland: 'I',
+    track: 'tech',
+    accent: '#38bdf8',
+    category: 'tech',
+    degrees: 'AI, Machine Learning, Intelligent Systems (e.g. MBZUAI, UAEU pathways)',
+    careers: 'AI engineer, research assistant, data-centric product teams',
+    isTheoretical: false,
+  },
+  data_science: {
+    id: 'data_science',
+    label: 'Data Science',
+    displayTitle: 'BSc in Data Science / Analytics',
+    holland: 'I–C',
+    track: 'tech',
+    accent: '#38bdf8',
+    category: 'tech',
+    degrees: 'Data Science, Business Analytics, Statistics',
+    careers: 'Analyst, BI specialist, fintech & logistics analytics in the GCC',
+    isTheoretical: false,
+  },
 };
 
 const THEORETICAL_IDS = new Set(
@@ -270,9 +359,13 @@ export function needsBehavioralSorter(selectedInterests) {
   return selectedInterests.some((id) => BEHAVIORAL_TRIGGER_INTERESTS.includes(id));
 }
 
-/** Engineering quiz if building selected; else science/creative branch */
+/**
+ * Priority: building → engineering quiz; computers → tech quiz;
+ * science/creative → science quiz.
+ */
 export function resolveBehavioralBranch(selectedInterests) {
   if (selectedInterests.includes('building')) return 'engineering';
+  if (selectedInterests.includes('computers')) return 'tech_digital';
   if (
     selectedInterests.includes('science') ||
     selectedInterests.includes('creative')
@@ -283,7 +376,9 @@ export function resolveBehavioralBranch(selectedInterests) {
 }
 
 export function getQuizForBranch(branch) {
-  return branch === 'engineering' ? ENGINEERING_QUIZ : SCIENCE_QUIZ;
+  if (branch === 'engineering') return ENGINEERING_QUIZ;
+  if (branch === 'tech_digital') return TECH_DIGITAL_QUIZ;
+  return SCIENCE_QUIZ;
 }
 
 export function resolveSubTrackFromOption(option) {
@@ -303,7 +398,7 @@ export function applySubTrackToPathwayScores(scores, subTrackId) {
   const next = { ...scores };
   next[meta.track] = (next[meta.track] || 0) + 8;
 
-  if (meta.category === 'engineering') {
+  if (meta.category === 'engineering' || meta.category === 'tech') {
     next.tech = (next.tech || 0) + 4;
   }
   if (meta.category === 'science' && meta.track === 'business') {

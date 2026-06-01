@@ -3,7 +3,11 @@ import React from 'react';
 export default function HowMasarWorksSidebar({ showExploreHint }) {
   const steps = [
     { n: '1', title: 'Tell Us About You', desc: 'Curriculum, Grades & Location' },
-    { n: '2', title: 'Explore Directions', desc: 'Discover Majors That Fit Your Interests' },
+    {
+      n: '2',
+      title: 'Explore Directions',
+      desc: 'Interests + optional Step 2.5 behavioral quiz (RIASEC)',
+    },
     { n: '3', title: 'See Real Programs', desc: 'Accredited UAE Universities From Our Database' },
     { n: '4', title: 'Ask K2 Counselor', desc: 'Get Explanations & Follow-Up Help' },
   ];

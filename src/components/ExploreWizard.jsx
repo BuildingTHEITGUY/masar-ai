@@ -33,6 +33,7 @@ import {
   getPreviousStep,
 
   getNextStepFromInterests,
+  interestTriggersBehavioral,
 
 } from '../lib/behavioralSorter';
 
@@ -138,48 +139,47 @@ function StepDots({ step, hasBehavioral }) {
 
 
 
-function SelectCard({ selected, onClick, emoji, label }) {
-
+function SelectCard({ selected, onClick, emoji, label, showBehavioralBadge }) {
   return (
-
     <button
-
       type="button"
-
       onClick={onClick}
-
       style={{
-
         padding: '14px 16px',
-
         borderRadius: '10px',
-
         border: `2px solid ${selected ? '#38bdf8' : '#334155'}`,
-
         background: selected ? 'rgba(56,189,248,0.12)' : '#131a26',
-
         cursor: 'pointer',
-
         textAlign: 'left',
-
         color: '#e2e8f0',
-
         fontSize: '0.88rem',
-
         lineHeight: 1.45,
-
+        position: 'relative',
       }}
-
     >
-
+      {showBehavioralBadge && (
+        <span
+          style={{
+            position: 'absolute',
+            top: '8px',
+            right: '10px',
+            fontSize: '0.58rem',
+            fontWeight: 700,
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+            color: '#38bdf8',
+            background: 'rgba(56, 189, 248, 0.15)',
+            padding: '2px 6px',
+            borderRadius: '4px',
+          }}
+        >
+          + Step 2.5
+        </span>
+      )}
       <span style={{ marginRight: '8px' }}>{emoji}</span>
-
       {label}
-
     </button>
-
   );
-
 }
 
 
@@ -593,84 +593,72 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
           </h2>
 
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 20px' }}>
-
+          <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 12px' }}>
             Pick up to <strong style={{ color: '#38bdf8' }}>2</strong> that feel closest to you (macro enjoyment).
-
           </p>
 
-
+          <p
+            style={{
+              color: '#64748b',
+              fontSize: '0.78rem',
+              margin: '0 0 16px',
+              lineHeight: 1.5,
+              padding: '10px 12px',
+              borderRadius: '8px',
+              background: 'rgba(30, 41, 59, 0.5)',
+              border: '1px solid #334155',
+            }}
+          >
+            {hasBehavioral ? (
+              <>
+                <strong style={{ color: '#38bdf8' }}>Step 2.5 unlocks next</strong> — a short behavioral quiz
+                narrows your path (engineering, science, or digital tech).
+              </>
+            ) : (
+              <>
+                <strong style={{ color: '#94a3b8' }}>No Step 2.5</strong> for Business / Law / Unsure only — you
+                go straight to value drivers. Pick 🔧 Building, 🔬 Science, 🎨 Creative, or 💻 Computers to unlock
+                the quiz.
+              </>
+            )}
+          </p>
 
           <div
-
             style={{
-
               display: 'grid',
-
               gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-
               gap: '10px',
-
               marginBottom: '28px',
-
             }}
-
           >
-
             {INTEREST_OPTIONS.map((opt) => (
-
               <SelectCard
-
                 key={opt.id}
-
                 emoji={opt.emoji}
-
                 label={opt.label}
-
                 selected={interests.includes(opt.id)}
-
+                showBehavioralBadge={interestTriggersBehavioral(opt.id)}
                 onClick={() => toggleInterest(opt.id)}
-
               />
-
             ))}
-
           </div>
 
-
-
           <button
-
             type="button"
-
             disabled={!canNextStep1}
-
             onClick={handleContinueFromInterests}
-
             style={{
-
               width: '100%',
-
               padding: '14px',
-
               borderRadius: '8px',
-
               border: 'none',
-
               background: canNextStep1 ? 'linear-gradient(135deg, #38bdf8, #0ea5e9)' : '#334155',
-
               color: '#0f172a',
-
               fontWeight: 700,
-
               cursor: canNextStep1 ? 'pointer' : 'not-allowed',
-
             }}
-
           >
-
-            Continue →
-
+            {hasBehavioral ? 'Continue to Step 2.5 →' : 'Continue to Step 3 →'}
           </button>
 
         </>

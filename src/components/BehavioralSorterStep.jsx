@@ -74,6 +74,10 @@ export default function BehavioralSorterStep({
           psychology: 'Psychology',
           geography: 'Geography',
           philosophy: 'Philosophy',
+          computer_science: 'Computer Science',
+          cybersecurity: 'Cybersecurity',
+          ai_systems: 'Artificial Intelligence',
+          data_science: 'Data Science',
         };
         return labels[id] || id;
       })
