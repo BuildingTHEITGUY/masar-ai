@@ -1,3 +1,5 @@
+import { applySubTrackToPathwayScores, buildSubTrackInterestSuffix } from './behavioralSorter.js';
+
 export const INTEREST_OPTIONS = [
   {
     id: 'computers',
@@ -21,6 +23,12 @@ export const INTEREST_OPTIONS = [
     id: 'building',
     emoji: '🔧',
     label: 'Building, engineering & how things work',
+    tracks: { tech: 3, business: 0 },
+  },
+  {
+    id: 'science',
+    emoji: '🔬',
+    label: 'Science, health & the natural world',
     tracks: { tech: 3, business: 0 },
   },
   {
@@ -84,7 +92,7 @@ function streamKey(stream) {
   return 'default';
 }
 
-export function suggestPathways(selectedInterests, selectedPriorities, stream) {
+export function suggestPathways(selectedInterests, selectedPriorities, stream, subTrackId = null) {
   const scores = { law: 0, tech: 0, business: 0 };
 
   for (const id of selectedInterests) {
@@ -108,8 +116,12 @@ export function suggestPathways(selectedInterests, selectedPriorities, stream) {
     scores.tech += 1;
   }
 
+  const adjusted = subTrackId
+    ? applySubTrackToPathwayScores(scores, subTrackId)
+    : scores;
+
   const sk = streamKey(stream);
-  const ranked = Object.entries(scores)
+  const ranked = Object.entries(adjusted)
     .map(([track, score]) => ({
       track,
       score,
@@ -121,16 +133,20 @@ export function suggestPathways(selectedInterests, selectedPriorities, stream) {
   return ranked;
 }
 
-export function buildExploreInterestText(selectedInterests, selectedPriorities) {
+export function buildExploreInterestText(selectedInterests, selectedPriorities, subTrackId = null) {
   const interestLabels = selectedInterests
     .map((id) => INTEREST_OPTIONS.find((c) => c.id === id)?.label)
     .filter(Boolean);
   const priorityLabels = selectedPriorities
     .map((id) => PRIORITY_OPTIONS.find((p) => p.id === id)?.label)
     .filter(Boolean);
+
+  const subSector = subTrackId ? buildSubTrackInterestSuffix(subTrackId) : '';
+
   return [
     interestLabels.length ? `Interests: ${interestLabels.join('; ')}` : '',
     priorityLabels.length ? `Priorities: ${priorityLabels.join('; ')}` : '',
+    subSector.trim(),
   ]
     .filter(Boolean)
     .join('. ');

@@ -113,6 +113,7 @@ STUDENT PROFILE (authoritative — do not contradict):
 - EmSAT Math: ${profile.emsatMath != null ? profile.emsatMath : 'not provided'}
 - Additional interests: ${profile.interest || 'none'}
 - Discovery mode: ${profile.discoveryMode ? 'yes — student used Explore wizard; explain why their chosen track fits their stated interests' : 'no — student picked field directly'}
+${profile.subTrackMeta ? `- Behavioral sub-sector (RIASEC sorter): ${profile.subTrackMeta.label} — target degree pathway: ${profile.subTrackMeta.displayTitle}` : ''}
 
 VERIFIED PROGRAM MATCHES (only discuss these institutions):
 ${matchBlock}${overflowNote}

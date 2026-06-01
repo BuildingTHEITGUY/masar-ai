@@ -4,6 +4,7 @@ import LandingChoice from './components/LandingChoice';
 import ExploreWizard from './components/ExploreWizard';
 import HowMasarWorksSidebar from './components/HowMasarWorksSidebar';
 import K2CounselorPanel from './components/K2CounselorPanel';
+import { SubTrackHeroCard, AdvisorInsightBox } from './components/SubTrackPathwayCard';
 import programs from './data/programs.json';
 import universities from './data/universities.json';
 import { matchPrograms, programsByEmirate } from './lib/matchPrograms';
@@ -315,9 +316,10 @@ function InstitutionalFooter() {
   );
 }
 
-function MatchCard({ match, studentProfile, variant = 'match' }) {
+function MatchCard({ match, studentProfile, variant = 'match', subTrackAccent }) {
   const borderColor =
     variant === 'alternative' ? '#f59e0b' : match.isUnderScore ? '#ef4444' : '#10b981';
+  const programColor = subTrackAccent && variant === 'match' ? subTrackAccent : '#38bdf8';
 
   return (
     <div
@@ -364,7 +366,9 @@ function MatchCard({ match, studentProfile, variant = 'match' }) {
         <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#94a3b8', display: 'block', marginBottom: '2px' }}>
           Target degree program
         </span>
-        <strong style={{ fontSize: '1.05rem', color: '#38bdf8', fontWeight: '700' }}>{match.programName}</strong>
+        <strong style={{ fontSize: '1.05rem', color: programColor, fontWeight: '800' }}>
+          {match.programName}
+        </strong>
       </div>
       <div>
         <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>
@@ -542,6 +546,17 @@ export default function App() {
                     {studentProfile.discoveryMode && (
                       <span style={{ color: '#38bdf8', marginRight: '6px' }}>Explore mode ·</span>
                     )}
+                    {studentProfile.subTrackMeta && (
+                      <span
+                        style={{
+                          color: studentProfile.subTrackMeta.accent,
+                          fontWeight: 700,
+                          marginRight: '6px',
+                        }}
+                      >
+                        {studentProfile.subTrackMeta.label} ·
+                      </span>
+                    )}
                     {resolvedTrack
                       ? `${TRACK_LABELS[resolvedTrack]} · ${studentProfile.emirate === 'all' ? 'All Emirates' : studentProfile.emirate} · ${studentProfile.stream.replace(/_/g, ' ')}`
                       : 'Processing…'}
@@ -601,6 +616,11 @@ export default function App() {
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  {studentProfile.subTrack && (
+                    <SubTrackHeroCard subTrackId={studentProfile.subTrack} isTopPick />
+                  )}
+                  <AdvisorInsightBox insight={studentProfile.advisorInsight} />
+
                   {matchingResults.length === 0 && alternativeResults.length > 0 && (
                     <div
                       style={{
@@ -619,7 +639,12 @@ export default function App() {
                   )}
 
                   {matchingResults.map((match) => (
-                    <MatchCard key={match.id} match={match} studentProfile={studentProfile} />
+                    <MatchCard
+                      key={match.id}
+                      match={match}
+                      studentProfile={studentProfile}
+                      subTrackAccent={studentProfile.subTrackMeta?.accent}
+                    />
                   ))}
 
                   {alternativeResults.length > 0 && matchingResults.length > 0 && (
