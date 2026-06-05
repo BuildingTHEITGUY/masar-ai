@@ -13,10 +13,16 @@ export default function FormInput({ onSubmit, onBack }) {
   const [highSchoolAvg, setHighSchoolAvg] = useState('');
   const [emsatMath, setEmsatMath] = useState('');
   const [interest, setInterest] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [nationality, setNationality] = useState('UAE');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({
+      name: name.trim(),
+      email: email.trim(),
+      nationality: nationality.trim(),
       stream,
       emirate,
       track,
@@ -83,6 +89,48 @@ export default function FormInput({ onSubmit, onBack }) {
       <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 28px 0', lineHeight: 1.5 }}>
         Tell us about your high school — Masar matches accredited UAE undergraduate programs.
       </p>
+
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+          gap: '16px',
+          marginBottom: '20px',
+        }}
+      >
+        <div>
+          <label style={labelStyle}>Your name *</label>
+          <input
+            type="text"
+            required
+            placeholder="e.g. Sara Ahmed"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={inputStyle}
+          />
+        </div>
+        <div>
+          <label style={labelStyle}>Email *</label>
+          <input
+            type="email"
+            required
+            placeholder="you@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={inputStyle}
+          />
+        </div>
+        <div>
+          <label style={labelStyle}>Nationality</label>
+          <input
+            type="text"
+            placeholder="e.g. UAE"
+            value={nationality}
+            onChange={(e) => setNationality(e.target.value)}
+            style={inputStyle}
+          />
+        </div>
+      </div>
 
       <div style={{ marginBottom: '20px' }}>
         <label style={labelStyle}>What do you want to study?</label>

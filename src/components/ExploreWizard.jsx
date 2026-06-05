@@ -216,6 +216,12 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
   const [step, setStep] = useState(WIZARD_STEP.PROFILE);
 
+  const [name, setName] = useState('');
+
+  const [email, setEmail] = useState('');
+
+  const [nationality, setNationality] = useState('UAE');
+
   const [stream, setStream] = useState('moe_general');
 
   const [emirate, setEmirate] = useState('dubai');
@@ -303,34 +309,30 @@ export default function ExploreWizard({ onSubmit, onBack }) {
   const finishWithTrack = (track) => {
 
     onSubmit({
-
+      name: name.trim(),
+      email: email.trim(),
+      nationality: nationality.trim(),
       stream,
-
       emirate,
-
       track,
-
       highSchoolAvg: parseFloat(highSchoolAvg) || 0,
-
       emsatMath: emsatMath ? parseInt(emsatMath, 10) : null,
-
       interest: buildExploreInterestText(interests, priorities, subTrack),
-
       discoveryMode: true,
-
       subTrack,
-
       subTrackMeta,
-
       advisorInsight: computeAdvisorInsight(subTrack, priorities),
-
     });
 
   };
 
 
 
-  const canNextStep0 = highSchoolAvg && parseFloat(highSchoolAvg) >= 50;
+  const canNextStep0 =
+    name.trim() &&
+    email.trim() &&
+    highSchoolAvg &&
+    parseFloat(highSchoolAvg) >= 50;
 
   const canNextStep1 = interests.length >= 1;
 
@@ -441,12 +443,48 @@ export default function ExploreWizard({ onSubmit, onBack }) {
           </h2>
 
           <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 24px', lineHeight: 1.5 }}>
-
-            Basic facts so Masar can check which UAE programs you qualify for.
-
+            Basic facts so Masar can check which UAE programs you qualify for — and email your pathway.
           </p>
 
-
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+              gap: '16px',
+              marginBottom: '20px',
+            }}
+          >
+            <div>
+              <label style={labelStyle}>Your name *</label>
+              <input
+                type="text"
+                placeholder="e.g. Sara Ahmed"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Email *</label>
+              <input
+                type="email"
+                placeholder="you@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Nationality</label>
+              <input
+                type="text"
+                placeholder="e.g. UAE"
+                value={nationality}
+                onChange={(e) => setNationality(e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+          </div>
 
           <div style={{ marginBottom: '20px' }}>
 

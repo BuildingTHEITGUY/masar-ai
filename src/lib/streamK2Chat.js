@@ -4,11 +4,14 @@ import { sanitizeK2Final } from './sanitizeK2Output';
  * Streams tokens from POST /api/chat (Vercel → K2 Think).
  * Chain-of-thought is stripped before reaching the UI.
  */
-export async function streamK2Chat(messages, onChunk, signal) {
+export async function streamK2Chat(messages, onChunk, signal, profilePayload = {}) {
   const response = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages }),
+    body: JSON.stringify({
+      messages,
+      ...profilePayload,
+    }),
     signal,
   });
 

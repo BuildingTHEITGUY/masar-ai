@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import universities from '../data/universities.json';
 import { buildSystemPrompt, buildInitialUserMessage, buildFollowUpSystemPrompt } from '../lib/buildK2Context';
 import { streamK2Chat } from '../lib/streamK2Chat';
+import { buildChatProfilePayload } from '../lib/buildChatProfilePayload';
 import { k2ContentIsRenderable } from '../lib/sanitizeK2Output';
 import K2MessageContent from './K2MessageContent';
 
@@ -68,7 +69,7 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, streamingText, isOpen]);
 
-  const runK2 = async (apiMessages) => {
+  const runK2 = async (apiMessages, options = {}) => {
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
@@ -78,12 +79,17 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
     setError(null);
 
     try {
+      const profilePayload = buildChatProfilePayload(studentProfile, resolvedTrack, {
+        captureRoadmap: Boolean(options.captureRoadmap),
+      });
+
       const finalText = await streamK2Chat(
         apiMessages,
         (sanitized) => {
           setStreamingText(sanitized);
         },
-        controller.signal
+        controller.signal,
+        profilePayload
       );
       const trimmed = finalText.trim();
       if (!trimmed || !k2ContentIsRenderable(trimmed, true)) {
@@ -112,7 +118,7 @@ export default function K2CounselorPanel({ studentProfile, matchingResults, reso
       { role: 'user', content: initialUser },
     ];
     setMessages([{ role: 'user', content: initialUser }]);
-    await runK2(apiMessages);
+    await runK2(apiMessages, { captureRoadmap: true });
   };
 
   const sendFollowUp = async (e) => {
