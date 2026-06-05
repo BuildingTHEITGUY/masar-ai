@@ -1,3 +1,5 @@
+import { persistStudentRecord } from '../lib/supabaseStudent.js';
+
 export const config = {
     runtime: 'edge',
 };
@@ -102,28 +104,15 @@ function buildResendHtml(name, roadmapMarkdown) {
 }
 
 async function persistToSupabase(profile, roadmap) {
-    const url = process.env.SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) return;
-
-    await fetch(`${url.replace(/\/$/, '')}/rest/v1/students`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            apikey: key,
-            Authorization: `Bearer ${key}`,
-            Prefer: 'return=minimal',
-        },
-        body: JSON.stringify({
-            name: profile.name || null,
-            email: profile.email || null,
-            nationality: profile.nationality || null,
-            curriculum: profile.curriculum || null,
-            overall_average: profile.overall_average ?? null,
-            preferred_location: profile.preferred_location || null,
-            selected_track: profile.selected_track || null,
-            ai_roadmap: roadmap,
-        }),
+    return persistStudentRecord({
+        name: profile.name,
+        email: profile.email,
+        nationality: profile.nationality,
+        curriculum: profile.curriculum,
+        overall_average: profile.overall_average,
+        preferred_location: profile.preferred_location,
+        selected_track: profile.selected_track,
+        ai_roadmap: roadmap,
     });
 }
 
@@ -147,10 +136,18 @@ async function sendResendEmail(profile, roadmap) {
     });
 }
 
-function runPostStreamWorkers(profile, roadmap) {
-    if (!profile.capture_roadmap || !roadmap?.trim()) return;
-    void persistToSupabase(profile, roadmap).catch(() => {});
-    void sendResendEmail(profile, roadmap).catch(() => {});
+async function runPostStreamWorkers(profile, roadmap) {
+    if (!profile.capture_roadmap) return;
+    if (!roadmap?.trim()) {
+        console.warn('[Masar] K2 stream ended with empty roadmap text — skipping Supabase/Resend');
+        return;
+    }
+    await persistToSupabase(profile, roadmap).catch((e) =>
+        console.error('[Masar] Supabase post-stream error:', e?.message)
+    );
+    await sendResendEmail(profile, roadmap).catch((e) =>
+        console.error('[Masar] Resend post-stream error:', e?.message)
+    );
 }
 
 function createCapturingStream(sourceBody, profile) {
@@ -166,9 +163,9 @@ function createCapturingStream(sourceBody, profile) {
             sseCarry = parts.pop() || '';
             extractContentFromSseChunk(parts.join('\n') + '\n', accumulator);
         },
-        flush() {
+        async flush() {
             if (sseCarry) extractContentFromSseChunk(sseCarry, accumulator);
-            runPostStreamWorkers(profile, accumulator.value);
+            await runPostStreamWorkers(profile, accumulator.value);
         },
     });
 
