@@ -85,11 +85,38 @@ const REASONING_MARKERS = [
   'Check the others',
   'Encourage.',
   'For other institutions',
+  'Thus final output must be',
+  'Make sure we abide',
+  'Check contact text',
+  'We can also consider',
+  'Must start with "## "',
+  'We must not mention',
+  'No invented numbers',
+  'Optional 1-2 sentence intro',
+  'Must use verified contacts',
+  'Must obey strict rules',
+  'explain my top matches',
+  'Pick top 3-4 matches',
+  'One row per university',
+  'Now produce final answer',
+  'Check that we abide',
+  'We need to pick top',
+  'We need to ensure the table',
+  'We need to use table markdown',
+  'Length about 200 words',
+  'Keep paragraphs short',
+  'No HTML tags',
+  'markdown only',
 ];
 
 /** Lines echoed from our prompt that K2 repeats while planning */
 const PROMPT_ECHO_MARKERS = [
+  'Explain my top matches in plain language',
   'Explain my matches in plain language',
+  'Must start with "## " and a main title',
+  'STRICT RULES',
+  'conditional flags and next steps',
+  'Verified contacts only',
   'They also specify',
   'Output formatting',
   'Use only verified contact links',
@@ -117,7 +144,9 @@ const HEADING_LINE = /^#{1,3}\s+\S/;
 
 /** Plain student-answer title without # prefix */
 const PLAIN_ANSWER_TITLE =
-  /^Your .+ (Matches|Path|Options|Universities|Programs|Track|Overview)/i;
+  /^Your .+ (Matches|Path|Options|Universities|Programs|Programmes|Track|Overview)/i;
+
+const PLAIN_TOP_TITLE = /^Your top .+/i;
 
 /** Section titles K2 sometimes emits without ### */
 const PLAIN_SECTION_TITLE =
@@ -204,9 +233,11 @@ function findPlainTitleStarts(text) {
 
   for (const line of lines) {
     const trimmed = line.trim();
-    if (PLAIN_ANSWER_TITLE.test(trimmed) && !HEADING_LINE.test(trimmed)) {
-      const lineStart = line.search(/\S/);
-      results.push(offset + (lineStart >= 0 ? lineStart : 0));
+    if (PLAIN_ANSWER_TITLE.test(trimmed) || PLAIN_TOP_TITLE.test(trimmed)) {
+      if (!HEADING_LINE.test(trimmed)) {
+        const lineStart = line.search(/\S/);
+        results.push(offset + (lineStart >= 0 ? lineStart : 0));
+      }
     }
     offset += line.length + 1;
   }
@@ -295,7 +326,7 @@ function trimLeadingReasoningLines(text) {
   for (let i = 0; i < lines.length; i++) {
     const trimmed = lines[i].trim();
     if (!trimmed) continue;
-    if (HEADING_LINE.test(trimmed) || PLAIN_ANSWER_TITLE.test(trimmed)) {
+    if (HEADING_LINE.test(trimmed) || PLAIN_ANSWER_TITLE.test(trimmed) || PLAIN_TOP_TITLE.test(trimmed)) {
       start = i;
       break;
     }
@@ -366,6 +397,31 @@ function stripTrailingReasoning(text) {
   return lines.slice(0, end).join('\n').trim();
 }
 
+function stripBogusLeadingLines(text) {
+  const lines = text.split('\n');
+  let start = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (!trimmed) continue;
+
+    const heading = trimmed.match(/^#{1,3}\s+(.+)$/);
+    if (heading) {
+      const title = heading[1].trim();
+      if (title.length < 8 || /^["']/.test(title) || /^and a main title/i.test(title)) {
+        continue;
+      }
+    }
+
+    if (isReasoningLine(trimmed) || /^Must start with/i.test(trimmed)) continue;
+
+    start = i;
+    break;
+  }
+
+  return lines.slice(start).join('\n').trim();
+}
+
 function ensureMarkdownHeadings(text) {
   const lines = text.split('\n');
   if (lines.length === 0) return text;
@@ -373,7 +429,7 @@ function ensureMarkdownHeadings(text) {
   const first = lines[0].trim();
   if (
     !HEADING_LINE.test(first) &&
-    (PLAIN_ANSWER_TITLE.test(first) || /^Your .+ Overview/i.test(first))
+    (PLAIN_ANSWER_TITLE.test(first) || PLAIN_TOP_TITLE.test(first) || /^Your .+ Overview/i.test(first))
   ) {
     const indent = lines[0].match(/^\s*/)?.[0] ?? '';
     lines[0] = `${indent}## ${first}`;
@@ -429,6 +485,7 @@ export function extractStudentAnswer(text) {
   cleaned = dedupeRepeatedSections(cleaned);
   cleaned = stripTrailingReasoning(cleaned);
   cleaned = ensureMarkdownHeadings(cleaned);
+  cleaned = stripBogusLeadingLines(cleaned);
 
   if (containsReasoning(cleaned)) {
     const retryIdx = findLastAnswerBlockStart(cleaned);
@@ -439,6 +496,7 @@ export function extractStudentAnswer(text) {
     }
     cleaned = dedupeRepeatedSections(cleaned);
     cleaned = ensureMarkdownHeadings(cleaned);
+    cleaned = stripBogusLeadingLines(cleaned);
   }
 
   cleaned = cleaned.trim();
