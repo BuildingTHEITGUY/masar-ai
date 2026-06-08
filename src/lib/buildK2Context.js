@@ -1,4 +1,5 @@
 import universities from '../data/universities.json' with { type: 'json' };
+import { formatSubjectMarksLine } from './normalizeSubjectMarks';
 
 const STREAM_LABELS = {
   moe_advanced: 'UAE MoE Advanced Stream',
@@ -43,17 +44,24 @@ function formatMatchBlock(matches) {
         `${i + 1}. ${m.uniName} — ${m.programName}
    Emirate: ${m.emirate} | Min overall: ${m.minOverallPercent}%
    Criteria: ${m.criteriaText}
-   Student vs threshold: ${m.isUnderScore ? 'BELOW (conditional pathway likely)' : 'MEETS typical overall index'}
+   Student vs threshold: ${m.isUnderScore ? 'BELOW (conditional pathway likely)' : 'MEETS typical overall index'}${m.subjectFlags?.length ? `\n   Subject flags: ${m.subjectFlags.join('; ')}` : ''}
 ${contactBlockForMatch(m)}`
     )
     .join('\n\n');
+}
+
+function subjectMarksBlock(profile) {
+  if (!profile.subjectMarks) {
+    return `- EmSAT Math: ${profile.emsatMath != null ? profile.emsatMath : 'not provided'}`;
+  }
+  return `- Subject marks: ${formatSubjectMarksLine(profile.stream, profile.subjectMarks)}`;
 }
 
 function profileSummary(profile, track) {
   return `- Preferred emirate: ${profile.emirate === 'all' ? 'All Emirates' : profile.emirate}
 - Target track: ${TRACK_LABELS[track] || track}
 - Curriculum: ${STREAM_LABELS[profile.stream] || profile.stream} | Overall: ${profile.highSchoolAvg}%
-- EmSAT Math: ${profile.emsatMath != null ? profile.emsatMath : 'not provided'}`;
+${subjectMarksBlock(profile)}`;
 }
 
 /** Pick programs mentioned in the student's follow-up question */
@@ -110,7 +118,7 @@ STUDENT PROFILE (authoritative — do not contradict):
 - Target track: ${TRACK_LABELS[track] || track}
 - High school curriculum: ${STREAM_LABELS[profile.stream] || profile.stream}
 - Overall average: ${profile.highSchoolAvg}%
-- EmSAT Math: ${profile.emsatMath != null ? profile.emsatMath : 'not provided'}
+${subjectMarksBlock(profile)}
 - Additional interests: ${profile.interest || 'none'}
 - Discovery mode: ${profile.discoveryMode ? 'yes — student used Explore wizard; explain why their chosen track fits their stated interests' : 'no — student picked field directly'}
 ${profile.subTrackMeta ? `- Behavioral sub-sector (RIASEC sorter): ${profile.subTrackMeta.label} — target degree pathway: ${profile.subTrackMeta.displayTitle}` : ''}
@@ -138,7 +146,8 @@ STRICT RULES — violations break trust:
    - Keep paragraphs short (2–3 sentences max)
 7. Keep total length scannable — ~200 words unless the student asks for detail.
 8. Do not invent programs or cutoffs not listed above.
-9. Be encouraging and practical for UAE students and parents.`;
+9. Use subject marks vs overall average: if Math/Science exceed overall, highlight STEM-friendly programs from the verified list; if Math/Science are weak for a STEM program, flag foundation/placement — never invent programs outside the list.
+10. Be encouraging and practical for UAE students and parents.`;
 }
 
 export function buildFollowUpSystemPrompt(profile, matches, track, userQuestion) {

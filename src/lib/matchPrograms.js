@@ -1,3 +1,6 @@
+import { normalizeSubjectMarks } from './normalizeSubjectMarks';
+import { computeSubjectFlags } from './subjectThresholds';
+
 const TRACK_KEYWORDS = {
   law: ['law', 'llb', 'legal', 'شريعة', 'قانون'],
   business: ['market', 'bus', 'fin', 'manag', 'account', 'econom', 'bba'],
@@ -20,18 +23,24 @@ export function resolveTrack({ track, interest = '' }) {
   return null;
 }
 
-function enrichMatch(p, uniById, highSchoolAvg, emsatMath) {
+function enrichMatch(p, uniById, highSchoolAvg, emsatMath, track, normalizedSubjects) {
   const uni = uniById[p.universityId];
   const belowOverall = highSchoolAvg < p.minOverallPercent;
   const belowEmsat =
     p.emsatMathMin != null && (emsatMath == null || emsatMath < p.emsatMathMin);
+  const subjectFlags = normalizedSubjects
+    ? computeSubjectFlags(track, normalizedSubjects, highSchoolAvg)
+    : [];
+  const subjectPenalty = subjectFlags.filter((f) => f.includes('below')).length * 5;
+
   return {
     ...p,
     uniName: uni ? `${uni.name} (${uni.shortName})` : p.universityId,
     url: uni?.url ?? p.sourceUrl,
     isUnderScore: belowOverall,
-    isConditional: belowOverall || belowEmsat,
-    fitScore: highSchoolAvg - p.minOverallPercent,
+    isConditional: belowOverall || belowEmsat || subjectFlags.some((f) => f.includes('below')),
+    subjectFlags,
+    fitScore: highSchoolAvg - p.minOverallPercent - subjectPenalty,
   };
 }
 
@@ -51,6 +60,7 @@ export function matchPrograms(programs, universities, profile) {
     highSchoolAvg,
     stream: curriculum = 'moe_general',
     emsatMath = null,
+    subjectMarks = null,
     track: explicitTrack,
     interest = '',
     degreeLevel = 'undergraduate',
@@ -61,18 +71,25 @@ export function matchPrograms(programs, universities, profile) {
     return { track: null, matches: [], alternatives: [], error: 'TRACK_UNRESOLVED' };
   }
 
+  const normalizedSubjects = subjectMarks
+    ? normalizeSubjectMarks(curriculum, subjectMarks)
+    : null;
+  const emsatFromMarks = normalizedSubjects?.emsatMath ?? emsatMath;
+
   const uniById = Object.fromEntries(universities.map((u) => [u.id, u]));
   const pool = baseFilter(programs, { track, emirate, degreeLevel });
 
   const matches = pool
     .filter((p) => curriculumMatches(p.acceptedCurricula, curriculum))
-    .map((p) => enrichMatch(p, uniById, highSchoolAvg, emsatMath))
+    .map((p) =>
+      enrichMatch(p, uniById, highSchoolAvg, emsatFromMarks, track, normalizedSubjects)
+    )
     .sort((a, b) => b.fitScore - a.fitScore);
 
   const alternatives = pool
     .filter((p) => !curriculumMatches(p.acceptedCurricula, curriculum))
     .map((p) => ({
-      ...enrichMatch(p, uniById, highSchoolAvg, emsatMath),
+      ...enrichMatch(p, uniById, highSchoolAvg, emsatFromMarks, track, normalizedSubjects),
       curriculumMismatch: true,
     }))
     .sort((a, b) => b.fitScore - a.fitScore);

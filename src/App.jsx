@@ -8,6 +8,7 @@ import { SubTrackHeroCard, AdvisorInsightBox } from './components/SubTrackPathwa
 import programs from './data/programs.json';
 import universities from './data/universities.json';
 import { matchPrograms, programsByEmirate } from './lib/matchPrograms';
+import { buildChatProfilePayload } from './lib/buildChatProfilePayload';
 
 const TRACK_LABELS = { law: 'Law', tech: 'Technology', business: 'Business' };
 
@@ -318,7 +319,11 @@ function InstitutionalFooter() {
 
 function MatchCard({ match, studentProfile, variant = 'match', subTrackAccent }) {
   const borderColor =
-    variant === 'alternative' ? '#f59e0b' : match.isUnderScore ? '#ef4444' : '#10b981';
+    variant === 'alternative'
+      ? '#f59e0b'
+      : match.isUnderScore || match.isConditional
+        ? '#ef4444'
+        : '#10b981';
   const programColor = subTrackAccent && variant === 'match' ? subTrackAccent : '#38bdf8';
 
   return (
@@ -392,6 +397,25 @@ function MatchCard({ match, studentProfile, variant = 'match', subTrackAccent })
           index of {match.minOverallPercent}% for this program.
         </div>
       )}
+      {match.subjectFlags?.length > 0 && variant === 'match' && (
+        <div
+          style={{
+            marginTop: '12px',
+            padding: '10px 14px',
+            background: 'rgba(245, 158, 11, 0.08)',
+            border: '1px solid #f59e0b',
+            borderRadius: '6px',
+            fontSize: '0.78rem',
+            color: '#fcd34d',
+          }}
+        >
+          {match.subjectFlags.map((flag) => (
+            <div key={flag} style={{ marginBottom: match.subjectFlags.length > 1 ? '4px' : 0 }}>
+              {flag}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -422,12 +446,22 @@ export default function App() {
     setActiveTab(profileData.emirate === 'all' ? 'dubai' : profileData.emirate);
     setIsProcessing(true);
 
+    const profilePayload = buildChatProfilePayload(profileData, profileData.track);
+    if (profilePayload.email) {
+      fetch('/api/log-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profilePayload),
+      }).catch(() => {});
+    }
+
     setTimeout(() => {
       const { track, matches, alternatives, error } = matchPrograms(programs, universities, {
         emirate: profileData.emirate,
         highSchoolAvg: profileData.highSchoolAvg,
         stream: profileData.stream,
         emsatMath: profileData.emsatMath,
+        subjectMarks: profileData.subjectMarks,
         track: profileData.track,
         interest: profileData.interest,
         degreeLevel: 'undergraduate',

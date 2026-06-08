@@ -18,7 +18,22 @@ function parseK2ApiKey(raw) {
     return key;
 }
 
-function buildPersonalizationRule({ name, nationality, curriculum, overall_average, preferred_location, selected_track }) {
+function formatScore(value, suffix = '%') {
+    if (value == null || value === '') return 'not provided';
+    return `${value}${suffix}`;
+}
+
+function buildPersonalizationRule({
+    name,
+    nationality,
+    curriculum,
+    overall_average,
+    preferred_location,
+    selected_track,
+    math_score,
+    physics_score,
+    english_score,
+}) {
     const studentName = name || 'Student';
     const avg = overall_average ?? '—';
     const curr = curriculum || 'UAE curriculum';
@@ -28,8 +43,12 @@ function buildPersonalizationRule({ name, nationality, curriculum, overall_avera
 
     return (
         `You are Masar AI, an elite academic advisor. You are counseling a student named ${studentName}${nat} ` +
-        `who holds a ${avg}% average in the ${curr} system and prefers studying in ${loc}, ` +
-        `with a focus on ${track}. Address them politely by their first name throughout your evaluation layout.`
+        `who holds a ${avg}% overall average in the ${curr} system and prefers studying in ${loc}, ` +
+        `with a focus on ${track}. ` +
+        `Subject marks: Mathematics ${formatScore(math_score)}, Physics/Science ${formatScore(physics_score)}, English ${formatScore(english_score)}. ` +
+        `Use these subject marks with the verified program list to explain fit, conditional admission, and foundation routes — ` +
+        `if Math/Science exceed overall, highlight STEM programs from the verified list only; never invent institutions. ` +
+        `Address them politely by their first name throughout your evaluation layout.`
     );
 }
 
@@ -224,6 +243,22 @@ function buildProfileSummaryHtml(profile) {
                 ? `${profile.overall_average}%`
                 : null,
         ],
+        [
+            'Math',
+            profile.math_score != null && profile.math_score !== '' ? `${profile.math_score}%` : null,
+        ],
+        [
+            'Physics/Science',
+            profile.physics_score != null && profile.physics_score !== ''
+                ? `${profile.physics_score}%`
+                : null,
+        ],
+        [
+            'English',
+            profile.english_score != null && profile.english_score !== ''
+                ? `${profile.english_score}%`
+                : null,
+        ],
         ['Preferred location', profile.preferred_location],
         ['Track', profile.selected_track],
     ].filter(([, value]) => value);
@@ -277,6 +312,9 @@ async function persistToSupabase(profile, roadmap) {
         nationality: profile.nationality,
         curriculum: profile.curriculum,
         overall_average: profile.overall_average,
+        math_score: profile.math_score,
+        physics_score: profile.physics_score,
+        english_score: profile.english_score,
         preferred_location: profile.preferred_location,
         selected_track: profile.selected_track,
         ai_roadmap: roadmap,
@@ -376,6 +414,9 @@ export default async function handler(req) {
             nationality: incomingData.nationality ?? '',
             curriculum: incomingData.curriculum ?? '',
             overall_average: incomingData.overall_average ?? null,
+            math_score: incomingData.math_score ?? null,
+            physics_score: incomingData.physics_score ?? null,
+            english_score: incomingData.english_score ?? null,
             preferred_location: incomingData.preferred_location ?? '',
             selected_track: incomingData.selected_track ?? '',
             capture_roadmap: Boolean(incomingData.capture_roadmap),

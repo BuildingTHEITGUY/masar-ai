@@ -41,6 +41,12 @@ import BehavioralSorterStep from './BehavioralSorterStep';
 
 import { SubTrackHeroCard, AdvisorInsightBox } from './SubTrackPathwayCard';
 
+import SubjectMarksFields from './SubjectMarksFields';
+
+import { EMPTY_SUBJECT_MARKS } from '../lib/subjectMarksConfig';
+
+import { subjectMarksAreValid } from '../lib/normalizeSubjectMarks';
+
 
 
 const labelStyle = {
@@ -228,7 +234,7 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
   const [highSchoolAvg, setHighSchoolAvg] = useState('');
 
-  const [emsatMath, setEmsatMath] = useState('');
+  const [subjectMarks, setSubjectMarks] = useState({ ...EMPTY_SUBJECT_MARKS });
 
   const [interests, setInterests] = useState([]);
 
@@ -316,7 +322,8 @@ export default function ExploreWizard({ onSubmit, onBack }) {
       emirate,
       track,
       highSchoolAvg: parseFloat(highSchoolAvg) || 0,
-      emsatMath: emsatMath ? parseInt(emsatMath, 10) : null,
+      subjectMarks,
+      emsatMath: subjectMarks.emsatMath ? parseInt(subjectMarks.emsatMath, 10) : null,
       interest: buildExploreInterestText(interests, priorities, subTrack),
       discoveryMode: true,
       subTrack,
@@ -332,7 +339,8 @@ export default function ExploreWizard({ onSubmit, onBack }) {
     name.trim() &&
     email.trim() &&
     highSchoolAvg &&
-    parseFloat(highSchoolAvg) >= 50;
+    parseFloat(highSchoolAvg) >= 50 &&
+    subjectMarksAreValid(stream, subjectMarks);
 
   const canNextStep1 = interests.length >= 1;
 
@@ -490,7 +498,14 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
             <label style={labelStyle}>Which high school system did you follow?</label>
 
-            <select value={stream} onChange={(e) => setStream(e.target.value)} style={inputStyle}>
+            <select
+              value={stream}
+              onChange={(e) => {
+                setStream(e.target.value);
+                setSubjectMarks({ ...EMPTY_SUBJECT_MARKS });
+              }}
+              style={inputStyle}
+            >
 
               <option value="moe_general">UAE MoE — General Stream</option>
 
@@ -524,7 +539,7 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
             <div>
 
-              <label style={labelStyle}>Your overall average (%)</label>
+              <label style={labelStyle}>Your overall average (%) *</label>
 
               <input
 
@@ -546,29 +561,14 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
             </div>
 
-            <div>
-
-              <label style={labelStyle}>EmSAT Math (optional)</label>
-
-              <input
-
-                type="number"
-
-                placeholder="Haven't taken it yet"
-
-                value={emsatMath}
-
-                onChange={(e) => setEmsatMath(e.target.value)}
-
-                style={inputStyle}
-
-              />
-
-            </div>
-
           </div>
 
-
+          <SubjectMarksFields
+            stream={stream}
+            values={subjectMarks}
+            onChange={setSubjectMarks}
+            inputStyleOverride={inputStyle}
+          />
 
           <div style={{ marginBottom: '28px' }}>
 

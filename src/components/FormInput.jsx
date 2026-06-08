@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import SubjectMarksFields from './SubjectMarksFields';
+import { EMPTY_SUBJECT_MARKS } from '../lib/subjectMarksConfig';
+import { subjectMarksAreValid } from '../lib/normalizeSubjectMarks';
 
 const TRACK_HINTS = {
   law: 'Courts, legal work, government & corporate compliance',
@@ -11,7 +14,7 @@ export default function FormInput({ onSubmit, onBack }) {
   const [emirate, setEmirate] = useState('dubai');
   const [track, setTrack] = useState('business');
   const [highSchoolAvg, setHighSchoolAvg] = useState('');
-  const [emsatMath, setEmsatMath] = useState('');
+  const [subjectMarks, setSubjectMarks] = useState({ ...EMPTY_SUBJECT_MARKS });
   const [interest, setInterest] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -27,7 +30,8 @@ export default function FormInput({ onSubmit, onBack }) {
       emirate,
       track,
       highSchoolAvg: parseFloat(highSchoolAvg) || 0,
-      emsatMath: emsatMath ? parseInt(emsatMath, 10) : null,
+      subjectMarks,
+      emsatMath: subjectMarks.emsatMath ? parseInt(subjectMarks.emsatMath, 10) : null,
       interest,
       discoveryMode: false,
     });
@@ -154,7 +158,14 @@ export default function FormInput({ onSubmit, onBack }) {
         </div>
         <div>
           <label style={labelStyle}>High school system</label>
-          <select value={stream} onChange={(e) => setStream(e.target.value)} style={inputStyle}>
+          <select
+            value={stream}
+            onChange={(e) => {
+              setStream(e.target.value);
+              setSubjectMarks({ ...EMPTY_SUBJECT_MARKS });
+            }}
+            style={inputStyle}
+          >
             <option value="moe_general">UAE MoE — General</option>
             <option value="moe_advanced">UAE MoE — Advanced</option>
             <option value="british_alevels">British (A-Levels)</option>
@@ -163,31 +174,26 @@ export default function FormInput({ onSubmit, onBack }) {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
-        <div>
-          <label style={labelStyle}>Overall average (%) *</label>
-          <input
-            type="number"
-            required
-            min="50"
-            max="100"
-            placeholder="e.g. 85"
-            value={highSchoolAvg}
-            onChange={(e) => setHighSchoolAvg(e.target.value)}
-            style={inputStyle}
-          />
-        </div>
-        <div>
-          <label style={labelStyle}>EmSAT Math (optional)</label>
-          <input
-            type="number"
-            placeholder="Leave blank if skipped"
-            value={emsatMath}
-            onChange={(e) => setEmsatMath(e.target.value)}
-            style={inputStyle}
-          />
-        </div>
+      <div style={{ marginBottom: '20px' }}>
+        <label style={labelStyle}>Overall average (%) *</label>
+        <input
+          type="number"
+          required
+          min="50"
+          max="100"
+          placeholder="e.g. 85"
+          value={highSchoolAvg}
+          onChange={(e) => setHighSchoolAvg(e.target.value)}
+          style={inputStyle}
+        />
       </div>
+
+      <SubjectMarksFields
+        stream={stream}
+        values={subjectMarks}
+        onChange={setSubjectMarks}
+        inputStyleOverride={inputStyle}
+      />
 
       <div style={{ marginBottom: '28px' }}>
         <label style={labelStyle}>Anything else we should know? (optional)</label>
@@ -202,6 +208,7 @@ export default function FormInput({ onSubmit, onBack }) {
 
       <button
         type="submit"
+        disabled={!subjectMarksAreValid(stream, subjectMarks)}
         style={{
           width: '100%',
           padding: '16px',
@@ -211,7 +218,8 @@ export default function FormInput({ onSubmit, onBack }) {
           borderRadius: '8px',
           fontWeight: '700',
           fontSize: '1rem',
-          cursor: 'pointer',
+          cursor: subjectMarksAreValid(stream, subjectMarks) ? 'pointer' : 'not-allowed',
+          opacity: subjectMarksAreValid(stream, subjectMarks) ? 1 : 0.6,
           boxShadow: '0 4px 20px rgba(224, 83, 27, 0.3)',
         }}
       >
