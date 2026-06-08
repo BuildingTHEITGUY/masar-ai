@@ -12,6 +12,8 @@ const CURRICULUM_LABELS = {
 
   american_diploma: 'American High School Diploma',
 
+  cbse: 'CBSE (Indian Curriculum)',
+
 };
 
 

@@ -47,63 +47,7 @@ import { EMPTY_SUBJECT_MARKS } from '../lib/subjectMarksConfig';
 
 import { subjectMarksAreValid } from '../lib/normalizeSubjectMarks';
 
-
-
-const labelStyle = {
-
-  display: 'block',
-
-  fontSize: '0.85rem',
-
-  fontWeight: '600',
-
-  color: '#94a3b8',
-
-  marginBottom: '6px',
-
-  letterSpacing: '0.03em',
-
-};
-
-
-
-const inputStyle = {
-
-  width: '100%',
-
-  padding: '14px',
-
-  borderRadius: '8px',
-
-  border: '1px solid #334155',
-
-  backgroundColor: '#131a26',
-
-  color: '#f8fafc',
-
-  fontSize: '0.95rem',
-
-  boxSizing: 'border-box',
-
-  outline: 'none',
-
-};
-
-
-
-const shellStyle = {
-
-  padding: '36px 40px',
-
-  background: '#0b0f19',
-
-  borderRadius: '16px',
-
-  border: '1px solid #1e293b',
-
-  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-
-};
+import { masarLabel as labelStyle, masarInput as inputStyle, masarShell as shellStyle } from '../lib/masarStyles';
 
 
 
@@ -444,7 +388,7 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
         <>
 
-          <h2 style={{ color: '#fff', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
+          <h2 style={{ color: 'var(--masar-text-primary)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
 
             Step 1 — About your high school
 
@@ -514,6 +458,8 @@ export default function ExploreWizard({ onSubmit, onBack }) {
               <option value="british_alevels">British Curriculum (A-Levels)</option>
 
               <option value="american_diploma">American Diploma</option>
+
+              <option value="cbse">CBSE (Indian Curriculum)</option>
 
             </select>
 
@@ -634,7 +580,7 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
         <>
 
-          <h2 style={{ color: '#fff', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
+          <h2 style={{ color: 'var(--masar-text-primary)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
 
             Step 2 — What do you enjoy?
 
@@ -738,7 +684,7 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
         <>
 
-          <h2 style={{ color: '#fff', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
+          <h2 style={{ color: 'var(--masar-text-primary)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
 
             {getStepLabel(step)} — What matters to you?
 
@@ -856,7 +802,7 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
         <>
 
-          <h2 style={{ color: '#fff', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
+          <h2 style={{ color: 'var(--masar-text-primary)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
 
             {getStepLabel(step)} — Your suggested directions
 

@@ -6,6 +6,7 @@ const STREAM_LABELS = {
   moe_general: 'UAE MoE General Stream',
   british_alevels: 'British Curriculum (A-Levels)',
   american_diploma: 'American High School Diploma',
+  cbse: 'CBSE (Indian Curriculum)',
 };
 
 const TRACK_LABELS = { law: 'Law', tech: 'Technology & Engineering', business: 'Business' };

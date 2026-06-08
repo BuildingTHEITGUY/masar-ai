@@ -9,7 +9,13 @@
     "programName": "Bachelor of Law (LLB) — Dual-Degree with University of London",
     "criteriaText": "Min 70% Mathematics (or UD MPT). Year 1: 30 CH with 2.0 CGPA. IELTS 6.0 for UoL registration.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://ud.ac.ae/en/academic-programs/college-of-law",
     "active": true
@@ -24,7 +30,11 @@
     "programName": "BSc in Computer Science / Computer Engineering",
     "criteriaText": "Advanced stream typical: 80% Math, 80% Physics, 80% Chemistry or Biology (or MPT). MoE General may require foundation/placement — verify with UD admissions.",
     "minOverallPercent": 80,
-    "acceptedCurricula": ["moe_advanced", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_advanced",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://ud.ac.ae",
     "active": true
@@ -39,7 +49,13 @@
     "programName": "BSc in Information Systems Security",
     "criteriaText": "IT-focused pathway; verify Math/English thresholds on current UD bulletin. Often more accessible than pure engineering for General stream with placement.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://ud.ac.ae",
     "active": true
@@ -54,7 +70,13 @@
     "programName": "BBA in Digital Marketing / BBA in Finance",
     "criteriaText": "Standard high school completion. English: 80% MoE English or EPT.",
     "minOverallPercent": 60,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://ud.ac.ae",
     "active": true
@@ -69,7 +91,13 @@
     "programName": "Bachelor of Arts in International Studies — Legal Studies concentration",
     "criteriaText": "Verify AUD law-related majors on official catalog. Typical English proficiency required.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.aud.edu",
     "active": true
@@ -84,7 +112,13 @@
     "programName": "BSc in Electrical Engineering / Computer Engineering",
     "criteriaText": "STEM prerequisites apply. Verify current AUD admission matrix for MoE General vs Advanced.",
     "minOverallPercent": 75,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "american_diploma", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "american_diploma",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.aud.edu",
     "active": true
@@ -99,7 +133,13 @@
     "programName": "BBA in Management / Marketing / Finance",
     "criteriaText": "High school diploma with competitive GPA. English proficiency per AUD policy.",
     "minOverallPercent": 65,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.aud.edu",
     "active": true
@@ -114,7 +154,13 @@
     "programName": "BSc (Hons) Computer Science",
     "criteriaText": "British-style entry. MoE students typically need strong Math; foundation routes available — check HW Dubai admissions.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.hw.ac.uk/dubai",
     "active": true
@@ -129,7 +175,13 @@
     "programName": "BA (Hons) Business Management",
     "criteriaText": "Verify English and Math requirements on HW Dubai site.",
     "minOverallPercent": 65,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.hw.ac.uk/dubai",
     "active": true
@@ -144,7 +196,13 @@
     "programName": "BSc Honours Information Technology / Business Information Systems",
     "criteriaText": "Common pathway for MoE General students into IT (not heavy engineering). Verify 2025–26 entry grades.",
     "minOverallPercent": 65,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.mdx.ac.ae",
     "active": true
@@ -159,7 +217,13 @@
     "programName": "BA Honours Business Management / Marketing",
     "criteriaText": "Standard undergraduate entry per Middlesex Dubai admissions.",
     "minOverallPercent": 60,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.mdx.ac.ae",
     "active": true
@@ -174,7 +238,13 @@
     "programName": "Bachelor of Computer Science",
     "criteriaText": "Math competency required. Foundation or diploma pathways may apply for General stream — confirm with UOWD.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.uowdubai.ac.ae",
     "active": true
@@ -189,7 +259,13 @@
     "programName": "Bachelor of Business Administration",
     "criteriaText": "See UOWD undergraduate admission requirements.",
     "minOverallPercent": 65,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.uowdubai.ac.ae",
     "active": true
@@ -204,7 +280,13 @@
     "programName": "BSc Information Technology / BSc Computer Science",
     "criteriaText": "Indian curriculum and MoE recognized. Verify Manipal Dubai cutoffs for General stream.",
     "minOverallPercent": 60,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.manipaldubai.com",
     "active": true
@@ -219,7 +301,13 @@
     "programName": "BBA / BCom",
     "criteriaText": "See Manipal Dubai admissions office for current thresholds.",
     "minOverallPercent": 55,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.manipaldubai.com",
     "active": true
@@ -234,7 +322,13 @@
     "programName": "BSc in Computing & Information Technologies",
     "criteriaText": "American-style degree. Strong English. Verify STEM readiness for MoE General.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "american_diploma", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "american_diploma",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.rit.edu/dubai",
     "active": true
@@ -249,7 +343,13 @@
     "programName": "BSc in Management / International Business",
     "criteriaText": "RIT Dubai undergraduate admissions.",
     "minOverallPercent": 65,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "american_diploma", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "american_diploma",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.rit.edu/dubai",
     "active": true
@@ -264,7 +364,13 @@
     "programName": "BSc in Computer Science / Software Engineering",
     "criteriaText": "Verify CUD admission for MoE General — foundation year may apply.",
     "minOverallPercent": 65,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.cud.ac.ae",
     "active": true
@@ -279,7 +385,13 @@
     "programName": "BBA in various majors",
     "criteriaText": "CUD undergraduate admission requirements.",
     "minOverallPercent": 60,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.cud.ac.ae",
     "active": true
@@ -294,7 +406,9 @@
     "programName": "MSc Data Science (postgraduate only)",
     "criteriaText": "Requires bachelor's degree — not for direct high-school entry.",
     "minOverallPercent": 90,
-    "acceptedCurricula": [],
+    "acceptedCurricula": [
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.buid.ac.ae",
     "active": false
@@ -309,7 +423,11 @@
     "programName": "Diploma / Bachelor in Information Technology (HCT pathway)",
     "criteriaText": "HCT widely accepts MoE General and Advanced. Strong option for practical IT careers in UAE.",
     "minOverallPercent": 60,
-    "acceptedCurricula": ["moe_general", "moe_advanced"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.hct.ac.ae",
     "active": true
@@ -324,7 +442,11 @@
     "programName": "Bachelor of Business Administration (HCT)",
     "criteriaText": "MoE streams accepted. Check campus-specific intake.",
     "minOverallPercent": 60,
-    "acceptedCurricula": ["moe_general", "moe_advanced"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.hct.ac.ae",
     "active": true
@@ -339,7 +461,11 @@
     "programName": "BSc in Information Technology / Computing",
     "criteriaText": "Zayed University federal admissions — competitive. Verify EmSAT and stream requirements.",
     "minOverallPercent": 75,
-    "acceptedCurricula": ["moe_general", "moe_advanced"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "cbse"
+    ],
     "emsatMathMin": 700,
     "sourceUrl": "https://www.zu.ac.ae",
     "active": true
@@ -354,7 +480,11 @@
     "programName": "BBA programs",
     "criteriaText": "ZU admission matrix — often requires EmSAT suite.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.zu.ac.ae",
     "active": true
@@ -369,7 +499,12 @@
     "programName": "Bachelor of Laws (LLB)",
     "criteriaText": "Highly competitive — typically 85%+ overall plus language diagnostics.",
     "minOverallPercent": 85,
-    "acceptedCurricula": ["moe_advanced", "moe_general", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_advanced",
+      "moe_general",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.uaeu.ac.ae",
     "active": true
@@ -384,7 +519,11 @@
     "programName": "BSc in Computer Science",
     "criteriaText": "STEM competitive entry — Advanced stream typical.",
     "minOverallPercent": 85,
-    "acceptedCurricula": ["moe_advanced", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_advanced",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.uaeu.ac.ae",
     "active": true
@@ -399,7 +538,12 @@
     "programName": "BSc in Information Technology",
     "criteriaText": "May accept broader MoE profiles than pure CS — verify UAEU bulletin.",
     "minOverallPercent": 80,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.uaeu.ac.ae",
     "active": true
@@ -414,7 +558,13 @@
     "programName": "BBA in Business Administration",
     "criteriaText": "Verify UAEU admission for MoE General vs Advanced.",
     "minOverallPercent": 75,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.uaeu.ac.ae",
     "active": true
@@ -429,7 +579,12 @@
     "programName": "Bachelor of Laws (LLB)",
     "criteriaText": "ADU law program admission — verify Arabic/English medium options.",
     "minOverallPercent": 75,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.adu.ac.ae",
     "active": true
@@ -444,7 +599,13 @@
     "programName": "BSc in Computer Engineering / Software Engineering",
     "criteriaText": "ADU engineering entry requirements.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.adu.ac.ae",
     "active": true
@@ -459,7 +620,13 @@
     "programName": "BBA programs",
     "criteriaText": "ADU undergraduate business admissions.",
     "minOverallPercent": 65,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.adu.ac.ae",
     "active": true
@@ -474,7 +641,11 @@
     "programName": "BSc in Computer Science / Computer Engineering",
     "criteriaText": "Highly selective STEM university — Advanced stream and high EmSAT typical.",
     "minOverallPercent": 90,
-    "acceptedCurricula": ["moe_advanced", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_advanced",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": 1200,
     "sourceUrl": "https://www.ku.ac.ae",
     "active": true
@@ -489,7 +660,11 @@
     "programName": "Bachelor in Information Technology (HCT)",
     "criteriaText": "Accessible federal pathway for MoE General students in Abu Dhabi emirate campuses.",
     "minOverallPercent": 60,
-    "acceptedCurricula": ["moe_general", "moe_advanced"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.hct.ac.ae",
     "active": true
@@ -504,7 +679,13 @@
     "programName": "BSc in Artificial Intelligence (Business)",
     "criteriaText": "Elite holistic review — strong academics, leadership, competitions (STEM, business, arts/athletics). English: IELTS Academic 6.5, TOEFL iBT 90, PTE 60, or Cambridge C1 180. Regular Decision deadline: 30 April 2026. 85% indicative minimum — not guaranteed admission.",
     "minOverallPercent": 85,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://mbzuai.ac.ae/study/undergraduate-program/",
     "active": true
@@ -519,7 +700,13 @@
     "programName": "BSc in Artificial Intelligence (Engineering)",
     "criteriaText": "Elite holistic review — future engineers/researchers; coding/STEM experience beneficial. English: IELTS Academic 6.5, TOEFL iBT 90, PTE 60, or Cambridge C1 180. Regular Decision deadline: 30 April 2026. 85% indicative minimum — not guaranteed admission.",
     "minOverallPercent": 85,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://mbzuai.ac.ae/study/undergraduate-program/",
     "active": true
@@ -534,7 +721,11 @@
     "programName": "Bachelor of Law (Arabic Medium)",
     "criteriaText": "75% overall for MoE tracks. College interview. Arabic proficiency.",
     "minOverallPercent": 75,
-    "acceptedCurricula": ["moe_general", "moe_advanced"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.sharjah.ac.ae",
     "active": true
@@ -549,7 +740,11 @@
     "programName": "BSc in Cybersecurity Engineering / Computer Science",
     "criteriaText": "80% average on advanced stream typical. Placement tests may apply.",
     "minOverallPercent": 80,
-    "acceptedCurricula": ["moe_advanced", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_advanced",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": 800,
     "sourceUrl": "https://www.sharjah.ac.ae",
     "active": true
@@ -564,7 +759,12 @@
     "programName": "BSc in Information Technology",
     "criteriaText": "IT program may accept MoE General with placement — verify Sharjah admissions.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.sharjah.ac.ae",
     "active": true
@@ -579,7 +779,13 @@
     "programName": "BBA in Marketing / BBA in Management",
     "criteriaText": "70% minimum. IELTS 5.0 equivalent.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.sharjah.ac.ae",
     "active": true
@@ -594,7 +800,13 @@
     "programName": "BSc in Computer Science / Computer Engineering",
     "criteriaText": "American system — competitive. Strong Math/English. Verify MoE General foundation options.",
     "minOverallPercent": 75,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "american_diploma", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "american_diploma",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.aus.edu",
     "active": true
@@ -609,7 +821,13 @@
     "programName": "BBA in Business Administration",
     "criteriaText": "AUS undergraduate admission requirements.",
     "minOverallPercent": 70,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "american_diploma", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "american_diploma",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.aus.edu",
     "active": true
@@ -624,7 +842,12 @@
     "programName": "BSc in Computer Engineering / Information Systems",
     "criteriaText": "Ajman University — verify current admission brochure.",
     "minOverallPercent": 65,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.ajman.ac.ae",
     "active": true
@@ -639,7 +862,13 @@
     "programName": "BBA programs",
     "criteriaText": "Ajman University business admissions.",
     "minOverallPercent": 60,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.ajman.ac.ae",
     "active": true
@@ -654,7 +883,13 @@
     "programName": "BBA in Business Administration",
     "criteriaText": "Skyline University College undergraduate entry.",
     "minOverallPercent": 55,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.skylineuniversity.ac.ae",
     "active": true
@@ -669,7 +904,13 @@
     "programName": "BSc in Information Technology",
     "criteriaText": "Practical IT degree — verify Skyline admissions.",
     "minOverallPercent": 55,
-    "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.skylineuniversity.ac.ae",
     "active": true

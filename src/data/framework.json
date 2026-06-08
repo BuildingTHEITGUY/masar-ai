@@ -33,6 +33,17 @@
             "eligible_paths": [
                 "Dependent on matching AP subject credits"
             ]
+        },
+        "cbse": {
+            "stream_name": "CBSE (Indian Curriculum)",
+            "typical_emsat_min_math": 700,
+            "eligible_paths": [
+                "Engineering",
+                "Computer Science",
+                "Business Administration",
+                "Law",
+                "Health Sciences"
+            ]
         }
     },
     "sample_institutions": [

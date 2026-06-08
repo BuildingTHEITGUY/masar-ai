@@ -19,14 +19,14 @@ export default function HowMasarWorksSidebar({ showExploreHint }) {
           margin: '0 0 4px 0',
           fontSize: '1rem',
           fontWeight: '700',
-          color: '#ffffff',
+          color: 'var(--masar-text-primary)',
           letterSpacing: '0.04em',
         }}
       >
         How Masar Works
       </h3>
-      <p style={{ margin: '0 0 20px 0', fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5 }}>
-        Built for UAE High School Graduates — MoE, British, American & EmSAT Aware.
+      <p style={{ margin: '0 0 20px 0', fontSize: '0.8rem', color: 'var(--masar-text-dim)', lineHeight: 1.5 }}>
+        Built for UAE High School Graduates — MoE, CBSE, British, American &amp; EmSAT Aware.
       </p>
 
       {showExploreHint && (
@@ -54,9 +54,9 @@ export default function HowMasarWorksSidebar({ showExploreHint }) {
                 width: '28px',
                 height: '28px',
                 borderRadius: '50%',
-                background: '#1e293b',
-                border: '1px solid #ff6b3d',
-                color: '#ff6b3d',
+                background: 'var(--masar-bg-card-alt)',
+                border: '1px solid var(--masar-accent)',
+                color: 'var(--masar-accent)',
                 fontWeight: 800,
                 fontSize: '0.8rem',
                 display: 'flex',
@@ -68,15 +68,15 @@ export default function HowMasarWorksSidebar({ showExploreHint }) {
               {s.n}
             </span>
             <div>
-              <strong style={{ color: '#f1f5f9', fontSize: '0.88rem', display: 'block' }}>{s.title}</strong>
-              <span style={{ color: '#64748b', fontSize: '0.78rem' }}>{s.desc}</span>
+              <strong style={{ color: 'var(--masar-text-body)', fontSize: '0.88rem', display: 'block' }}>{s.title}</strong>
+              <span style={{ color: 'var(--masar-text-dim)', fontSize: '0.78rem' }}>{s.desc}</span>
             </div>
           </div>
         ))}
       </div>
 
-      <div style={{ borderTop: '1px solid #1e293b', paddingTop: '16px' }}>
-        <h4 style={{ margin: '0 0 10px', fontSize: '0.85rem', color: '#94a3b8', fontWeight: 600 }}>
+      <div style={{ borderTop: '1px solid var(--masar-border)', paddingTop: '16px' }}>
+        <h4 style={{ margin: '0 0 10px', fontSize: '0.85rem', color: 'var(--masar-text-muted)', fontWeight: 600 }}>
           MoE General vs Advanced
         </h4>
         <p style={{ margin: 0, fontSize: '0.78rem', color: '#64748b', lineHeight: 1.55 }}>

@@ -1,12 +1,87 @@
+:root,
+[data-theme='dark'] {
+  --masar-bg-page: #0b0f19;
+  --masar-bg-header: #0f172a;
+  --masar-bg-card: #131a26;
+  --masar-bg-card-alt: #1e293b;
+  --masar-bg-input: #131a26;
+  --masar-bg-shell: #0b0f19;
+  --masar-bg-form: #1e293b;
+  --masar-text-primary: #ffffff;
+  --masar-text-body: #f8fafc;
+  --masar-text-secondary: #f3f4f6;
+  --masar-text-muted: #94a3b8;
+  --masar-text-dim: #64748b;
+  --masar-text-faint: #475569;
+  --masar-border: #1e293b;
+  --masar-border-input: #334155;
+  --masar-accent: #ff6b3d;
+  --masar-accent-blue: #38bdf8;
+  --masar-success: #10b981;
+  --masar-footer-gradient: linear-gradient(
+    145deg,
+    rgba(30, 41, 59, 0.9) 0%,
+    rgba(15, 23, 42, 0.95) 100%
+  );
+  --masar-badge-bg: linear-gradient(
+    180deg,
+    rgba(30, 41, 59, 0.5) 0%,
+    rgba(15, 23, 42, 0.35) 100%
+  );
+  --masar-status-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  --masar-placeholder: #4b5563;
+  --masar-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --masar-link: #38bdf8;
+}
+
+[data-theme='light'] {
+  --masar-bg-page: #f1f5f9;
+  --masar-bg-header: #ffffff;
+  --masar-bg-card: #ffffff;
+  --masar-bg-card-alt: #f8fafc;
+  --masar-bg-input: #ffffff;
+  --masar-bg-shell: #ffffff;
+  --masar-bg-form: #ffffff;
+  --masar-text-primary: #0f172a;
+  --masar-text-body: #1e293b;
+  --masar-text-secondary: #334155;
+  --masar-text-muted: #475569;
+  --masar-text-dim: #64748b;
+  --masar-text-faint: #94a3b8;
+  --masar-border: #e2e8f0;
+  --masar-border-input: #cbd5e1;
+  --masar-accent: #e0531b;
+  --masar-accent-blue: #0284c7;
+  --masar-success: #059669;
+  --masar-footer-gradient: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  --masar-badge-bg: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  --masar-status-gradient: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  --masar-placeholder: #94a3b8;
+  --masar-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.08);
+  --masar-link: #0284c7;
+}
+
 body {
   margin: 0;
   padding: 0;
-  background-color: #0b0f19;
+  background-color: var(--masar-bg-page);
+  color: var(--masar-text-body);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Custom placeholder styling */
 ::placeholder {
-  color: #4b5563 !important;
+  color: var(--masar-placeholder) !important;
+}
+
+.masar-footer-link {
+  color: var(--masar-link);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.masar-footer-link:hover {
+  text-decoration: underline;
+  color: var(--masar-accent);
 }

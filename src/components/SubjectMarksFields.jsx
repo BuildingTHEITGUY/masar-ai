@@ -1,26 +1,6 @@
 import React from 'react';
 import { ALEVEL_GRADES } from '../lib/subjectMarksConfig';
-
-const labelStyle = {
-  display: 'block',
-  fontSize: '0.85rem',
-  fontWeight: '600',
-  color: '#94a3b8',
-  marginBottom: '6px',
-  letterSpacing: '0.03em',
-};
-
-const inputStyle = {
-  width: '100%',
-  padding: '14px',
-  borderRadius: '8px',
-  border: '1px solid #334155',
-  backgroundColor: '#131a26',
-  color: '#f8fafc',
-  fontSize: '0.95rem',
-  boxSizing: 'border-box',
-  outline: 'none',
-};
+import { masarLabel as labelStyle, masarInput as defaultInputStyle } from '../lib/masarStyles';
 
 const gridStyle = {
   display: 'grid',
@@ -73,7 +53,7 @@ function GradeSelect({ label, value, onChange, required }) {
 }
 
 export default function SubjectMarksFields({ stream, values, onChange, inputStyleOverride }) {
-  const style = inputStyleOverride || inputStyle;
+  const style = inputStyleOverride || defaultInputStyle;
   const set = (key) => (val) => onChange({ ...values, [key]: val });
 
   const isBritish = stream === 'british_alevels';
@@ -86,7 +66,7 @@ export default function SubjectMarksFields({ stream, values, onChange, inputStyl
         style={{
           margin: '0 0 12px',
           fontSize: '0.8rem',
-          color: '#64748b',
+          color: 'var(--masar-text-dim)',
           lineHeight: 1.5,
         }}
       >

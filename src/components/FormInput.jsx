@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SubjectMarksFields from './SubjectMarksFields';
 import { EMPTY_SUBJECT_MARKS } from '../lib/subjectMarksConfig';
 import { subjectMarksAreValid } from '../lib/normalizeSubjectMarks';
+import { masarLabel as labelStyle, masarInput as inputStyle } from '../lib/masarStyles';
 
 const TRACK_HINTS = {
   law: 'Courts, legal work, government & corporate compliance',
@@ -37,36 +38,15 @@ export default function FormInput({ onSubmit, onBack }) {
     });
   };
 
-  const labelStyle = {
-    display: 'block',
-    fontSize: '0.85rem',
-    fontWeight: '600',
-    color: '#94a3b8',
-    marginBottom: '6px',
-    letterSpacing: '0.03em',
-  };
-
-  const inputStyle = {
-    width: '100%',
-    padding: '14px',
-    borderRadius: '8px',
-    border: '1px solid #334155',
-    backgroundColor: '#0f172a',
-    color: '#f8fafc',
-    fontSize: '0.95rem',
-    boxSizing: 'border-box',
-    outline: 'none',
-  };
-
   return (
     <form
       onSubmit={handleSubmit}
       style={{
         padding: '36px 40px',
-        background: '#1e293b',
+        background: 'var(--masar-bg-form)',
         borderRadius: '16px',
-        border: '1px solid #334155',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+        border: '1px solid var(--masar-border-input)',
+        boxShadow: 'var(--masar-shadow)',
       }}
     >
       {onBack && (
@@ -87,10 +67,10 @@ export default function FormInput({ onSubmit, onBack }) {
         </button>
       )}
 
-      <h2 style={{ color: '#ffffff', margin: '0 0 8px 0', fontSize: '1.4rem', fontWeight: '700' }}>
+      <h2 style={{ color: 'var(--masar-text-primary)', margin: '0 0 8px 0', fontSize: '1.4rem', fontWeight: '700' }}>
         Find universities for your field
       </h2>
-      <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 28px 0', lineHeight: 1.5 }}>
+      <p style={{ color: 'var(--masar-text-muted)', fontSize: '0.85rem', margin: '0 0 28px 0', lineHeight: 1.5 }}>
         Tell us about your high school — Masar matches accredited UAE undergraduate programs.
       </p>
 
@@ -170,6 +150,7 @@ export default function FormInput({ onSubmit, onBack }) {
             <option value="moe_advanced">UAE MoE — Advanced</option>
             <option value="british_alevels">British (A-Levels)</option>
             <option value="american_diploma">American Diploma</option>
+            <option value="cbse">CBSE (Indian Curriculum)</option>
           </select>
         </div>
       </div>

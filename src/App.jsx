@@ -9,6 +9,7 @@ import programs from './data/programs.json';
 import universities from './data/universities.json';
 import { matchPrograms, programsByEmirate } from './lib/matchPrograms';
 import { buildChatProfilePayload } from './lib/buildChatProfilePayload';
+import ThemeToggle from './components/ThemeToggle';
 
 const TRACK_LABELS = { law: 'Law', tech: 'Technology', business: 'Business' };
 
@@ -78,16 +79,30 @@ function AppHeader() {
   return (
     <header
       style={{
-        background: '#0f172a',
-        borderBottom: '1px solid #1e293b',
+        background: 'var(--masar-bg-header)',
+        borderBottom: '1px solid var(--masar-border)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: compact ? 'center' : 'space-between',
         flexDirection: compact ? 'column' : 'row',
         gap: compact ? '16px' : '12px',
         padding: compact ? '16px 20px' : '16px 40px',
+        position: 'relative',
       }}
     >
+      <div
+        style={{
+          position: compact ? 'static' : 'absolute',
+          top: compact ? undefined : '16px',
+          right: compact ? undefined : '40px',
+          alignSelf: compact ? 'flex-end' : undefined,
+          marginBottom: compact ? '-8px' : 0,
+          zIndex: 2,
+        }}
+      >
+        <ThemeToggle compact={compact} />
+      </div>
+
       <div
         style={{
           flex: compact ? undefined : '1 1 0',
@@ -115,10 +130,10 @@ function AppHeader() {
           flex: compact ? undefined : '0 1 auto',
         }}
       >
-        <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: '800', color: '#ffffff' }}>
-          Masar AI <span style={{ color: '#ff6b3d', fontWeight: '400' }}>(مسار)</span>
+        <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: '800', color: 'var(--masar-text-primary)' }}>
+          Masar AI <span style={{ color: 'var(--masar-accent)', fontWeight: '400' }}>(مسار)</span>
         </h1>
-        <p style={{ margin: '6px 0 0 0', color: '#94a3b8', fontSize: '0.95rem', fontWeight: '500' }}>
+        <p style={{ margin: '6px 0 0 0', color: 'var(--masar-text-muted)', fontSize: '0.95rem', fontWeight: '500' }}>
           Your UAE Pathway After High School
         </p>
         <UaeHeaderBadge />
@@ -156,15 +171,15 @@ function UaeHeaderBadge() {
         marginTop: '12px',
         padding: '7px 16px',
         borderRadius: '999px',
-        border: '1px solid rgba(148, 163, 184, 0.2)',
-        background: 'linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.35) 100%)',
-        boxShadow: '0 1px 12px rgba(0, 0, 0, 0.25)',
+        border: '1px solid var(--masar-border-input)',
+        background: 'var(--masar-badge-bg)',
+        boxShadow: 'var(--masar-shadow)',
       }}
     >
       <span
         style={{
           fontSize: '0.8rem',
-          color: '#94a3b8',
+          color: 'var(--masar-text-muted)',
           fontWeight: 500,
           letterSpacing: '0.02em',
           lineHeight: 1.4,
@@ -193,8 +208,8 @@ function InstitutionalFooter() {
   return (
     <footer
       style={{
-        background: '#0f172a',
-        borderTop: '1px solid #1e293b',
+        background: 'var(--masar-bg-header)',
+        borderTop: '1px solid var(--masar-border)',
         padding: '30px 20px',
         marginTop: '60px',
         textAlign: 'center',
@@ -202,20 +217,20 @@ function InstitutionalFooter() {
     >
       <div
         style={{
-          maxWidth: '1100px',
+          maxWidth: '1200px',
           margin: '0 auto',
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap',
-          alignItems: 'center',
+          alignItems: 'stretch',
           justifyContent: 'center',
-          gap: '28px 40px',
+          gap: '24px 32px',
         }}
       >
         <div
           style={{
-            flex: '1 1 300px',
-            maxWidth: '480px',
+            flex: '1 1 280px',
+            maxWidth: '400px',
             display: 'flex',
             justifyContent: 'center',
           }}
@@ -225,8 +240,8 @@ function InstitutionalFooter() {
               padding: '18px 22px',
               borderRadius: '12px',
               border: '1px solid rgba(255, 107, 61, 0.35)',
-              background: 'linear-gradient(145deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%)',
-              boxShadow: '0 0 24px rgba(255, 107, 61, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.04)',
+              background: 'var(--masar-footer-gradient)',
+              boxShadow: '0 0 24px rgba(255, 107, 61, 0.08)',
               textAlign: 'center',
               width: '100%',
             }}
@@ -238,7 +253,7 @@ function InstitutionalFooter() {
                 fontWeight: 700,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
-                color: '#64748b',
+                color: 'var(--masar-text-dim)',
               }}
             >
               UAE National Initiative
@@ -250,23 +265,23 @@ function InstitutionalFooter() {
                 fontWeight: 800,
                 letterSpacing: '0.06em',
                 lineHeight: 1.25,
-                color: '#ffffff',
+                color: 'var(--masar-text-primary)',
               }}
             >
               MAKE IT IN THE{' '}
-              <span style={{ color: '#ff6b3d' }}>EMIRATES</span>
+              <span style={{ color: 'var(--masar-accent)' }}>EMIRATES</span>
             </p>
             <p
               style={{
                 margin: '10px 0 0',
                 fontSize: '0.78rem',
-                color: '#94a3b8',
+                color: 'var(--masar-text-muted)',
                 lineHeight: 1.5,
                 fontWeight: 500,
               }}
             >
               National Talent Accelerator Node
-              <span style={{ color: '#64748b' }}> · </span>
+              <span style={{ color: 'var(--masar-text-dim)' }}> · </span>
               <span style={{ color: '#fbbf24', fontWeight: 600 }}>Vision 2031</span> Alignment
             </p>
           </div>
@@ -274,8 +289,8 @@ function InstitutionalFooter() {
 
         <div
           style={{
-            flex: '1 1 260px',
-            maxWidth: '420px',
+            flex: '1 1 220px',
+            maxWidth: '320px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -284,11 +299,11 @@ function InstitutionalFooter() {
           <p
             style={{
               margin: 0,
-              color: '#64748b',
+              color: 'var(--masar-text-dim)',
               fontSize: '0.8rem',
               lineHeight: 1.65,
               fontWeight: 500,
-              maxWidth: '360px',
+              maxWidth: '300px',
             }}
           >
             Proudly engineered in Dubai, UAE{' '}
@@ -296,10 +311,88 @@ function InstitutionalFooter() {
               🇦🇪
             </span>
             <br />
-            <span style={{ color: '#475569', fontSize: '0.75rem' }}>
+            <span style={{ color: 'var(--masar-text-faint)', fontSize: '0.75rem' }}>
               Designed for Zero-Trust Data Sovereignty
             </span>
           </p>
+        </div>
+
+        <div
+          style={{
+            flex: '1 1 280px',
+            maxWidth: '400px',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            style={{
+              padding: '18px 22px',
+              borderRadius: '12px',
+              border: '1px solid var(--masar-border-input)',
+              background: 'var(--masar-bg-card-alt)',
+              textAlign: 'center',
+              width: '100%',
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'var(--masar-text-dim)',
+              }}
+            >
+              Built by
+            </p>
+            <p
+              style={{
+                margin: '8px 0 6px',
+                fontSize: '1rem',
+                fontWeight: 800,
+                color: 'var(--masar-text-primary)',
+              }}
+            >
+              Building THE IT GUY
+            </p>
+            <p
+              style={{
+                margin: '0 0 14px',
+                fontSize: '0.78rem',
+                color: 'var(--masar-text-muted)',
+                lineHeight: 1.5,
+              }}
+            >
+              Mohamed Asath — IT strategist &amp; UAE education advocate
+            </p>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '10px 16px',
+                justifyContent: 'center',
+              }}
+            >
+              <a
+                href="https://www.buildingtheitguy.com/index.php/about-me/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="masar-footer-link"
+              >
+                About Me / Blog
+              </a>
+              <a
+                href="https://www.linkedin.com/in/mohamed-asath/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="masar-footer-link"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -307,7 +400,7 @@ function InstitutionalFooter() {
         style={{
           margin: '22px 0 0',
           fontSize: '0.7rem',
-          color: '#475569',
+          color: 'var(--masar-text-faint)',
           letterSpacing: '0.04em',
         }}
       >
@@ -481,7 +574,7 @@ export default function App() {
   );
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#0b0f19', color: '#f3f4f6' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--masar-bg-page)', color: 'var(--masar-text-secondary)' }}>
       <AppHeader />
 
       <main
@@ -498,8 +591,8 @@ export default function App() {
         <section style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <div
             style={{
-              background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-              border: '1px solid #1e293b',
+              background: 'var(--masar-status-gradient)',
+              border: '1px solid var(--masar-border)',
               borderRadius: '12px',
               padding: '16px 20px',
               display: 'flex',
@@ -555,10 +648,10 @@ export default function App() {
             <div
               style={{
                 width: '100%',
-                background: '#131a26',
+                background: 'var(--masar-bg-card)',
                 padding: '32px',
                 borderRadius: '16px',
-                border: '1px solid #1e293b',
+                border: '1px solid var(--masar-border)',
                 boxSizing: 'border-box',
               }}
             >
@@ -713,11 +806,11 @@ export default function App() {
           style={{
             flex: '1 1 320px',
             maxWidth: '480px',
-            background: '#0f172a',
-            border: '1px solid #1e293b',
+            background: 'var(--masar-bg-header)',
+            border: '1px solid var(--masar-border)',
             borderRadius: '16px',
             padding: '24px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+            boxShadow: 'var(--masar-shadow)',
             height: 'fit-content',
           }}
         >
@@ -730,14 +823,14 @@ export default function App() {
               margin: '0 0 4px 0',
               fontSize: '1rem',
               fontWeight: '700',
-              color: '#ffffff',
+              color: 'var(--masar-text-primary)',
               textTransform: 'uppercase',
               letterSpacing: '0.05em',
             }}
           >
             Knowledge base reference
           </h3>
-          <p style={{ margin: '0 0 16px 0', fontSize: '0.8rem', color: '#64748b' }}>
+          <p style={{ margin: '0 0 16px 0', fontSize: '0.8rem', color: 'var(--masar-text-dim)' }}>
             Catalogued {TRACK_LABELS[sidebarTrack]} programs — not your live match list.
           </p>
 
