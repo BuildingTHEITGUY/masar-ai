@@ -37,5 +37,10 @@
   { "id": "uos", "name": "University of Sharjah", "shortName": "UOS", "url": "https://www.sharjah.ac.ae", "applyUrl": "https://www.sharjah.ac.ae/en/academics/admissions", "contactUrl": "https://www.sharjah.ac.ae/en/contact", "emirate": "sharjah" },
   { "id": "aus", "name": "American University of Sharjah", "shortName": "AUS", "url": "https://www.aus.edu", "emirate": "sharjah" },
   { "id": "ajman", "name": "Ajman University", "shortName": "AU", "url": "https://www.ajman.ac.ae", "emirate": "sharjah" },
-  { "id": "skyline", "name": "Skyline University College", "shortName": "SUC", "url": "https://www.skylineuniversity.ac.ae", "emirate": "sharjah" }
+  { "id": "skyline", "name": "Skyline University College", "shortName": "SUC", "url": "https://www.skylineuniversity.ac.ae", "emirate": "sharjah" },
+  { "id": "bits-dubai", "name": "BITS Pilani Dubai Campus", "shortName": "BITS Dubai", "url": "https://www.bits-pilani.ac.ae/dubai", "emirate": "dubai" },
+  { "id": "curtin-dubai", "name": "Curtin University Dubai", "shortName": "Curtin", "url": "https://www.curtin.ae", "emirate": "dubai" },
+  { "id": "birmingham-dubai", "name": "University of Birmingham Dubai", "shortName": "UoB Dubai", "url": "https://www.birmingham.ac.uk/dubai", "emirate": "dubai" },
+  { "id": "aue", "name": "American University in the Emirates", "shortName": "AUE", "url": "https://www.aue.ae", "applyUrl": "https://www.aue.ae/admissions", "emirate": "dubai" },
+  { "id": "murdoch-dubai", "name": "Murdoch University Dubai", "shortName": "Murdoch", "url": "https://www.murdochuniversitydubai.com", "emirate": "dubai" }
 ]

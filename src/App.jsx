@@ -410,13 +410,15 @@ function InstitutionalFooter() {
   );
 }
 
-function MatchCard({ match, studentProfile, variant = 'match', subTrackAccent }) {
+function MatchCard({ match, studentProfile, variant = 'match', subTrackAccent, subTrackLabel }) {
   const borderColor =
     variant === 'alternative'
       ? '#f59e0b'
-      : match.isUnderScore || match.isConditional
-        ? '#ef4444'
-        : '#10b981';
+      : match.crossEmirate
+        ? '#a78bfa'
+        : match.isUnderScore || match.isConditional
+          ? '#ef4444'
+          : '#10b981';
   const programColor = subTrackAccent && variant === 'match' ? subTrackAccent : '#38bdf8';
 
   return (
@@ -428,6 +430,22 @@ function MatchCard({ match, studentProfile, variant = 'match', subTrackAccent })
         borderLeft: `4px solid ${borderColor}`,
       }}
     >
+      {match.isInterestMatch && variant === 'match' && subTrackLabel && (
+        <div
+          style={{
+            marginBottom: '10px',
+            padding: '8px 12px',
+            background: 'rgba(56, 189, 248, 0.1)',
+            border: `1px solid ${subTrackAccent || '#38bdf8'}`,
+            borderRadius: '6px',
+            fontSize: '0.78rem',
+            color: subTrackAccent || '#7dd3fc',
+          }}
+        >
+          <strong>Matches your interest:</strong> {subTrackLabel}
+          {match.crossEmirate ? ` · ${match.emirate} (outside your selected emirate)` : ''}
+        </div>
+      )}
       {variant === 'alternative' && (
         <div
           style={{
@@ -520,6 +538,7 @@ export default function App() {
   const [sidebarTrack, setSidebarTrack] = useState('law');
   const [matchingResults, setMatchingResults] = useState([]);
   const [alternativeResults, setAlternativeResults] = useState([]);
+  const [specialtyResults, setSpecialtyResults] = useState([]);
   const [resolvedTrack, setResolvedTrack] = useState(null);
   const [matchError, setMatchError] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -528,6 +547,7 @@ export default function App() {
     setStudentProfile(null);
     setMatchingResults([]);
     setAlternativeResults([]);
+    setSpecialtyResults([]);
     setResolvedTrack(null);
     setMatchError(null);
     setFlowPhase('landing');
@@ -549,22 +569,28 @@ export default function App() {
     }
 
     setTimeout(() => {
-      const { track, matches, alternatives, error } = matchPrograms(programs, universities, {
-        emirate: profileData.emirate,
-        highSchoolAvg: profileData.highSchoolAvg,
-        stream: profileData.stream,
-        subjectMarks: profileData.subjectMarks,
-        englishTestType: profileData.englishTestType,
-        englishTestScore: profileData.englishTestScore,
-        track: profileData.track,
-        interest: profileData.interest,
-        degreeLevel: 'undergraduate',
-      });
+      const { track, matches, alternatives, specialtyMatches, error } = matchPrograms(
+        programs,
+        universities,
+        {
+          emirate: profileData.emirate,
+          highSchoolAvg: profileData.highSchoolAvg,
+          stream: profileData.stream,
+          subjectMarks: profileData.subjectMarks,
+          englishTestType: profileData.englishTestType,
+          englishTestScore: profileData.englishTestScore,
+          track: profileData.track,
+          interest: profileData.interest,
+          subTrack: profileData.subTrack,
+          degreeLevel: 'undergraduate',
+        }
+      );
 
       setResolvedTrack(track);
       setMatchError(error);
       setMatchingResults(matches);
       setAlternativeResults(alternatives);
+      setSpecialtyResults(specialtyMatches ?? []);
       setIsProcessing(false);
     }, 600);
   };
@@ -726,7 +752,9 @@ export default function App() {
                 >
                   Could not determine your track. Select Law, Technology, or Business above.
                 </div>
-              ) : matchingResults.length === 0 && alternativeResults.length === 0 ? (
+              ) : matchingResults.length === 0 &&
+                alternativeResults.length === 0 &&
+                specialtyResults.length === 0 ? (
                 <div
                   style={{
                     color: '#ff6b3d',
@@ -772,8 +800,30 @@ export default function App() {
                       match={match}
                       studentProfile={studentProfile}
                       subTrackAccent={studentProfile.subTrackMeta?.accent}
+                      subTrackLabel={studentProfile.subTrackMeta?.label}
                     />
                   ))}
+
+                  {specialtyResults.length > 0 && (
+                    <>
+                      <h4 style={{ margin: '8px 0 0', color: '#a78bfa', fontSize: '0.9rem', fontWeight: '700' }}>
+                        Specialty programs in other emirates ({studentProfile.subTrackMeta?.label})
+                      </h4>
+                      <p style={{ margin: '0 0 8px', fontSize: '0.8rem', color: '#94a3b8', lineHeight: 1.5 }}>
+                        Few {studentProfile.subTrackMeta?.label?.toLowerCase()} degrees in your emirate — these
+                        accredited options are worth exploring across the UAE.
+                      </p>
+                      {specialtyResults.map((match) => (
+                        <MatchCard
+                          key={match.id}
+                          match={match}
+                          studentProfile={studentProfile}
+                          subTrackAccent={studentProfile.subTrackMeta?.accent}
+                          subTrackLabel={studentProfile.subTrackMeta?.label}
+                        />
+                      ))}
+                    </>
+                  )}
 
                   {alternativeResults.length > 0 && matchingResults.length > 0 && (
                     <>
@@ -792,9 +842,9 @@ export default function App() {
                     ))}
 
                   <K2CounselorPanel
-                    key={`k2-${studentProfile.highSchoolAvg}-${[...matchingResults, ...alternativeResults].map((m) => m.id).join(',')}`}
+                    key={`k2-${studentProfile.highSchoolAvg}-${[...matchingResults, ...specialtyResults, ...alternativeResults].map((m) => m.id).join(',')}`}
                     studentProfile={studentProfile}
-                    matchingResults={[...matchingResults, ...alternativeResults]}
+                    matchingResults={[...matchingResults, ...specialtyResults, ...alternativeResults]}
                     resolvedTrack={resolvedTrack}
                   />
                 </div>

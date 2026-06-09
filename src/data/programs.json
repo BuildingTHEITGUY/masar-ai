@@ -37,7 +37,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://ud.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "ud-bsc-isec",
@@ -58,7 +61,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://ud.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "cybersecurity"
+    ]
   },
   {
     "id": "ud-bba",
@@ -121,7 +127,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.aud.edu",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "aud-bba",
@@ -163,7 +172,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.hw.ac.uk/dubai",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "hw-bba",
@@ -205,7 +217,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.mdx.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "middlesex-bba",
@@ -247,7 +262,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.uowdubai.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "uowd-bba",
@@ -289,7 +307,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.manipaldubai.com",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "manipal-bba",
@@ -331,7 +352,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.rit.edu/dubai",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "rit-bba",
@@ -373,7 +397,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.cud.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "cud-bba",
@@ -430,7 +457,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.hct.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "hct-bba",
@@ -468,7 +498,10 @@
     ],
     "emsatMathMin": 700,
     "sourceUrl": "https://www.zu.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "zayed-bba",
@@ -526,7 +559,11 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.uaeu.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science",
+      "ai_systems"
+    ]
   },
   {
     "id": "uaeu-bsc-it",
@@ -546,7 +583,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.uaeu.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "uaeu-bba",
@@ -608,7 +648,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.adu.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "adu-bba",
@@ -648,7 +691,11 @@
     ],
     "emsatMathMin": 1200,
     "sourceUrl": "https://www.ku.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science",
+      "ai_systems"
+    ]
   },
   {
     "id": "hct-ad-it",
@@ -667,7 +714,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.hct.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "mbzuai-bsc-ai-business",
@@ -688,7 +738,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://mbzuai.ac.ae/study/undergraduate-program/",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "ai_systems"
+    ]
   },
   {
     "id": "mbzuai-bsc-ai-engineering",
@@ -709,7 +762,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://mbzuai.ac.ae/study/undergraduate-program/",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "ai_systems"
+    ]
   },
   {
     "id": "uos-llb-ar",
@@ -747,7 +803,10 @@
     ],
     "emsatMathMin": 800,
     "sourceUrl": "https://www.sharjah.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "cybersecurity"
+    ]
   },
   {
     "id": "uos-bsc-it",
@@ -767,7 +826,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.sharjah.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "uos-bba",
@@ -809,7 +871,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.aus.edu",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "aus-bba",
@@ -850,7 +915,10 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.ajman.ac.ae",
-    "active": true
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
   },
   {
     "id": "ajman-bba",
@@ -913,6 +981,343 @@
     ],
     "emsatMathMin": null,
     "sourceUrl": "https://www.skylineuniversity.ac.ae",
+    "active": true,
+    "subTracks": [
+      "computer_science"
+    ]
+  },
+  {
+    "id": "aud-bsc-cyber",
+    "universityId": "aud",
+    "emirate": "dubai",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "School of Arts & Sciences",
+    "programName": "BSc in Cybersecurity",
+    "subTracks": [
+      "cybersecurity"
+    ],
+    "focusKeywords": [
+      "cyber",
+      "security",
+      "forensics"
+    ],
+    "criteriaText": "AUD dedicated cybersecurity major — verify Math/English and MoE General vs Advanced on official admissions matrix.",
+    "minOverallPercent": 70,
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "american_diploma",
+      "british_alevels",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.aud.edu/academics/programs/cybersecurity",
+    "active": true
+  },
+  {
+    "id": "adu-bsc-cyber",
+    "universityId": "adu",
+    "emirate": "abudhabi",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "College of Engineering",
+    "programName": "BSc in Cybersecurity Engineering",
+    "subTracks": [
+      "cybersecurity"
+    ],
+    "focusKeywords": [
+      "cyber",
+      "security engineering"
+    ],
+    "criteriaText": "ADU cybersecurity engineering — STEM prerequisites. Verify current ADU undergraduate bulletin.",
+    "minOverallPercent": 72,
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.adu.ac.ae/colleges/engineering",
+    "active": true
+  },
+  {
+    "id": "hct-dubai-cyber",
+    "universityId": "hct",
+    "emirate": "dubai",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "Applied Technology",
+    "programName": "Bachelor in Information Technology — Cyber Security specialization",
+    "subTracks": [
+      "cybersecurity"
+    ],
+    "focusKeywords": [
+      "cyber security",
+      "network security"
+    ],
+    "criteriaText": "HCT IT degree with Cyber Security specialization — accessible federal pathway for MoE General students.",
+    "minOverallPercent": 60,
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.hct.ac.ae/en/programmes",
+    "active": true
+  },
+  {
+    "id": "hct-ad-cyber",
+    "universityId": "hct-ad",
+    "emirate": "abudhabi",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "Applied Technology",
+    "programName": "Bachelor in Information Technology — Cyber Security specialization",
+    "subTracks": [
+      "cybersecurity"
+    ],
+    "focusKeywords": [
+      "cyber security"
+    ],
+    "criteriaText": "HCT Abu Dhabi campuses — Cyber Security specialization within IT bachelor.",
+    "minOverallPercent": 60,
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.hct.ac.ae/en/programmes",
+    "active": true
+  },
+  {
+    "id": "uaeu-bsc-ds",
+    "universityId": "uaeu",
+    "emirate": "abudhabi",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "College of Information Technology",
+    "programName": "BSc in Data Science",
+    "subTracks": [
+      "data_science",
+      "ai_systems"
+    ],
+    "focusKeywords": [
+      "data science",
+      "analytics",
+      "machine learning"
+    ],
+    "criteriaText": "Competitive STEM entry — Advanced stream typical. Strong Math background expected.",
+    "minOverallPercent": 85,
+    "acceptedCurricula": [
+      "moe_advanced",
+      "british_alevels",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.uaeu.ac.ae/en/cit/programs/undergraduate/data_science.shtml",
+    "active": true
+  },
+  {
+    "id": "bits-bsc-cs",
+    "universityId": "bits-dubai",
+    "emirate": "dubai",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "School of Engineering",
+    "programName": "BSc (Hons) Computer Science",
+    "subTracks": [
+      "computer_science",
+      "ai_systems"
+    ],
+    "focusKeywords": [
+      "computer science",
+      "software"
+    ],
+    "criteriaText": "BITS Pilani Dubai — rigorous CS. CBSE and MoE Advanced typical; verify 2025–26 entry grades.",
+    "minOverallPercent": 75,
+    "acceptedCurricula": [
+      "moe_advanced",
+      "cbse",
+      "british_alevels"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.bits-pilani.ac.ae/dubai",
+    "active": true
+  },
+  {
+    "id": "curtin-bsc-cs",
+    "universityId": "curtin-dubai",
+    "emirate": "dubai",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "School of Science & Engineering",
+    "programName": "BSc in Cyber Security / Computer Science",
+    "subTracks": [
+      "cybersecurity",
+      "computer_science"
+    ],
+    "focusKeywords": [
+      "cyber security",
+      "computer science"
+    ],
+    "criteriaText": "Curtin Dubai offers cyber security and computing majors — check official program list.",
+    "minOverallPercent": 65,
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.curtin.ae/study/",
+    "active": true
+  },
+  {
+    "id": "birmingham-bsc-cs",
+    "universityId": "birmingham-dubai",
+    "emirate": "dubai",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "School of Computer Science",
+    "programName": "BSc Computer Science (with AI & Machine Learning options)",
+    "subTracks": [
+      "computer_science",
+      "ai_systems"
+    ],
+    "focusKeywords": [
+      "computer science",
+      "artificial intelligence",
+      "machine learning"
+    ],
+    "criteriaText": "University of Birmingham Dubai CS — British-style entry. Foundation year may apply for MoE General.",
+    "minOverallPercent": 70,
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.birmingham.ac.uk/dubai/courses/undergraduate/computer-science",
+    "active": true
+  },
+  {
+    "id": "aue-bsc-cyber",
+    "universityId": "aue",
+    "emirate": "dubai",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "College of Computer Information Technology",
+    "programName": "BSc in Cybersecurity",
+    "subTracks": [
+      "cybersecurity"
+    ],
+    "focusKeywords": [
+      "cybersecurity",
+      "information security"
+    ],
+    "criteriaText": "American University in the Emirates — verify undergraduate cyber program admission requirements.",
+    "minOverallPercent": 65,
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "american_diploma",
+      "british_alevels",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.aue.ae",
+    "active": true
+  },
+  {
+    "id": "murdoch-bsc-cyber",
+    "universityId": "murdoch-dubai",
+    "emirate": "dubai",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "School of Engineering & IT",
+    "programName": "BSc in Cyber Security and Forensics",
+    "subTracks": [
+      "cybersecurity"
+    ],
+    "focusKeywords": [
+      "cyber security",
+      "forensics"
+    ],
+    "criteriaText": "Murdoch University Dubai cyber security major — verify entry for MoE streams.",
+    "minOverallPercent": 65,
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.murdochuniversitydubai.com",
+    "active": true
+  },
+  {
+    "id": "rit-bsc-cyber",
+    "universityId": "rit-dubai",
+    "emirate": "dubai",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "Engineering & Computing",
+    "programName": "BSc in Computing Security",
+    "subTracks": [
+      "cybersecurity"
+    ],
+    "focusKeywords": [
+      "computing security",
+      "cyber"
+    ],
+    "criteriaText": "RIT Dubai computing security degree — American-style admissions. Strong English required.",
+    "minOverallPercent": 70,
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "american_diploma",
+      "british_alevels",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.rit.edu/dubai",
+    "active": true
+  },
+  {
+    "id": "uowd-bsc-cyber",
+    "universityId": "uowd",
+    "emirate": "dubai",
+    "track": "tech",
+    "degreeLevel": "undergraduate",
+    "college": "Faculty of Engineering & Information Sciences",
+    "programName": "Bachelor of Computer Science — Cyber Security major",
+    "subTracks": [
+      "cybersecurity",
+      "computer_science"
+    ],
+    "focusKeywords": [
+      "cyber security"
+    ],
+    "criteriaText": "UOWD CS with cyber security major — Math competency required.",
+    "minOverallPercent": 70,
+    "acceptedCurricula": [
+      "moe_general",
+      "moe_advanced",
+      "british_alevels",
+      "american_diploma",
+      "cbse"
+    ],
+    "emsatMathMin": null,
+    "sourceUrl": "https://www.uowdubai.ac.ae",
     "active": true
   }
 ]

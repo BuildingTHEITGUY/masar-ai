@@ -44,7 +44,7 @@ function formatMatchBlock(matches) {
     .map(
       (m, i) =>
         `${i + 1}. ${m.uniName} — ${m.programName}
-   Emirate: ${m.emirate} | Min overall: ${m.minOverallPercent}%
+   Emirate: ${m.emirate} | Min overall: ${m.minOverallPercent}%${m.isInterestMatch ? ' | Interest-aligned match' : ''}${m.crossEmirate ? ' | Other emirate (specialty)' : ''}
    Criteria: ${m.criteriaText}
    Student vs threshold: ${m.isUnderScore ? 'BELOW (conditional pathway likely)' : 'MEETS typical overall index'}${m.subjectFlags?.length ? `\n   Subject flags: ${m.subjectFlags.join('; ')}` : ''}
 ${contactBlockForMatch(m)}`

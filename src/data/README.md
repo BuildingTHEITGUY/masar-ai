@@ -18,9 +18,24 @@ Each row = **one undergraduate (or graduate) program** at one university.
   "acceptedCurricula": ["moe_general", "moe_advanced", "british_alevels", "american_diploma"],
   "emsatMathMin": null,
   "sourceUrl": "https://...",
-  "active": true
+  "active": true,
+  "subTracks": ["cybersecurity"],
+  "focusKeywords": ["cyber", "forensics"]
 }
 ```
+
+### `subTracks` (interest matching)
+
+Align programs with the Step 2.5 behavioral sorter. Values:
+
+| Value | Student interest |
+|-------|------------------|
+| `ai_systems` | Artificial Intelligence |
+| `cybersecurity` | Cybersecurity |
+| `computer_science` | Software / CS |
+| `data_science` | Data analytics |
+
+`matchPrograms` boosts rows whose `subTracks` match the student's choice. If omitted, keywords in `programName` are inferred.
 
 ## `acceptedCurricula` (important)
 
