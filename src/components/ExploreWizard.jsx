@@ -73,7 +73,7 @@ function StepDots({ step, hasBehavioral }) {
 
             borderRadius: '2px',
 
-            background: i <= index ? '#38bdf8' : '#334155',
+            background: i <= index ? 'var(--masar-accent-blue, #38bdf8)' : 'var(--masar-border-input, #334155)',
 
           }}
 
@@ -101,11 +101,11 @@ function SelectCard({ selected, onClick, emoji, label, showBehavioralBadge }) {
         gap: showBehavioralBadge ? '10px' : '0',
         padding: '14px 16px',
         borderRadius: '10px',
-        border: `2px solid ${selected ? '#38bdf8' : '#334155'}`,
-        background: selected ? 'rgba(56,189,248,0.12)' : '#131a26',
+        border: `2px solid ${selected ? 'var(--masar-accent-blue, #38bdf8)' : 'var(--masar-border-input, #334155)'}`,
+        background: selected ? 'rgba(56,189,248,0.12)' : 'var(--masar-bg-input, #131a26)',
         cursor: 'pointer',
         textAlign: 'left',
-        color: '#e2e8f0',
+        color: 'var(--masar-text-body, #e2e8f0)',
         fontSize: '0.88rem',
         lineHeight: 1.45,
         width: '100%',
@@ -360,7 +360,7 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
           border: 'none',
 
-          color: '#64748b',
+          color: 'var(--masar-text-dim, #64748b)',
 
           cursor: 'pointer',
 
@@ -388,13 +388,13 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
         <>
 
-          <h2 style={{ color: 'var(--masar-text-primary)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
+          <h2 style={{ color: 'var(--masar-text-primary, #ffffff)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
 
             Step 1 — About your high school
 
           </h2>
 
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 24px', lineHeight: 1.5 }}>
+          <p style={{ color: 'var(--masar-text-muted, #94a3b8)', fontSize: '0.85rem', margin: '0 0 24px', lineHeight: 1.5 }}>
             Basic facts so Masar can check which UAE programs you qualify for — and email your pathway.
           </p>
 
@@ -580,19 +580,19 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
         <>
 
-          <h2 style={{ color: 'var(--masar-text-primary)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
+          <h2 style={{ color: 'var(--masar-text-primary, #ffffff)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
 
             Step 2 — What do you enjoy?
 
           </h2>
 
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 12px' }}>
+          <p style={{ color: 'var(--masar-text-muted, #94a3b8)', fontSize: '0.85rem', margin: '0 0 12px' }}>
             Pick up to <strong style={{ color: '#38bdf8' }}>2</strong> that feel closest to you (macro enjoyment).
           </p>
 
           <p
             style={{
-              color: '#64748b',
+              color: 'var(--masar-text-dim, #64748b)',
               fontSize: '0.78rem',
               margin: '0 0 16px',
               lineHeight: 1.5,
@@ -609,7 +609,7 @@ export default function ExploreWizard({ onSubmit, onBack }) {
               </>
             ) : (
               <>
-                <strong style={{ color: '#94a3b8' }}>No Step 2.5</strong> for Business / Law / Unsure only — you
+                <strong style={{ color: 'var(--masar-text-muted, #94a3b8)' }}>No Step 2.5</strong> for Business / Law / Unsure only — you
                 go straight to value drivers. Pick 🔧 Building, 🔬 Science, 🎨 Creative, or 💻 Computers to unlock
                 the quiz.
               </>
@@ -684,13 +684,13 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
         <>
 
-          <h2 style={{ color: 'var(--masar-text-primary)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
+          <h2 style={{ color: 'var(--masar-text-primary, #ffffff)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
 
             {getStepLabel(step)} — What matters to you?
 
           </h2>
 
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 20px' }}>
+          <p style={{ color: 'var(--masar-text-muted, #94a3b8)', fontSize: '0.85rem', margin: '0 0 20px' }}>
 
             Value drivers — select any that apply. This helps rank your best pathways.
 
@@ -802,13 +802,13 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
         <>
 
-          <h2 style={{ color: 'var(--masar-text-primary)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
+          <h2 style={{ color: 'var(--masar-text-primary, #ffffff)', margin: '0 0 6px', fontSize: '1.35rem', fontWeight: 700 }}>
 
             {getStepLabel(step)} — Your suggested directions
 
           </h2>
 
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 20px', lineHeight: 1.5 }}>
+          <p style={{ color: 'var(--masar-text-muted, #94a3b8)', fontSize: '0.85rem', margin: '0 0 20px', lineHeight: 1.5 }}>
 
             Based on your profile, interests, and behavioral sorting — pick a direction to see real UAE
 
@@ -918,7 +918,7 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
                   <p style={{ margin: '0 0 6px', fontSize: '0.8rem', color: '#38bdf8' }}>{s.degrees}</p>
 
-                  <p style={{ margin: '0 0 6px', fontSize: '0.78rem', color: '#94a3b8', lineHeight: 1.45 }}>
+                  <p style={{ margin: '0 0 6px', fontSize: '0.78rem', color: 'var(--masar-text-muted, #94a3b8)', lineHeight: 1.45 }}>
 
                     {s.why}
 

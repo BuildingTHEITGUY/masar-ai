@@ -43,10 +43,10 @@ export default function FormInput({ onSubmit, onBack }) {
       onSubmit={handleSubmit}
       style={{
         padding: '36px 40px',
-        background: 'var(--masar-bg-form)',
+        background: 'var(--masar-bg-form, #1e293b)',
         borderRadius: '16px',
-        border: '1px solid var(--masar-border-input)',
-        boxShadow: 'var(--masar-shadow)',
+        border: '1px solid var(--masar-border-input, #334155)',
+        boxShadow: 'var(--masar-shadow, 0 25px 50px -12px rgba(0, 0, 0, 0.5))',
       }}
     >
       {onBack && (
@@ -67,10 +67,10 @@ export default function FormInput({ onSubmit, onBack }) {
         </button>
       )}
 
-      <h2 style={{ color: 'var(--masar-text-primary)', margin: '0 0 8px 0', fontSize: '1.4rem', fontWeight: '700' }}>
+      <h2 style={{ color: 'var(--masar-text-primary, #ffffff)', margin: '0 0 8px 0', fontSize: '1.4rem', fontWeight: '700' }}>
         Find universities for your field
       </h2>
-      <p style={{ color: 'var(--masar-text-muted)', fontSize: '0.85rem', margin: '0 0 28px 0', lineHeight: 1.5 }}>
+      <p style={{ color: 'var(--masar-text-muted, #94a3b8)', fontSize: '0.85rem', margin: '0 0 28px 0', lineHeight: 1.5 }}>
         Tell us about your high school — Masar matches accredited UAE undergraduate programs.
       </p>
 

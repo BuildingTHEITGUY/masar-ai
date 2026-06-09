@@ -574,7 +574,7 @@ export default function App() {
   );
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--masar-bg-page)', color: 'var(--masar-text-secondary)' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--masar-bg-page, #0b0f19)', color: 'var(--masar-text-secondary, #f3f4f6)' }}>
       <AppHeader />
 
       <main
