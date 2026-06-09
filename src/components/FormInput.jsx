@@ -3,6 +3,8 @@ import SubjectMarksFields from './SubjectMarksFields';
 import { EMPTY_SUBJECT_MARKS } from '../lib/subjectMarksConfig';
 import { subjectMarksAreValid } from '../lib/normalizeSubjectMarks';
 import { masarLabel as labelStyle, masarInput as inputStyle } from '../lib/masarStyles';
+import EnglishProficiencyFields from './EnglishProficiencyFields';
+import { parseEnglishTestScore } from '../lib/englishProficiency';
 
 const TRACK_HINTS = {
   law: 'Courts, legal work, government & corporate compliance',
@@ -16,6 +18,8 @@ export default function FormInput({ onSubmit, onBack }) {
   const [track, setTrack] = useState('business');
   const [highSchoolAvg, setHighSchoolAvg] = useState('');
   const [subjectMarks, setSubjectMarks] = useState({ ...EMPTY_SUBJECT_MARKS });
+  const [englishTestType, setEnglishTestType] = useState('');
+  const [englishTestScore, setEnglishTestScore] = useState('');
   const [interest, setInterest] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -32,7 +36,9 @@ export default function FormInput({ onSubmit, onBack }) {
       track,
       highSchoolAvg: parseFloat(highSchoolAvg) || 0,
       subjectMarks,
-      emsatMath: subjectMarks.emsatMath ? parseInt(subjectMarks.emsatMath, 10) : null,
+      englishTestType,
+      englishTestScore: parseEnglishTestScore(englishTestType, englishTestScore),
+      englishTestScoreRaw: englishTestScore,
       interest,
       discoveryMode: false,
     });
@@ -173,6 +179,17 @@ export default function FormInput({ onSubmit, onBack }) {
         stream={stream}
         values={subjectMarks}
         onChange={setSubjectMarks}
+        inputStyleOverride={inputStyle}
+      />
+
+      <EnglishProficiencyFields
+        englishTestType={englishTestType}
+        englishTestScore={englishTestScore}
+        onTypeChange={(val) => {
+          setEnglishTestType(val);
+          if (!val) setEnglishTestScore('');
+        }}
+        onScoreChange={setEnglishTestScore}
         inputStyleOverride={inputStyle}
       />
 

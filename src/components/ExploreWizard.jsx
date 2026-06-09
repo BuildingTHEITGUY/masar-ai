@@ -49,6 +49,10 @@ import { subjectMarksAreValid } from '../lib/normalizeSubjectMarks';
 
 import { masarLabel as labelStyle, masarInput as inputStyle, masarShell as shellStyle } from '../lib/masarStyles';
 
+import EnglishProficiencyFields from './EnglishProficiencyFields';
+
+import { parseEnglishTestScore } from '../lib/englishProficiency';
+
 
 
 function StepDots({ step, hasBehavioral }) {
@@ -180,6 +184,10 @@ export default function ExploreWizard({ onSubmit, onBack }) {
 
   const [subjectMarks, setSubjectMarks] = useState({ ...EMPTY_SUBJECT_MARKS });
 
+  const [englishTestType, setEnglishTestType] = useState('');
+
+  const [englishTestScore, setEnglishTestScore] = useState('');
+
   const [interests, setInterests] = useState([]);
 
   const [priorities, setPriorities] = useState([]);
@@ -267,7 +275,9 @@ export default function ExploreWizard({ onSubmit, onBack }) {
       track,
       highSchoolAvg: parseFloat(highSchoolAvg) || 0,
       subjectMarks,
-      emsatMath: subjectMarks.emsatMath ? parseInt(subjectMarks.emsatMath, 10) : null,
+      englishTestType,
+      englishTestScore: parseEnglishTestScore(englishTestType, englishTestScore),
+      englishTestScoreRaw: englishTestScore,
       interest: buildExploreInterestText(interests, priorities, subTrack),
       discoveryMode: true,
       subTrack,
@@ -513,6 +523,17 @@ export default function ExploreWizard({ onSubmit, onBack }) {
             stream={stream}
             values={subjectMarks}
             onChange={setSubjectMarks}
+            inputStyleOverride={inputStyle}
+          />
+
+          <EnglishProficiencyFields
+            englishTestType={englishTestType}
+            englishTestScore={englishTestScore}
+            onTypeChange={(val) => {
+              setEnglishTestType(val);
+              if (!val) setEnglishTestScore('');
+            }}
+            onScoreChange={setEnglishTestScore}
             inputStyleOverride={inputStyle}
           />
 

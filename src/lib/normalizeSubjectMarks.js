@@ -6,12 +6,6 @@ function parsePercent(value) {
   return Number.isFinite(n) ? n : null;
 }
 
-function parseEmsat(value) {
-  if (value === '' || value == null) return null;
-  const n = parseInt(value, 10);
-  return Number.isFinite(n) ? n : null;
-}
-
 function aLevelToPercent(grade) {
   if (!grade) return null;
   const key = String(grade).trim().toUpperCase().replace(/\s+/g, '');
@@ -34,8 +28,6 @@ export function normalizeSubjectMarks(stream, raw = {}) {
     math,
     english,
     physics,
-    emsatMath: parseEmsat(raw.emsatMath),
-    emsatEnglish: parseEmsat(raw.emsatEnglish),
     rawMath: raw.math ?? '',
     rawEnglish: raw.english ?? '',
     rawPhysics: raw.physics ?? '',
@@ -62,14 +54,12 @@ export function formatSubjectMarksLine(stream, raw = {}) {
   const scienceLabel = isAmerican ? 'Science' : 'Physics/Science';
   const parts = [
     `Mathematics: ${fmt(n.math, n.rawMath)}`,
-    `English: ${fmt(n.english, n.rawEnglish)}`,
+    `English (school subject): ${fmt(n.english, n.rawEnglish)}`,
   ];
 
   if (n.physics != null || n.rawPhysics) {
     parts.push(`${scienceLabel}: ${fmt(n.physics, n.rawPhysics)}`);
   }
-  if (n.emsatMath != null) parts.push(`EmSAT Math: ${n.emsatMath}`);
-  if (n.emsatEnglish != null) parts.push(`EmSAT English: ${n.emsatEnglish}`);
 
   return parts.join(' | ');
 }

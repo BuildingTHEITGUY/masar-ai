@@ -2,7 +2,7 @@
     "high_school_streams": {
         "moe_advanced": {
             "stream_name": "MoE Advanced Stream",
-            "typical_emsat_min_math": 900,
+            "typical_english_ielts_min": 5.5,
             "eligible_paths": [
                 "Engineering",
                 "Computer Science",
@@ -13,7 +13,7 @@
         },
         "moe_general": {
             "stream_name": "MoE General Stream",
-            "typical_emsat_min_math": 700,
+            "typical_english_ielts_min": 5.0,
             "eligible_paths": [
                 "Business Administration",
                 "Information Technology",
@@ -36,7 +36,7 @@
         },
         "cbse": {
             "stream_name": "CBSE (Indian Curriculum)",
-            "typical_emsat_min_math": 700,
+            "typical_english_ielts_min": 5.0,
             "eligible_paths": [
                 "Engineering",
                 "Computer Science",
@@ -52,7 +52,7 @@
             "colleges": [
                 {
                     "name": "College of Engineering and Information Technology",
-                    "min_emsat_math": 900,
+                    "typical_english_ielts_min": 5.5,
                     "programs": [
                         "BSc in Information Systems Security",
                         "BSc in Electrical Engineering",
@@ -61,7 +61,7 @@
                 },
                 {
                     "name": "Dubai Business School",
-                    "min_emsat_math": 600,
+                    "typical_english_ielts_min": 5.0,
                     "programs": [
                         "BBA in Accounting",
                         "BBA in Finance",

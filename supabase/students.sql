@@ -10,6 +10,8 @@ create table if not exists public.students (
   math_score numeric,
   physics_score numeric,
   english_score numeric,
+  english_test_type text,
+  english_test_score numeric,
   preferred_location text,
   selected_track text,
   ai_roadmap text

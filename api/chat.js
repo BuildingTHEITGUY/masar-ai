@@ -1,5 +1,6 @@
 import { persistStudentRecord } from '../lib/supabaseStudent.js';
 import { sanitizeK2Final } from '../src/lib/sanitizeK2Output.js';
+import { buildEnglishProficiencyK2Instruction } from '../src/lib/englishProficiency.js';
 
 export const config = {
     runtime: 'edge',
@@ -33,6 +34,10 @@ function buildPersonalizationRule({
     math_score,
     physics_score,
     english_score,
+    english_test_type,
+    english_test_score,
+    englishTestType,
+    englishTestScore,
 }) {
     const studentName = name || 'Student';
     const avg = overall_average ?? '—';
@@ -40,14 +45,24 @@ function buildPersonalizationRule({
     const loc = preferred_location || 'the UAE';
     const track = selected_track || 'their chosen field';
     const nat = nationality ? ` (${nationality})` : '';
+    const engType = english_test_type || englishTestType || 'Not taken';
+    const engScore =
+        english_test_score != null && english_test_score !== ''
+            ? english_test_score
+            : englishTestScore != null
+              ? englishTestScore
+              : 'not provided';
+
+    const englishInstruction = buildEnglishProficiencyK2Instruction(engType, engScore);
 
     return (
         `You are Masar AI, an elite academic advisor. You are counseling a student named ${studentName}${nat} ` +
         `who holds a ${avg}% overall average in the ${curr} system and prefers studying in ${loc}, ` +
         `with a focus on ${track}. ` +
-        `Subject marks: Mathematics ${formatScore(math_score)}, Physics/Science ${formatScore(physics_score)}, English ${formatScore(english_score)}. ` +
+        `Subject marks: Mathematics ${formatScore(math_score)}, Physics/Science ${formatScore(physics_score)}, English (school) ${formatScore(english_score)}. ` +
         `Use these subject marks with the verified program list to explain fit, conditional admission, and foundation routes — ` +
         `if Math/Science exceed overall, highlight STEM programs from the verified list only; never invent institutions. ` +
+        `${englishInstruction} ` +
         `Address them politely by their first name throughout your evaluation layout.`
     );
 }
@@ -254,9 +269,16 @@ function buildProfileSummaryHtml(profile) {
                 : null,
         ],
         [
-            'English',
+            'English (school)',
             profile.english_score != null && profile.english_score !== ''
                 ? `${profile.english_score}%`
+                : null,
+        ],
+        ['English exam', profile.english_test_type || null],
+        [
+            'English test score',
+            profile.english_test_score != null && profile.english_test_score !== ''
+                ? String(profile.english_test_score)
                 : null,
         ],
         ['Preferred location', profile.preferred_location],
@@ -315,6 +337,8 @@ async function persistToSupabase(profile, roadmap) {
         math_score: profile.math_score,
         physics_score: profile.physics_score,
         english_score: profile.english_score,
+        english_test_type: profile.english_test_type,
+        english_test_score: profile.english_test_score,
         preferred_location: profile.preferred_location,
         selected_track: profile.selected_track,
         ai_roadmap: roadmap,
@@ -417,6 +441,10 @@ export default async function handler(req) {
             math_score: incomingData.math_score ?? null,
             physics_score: incomingData.physics_score ?? null,
             english_score: incomingData.english_score ?? null,
+            english_test_type: incomingData.english_test_type ?? '',
+            english_test_score: incomingData.english_test_score ?? null,
+            englishTestType: incomingData.englishTestType ?? incomingData.english_test_type ?? '',
+            englishTestScore: incomingData.englishTestScore ?? incomingData.english_test_score ?? null,
             preferred_location: incomingData.preferred_location ?? '',
             selected_track: incomingData.selected_track ?? '',
             capture_roadmap: Boolean(incomingData.capture_roadmap),

@@ -124,31 +124,6 @@ export default function SubjectMarksFields({ stream, values, onChange, inputStyl
           </>
         )}
       </div>
-
-      {!isBritish && (
-        <div style={gridStyle}>
-          <div>
-            <label style={labelStyle}>EmSAT Math (optional)</label>
-            <input
-              type="number"
-              placeholder="Haven't taken it yet"
-              value={values.emsatMath}
-              onChange={(e) => set('emsatMath')(e.target.value)}
-              style={style}
-            />
-          </div>
-          <div>
-            <label style={labelStyle}>EmSAT English (optional)</label>
-            <input
-              type="number"
-              placeholder="Haven't taken it yet"
-              value={values.emsatEnglish}
-              onChange={(e) => set('emsatEnglish')(e.target.value)}
-              style={style}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

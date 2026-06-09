@@ -26,7 +26,7 @@ export default function HowMasarWorksSidebar({ showExploreHint }) {
         How Masar Works
       </h3>
       <p style={{ margin: '0 0 20px 0', fontSize: '0.8rem', color: 'var(--masar-text-dim)', lineHeight: 1.5 }}>
-        Built for UAE High School Graduates — MoE, CBSE, British, American &amp; EmSAT Aware.
+        Built for UAE High School Graduates — MoE, CBSE, British, American &amp; IELTS/TOEFL Aware.
       </p>
 
       {showExploreHint && (

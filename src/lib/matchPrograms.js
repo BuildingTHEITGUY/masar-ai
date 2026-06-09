@@ -1,5 +1,6 @@
 import { normalizeSubjectMarks } from './normalizeSubjectMarks';
 import { computeSubjectFlags } from './subjectThresholds';
+import { parseEnglishTestScore } from './englishProficiency';
 
 const TRACK_KEYWORDS = {
   law: ['law', 'llb', 'legal', 'شريعة', 'قانون'],
@@ -23,14 +24,12 @@ export function resolveTrack({ track, interest = '' }) {
   return null;
 }
 
-function enrichMatch(p, uniById, highSchoolAvg, emsatMath, track, normalizedSubjects) {
+function enrichMatch(p, uniById, highSchoolAvg, track, normalizedSubjects, englishTest) {
   const uni = uniById[p.universityId];
   const belowOverall = highSchoolAvg < p.minOverallPercent;
-  const belowEmsat =
-    p.emsatMathMin != null && (emsatMath == null || emsatMath < p.emsatMathMin);
   const subjectFlags = normalizedSubjects
-    ? computeSubjectFlags(track, normalizedSubjects, highSchoolAvg)
-    : [];
+    ? computeSubjectFlags(track, normalizedSubjects, highSchoolAvg, englishTest)
+    : computeSubjectFlags(track, {}, highSchoolAvg, englishTest);
   const subjectPenalty = subjectFlags.filter((f) => f.includes('below')).length * 5;
 
   return {
@@ -38,7 +37,7 @@ function enrichMatch(p, uniById, highSchoolAvg, emsatMath, track, normalizedSubj
     uniName: uni ? `${uni.name} (${uni.shortName})` : p.universityId,
     url: uni?.url ?? p.sourceUrl,
     isUnderScore: belowOverall,
-    isConditional: belowOverall || belowEmsat || subjectFlags.some((f) => f.includes('below')),
+    isConditional: belowOverall || subjectFlags.some((f) => /below|foundation|Not taken|missing/i.test(f)),
     subjectFlags,
     fitScore: highSchoolAvg - p.minOverallPercent - subjectPenalty,
   };
@@ -59,8 +58,9 @@ export function matchPrograms(programs, universities, profile) {
     emirate = 'all',
     highSchoolAvg,
     stream: curriculum = 'moe_general',
-    emsatMath = null,
     subjectMarks = null,
+    englishTestType = '',
+    englishTestScore = null,
     track: explicitTrack,
     interest = '',
     degreeLevel = 'undergraduate',
@@ -74,7 +74,14 @@ export function matchPrograms(programs, universities, profile) {
   const normalizedSubjects = subjectMarks
     ? normalizeSubjectMarks(curriculum, subjectMarks)
     : null;
-  const emsatFromMarks = normalizedSubjects?.emsatMath ?? emsatMath;
+
+  const englishTest = {
+    type: englishTestType,
+    score:
+      englishTestScore != null
+        ? englishTestScore
+        : parseEnglishTestScore(englishTestType, profile.englishTestScore),
+  };
 
   const uniById = Object.fromEntries(universities.map((u) => [u.id, u]));
   const pool = baseFilter(programs, { track, emirate, degreeLevel });
@@ -82,14 +89,14 @@ export function matchPrograms(programs, universities, profile) {
   const matches = pool
     .filter((p) => curriculumMatches(p.acceptedCurricula, curriculum))
     .map((p) =>
-      enrichMatch(p, uniById, highSchoolAvg, emsatFromMarks, track, normalizedSubjects)
+      enrichMatch(p, uniById, highSchoolAvg, track, normalizedSubjects, englishTest)
     )
     .sort((a, b) => b.fitScore - a.fitScore);
 
   const alternatives = pool
     .filter((p) => !curriculumMatches(p.acceptedCurricula, curriculum))
     .map((p) => ({
-      ...enrichMatch(p, uniById, highSchoolAvg, emsatFromMarks, track, normalizedSubjects),
+      ...enrichMatch(p, uniById, highSchoolAvg, track, normalizedSubjects, englishTest),
       curriculumMismatch: true,
     }))
     .sort((a, b) => b.fitScore - a.fitScore);

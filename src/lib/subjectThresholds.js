@@ -1,3 +1,5 @@
+import { computeEnglishProficiencyFlags } from './englishProficiency.js';
+
 /** Typical UAE entry thresholds (Phase 1 — advisory flags only, not hard filters) */
 const THRESHOLDS = {
   tech: { math: 75, physics: 70, english: 70 },
@@ -9,7 +11,7 @@ const THRESHOLDS = {
  * Build subject gap flags for a program match.
  * @returns {string[]}
  */
-export function computeSubjectFlags(track, normalized, highSchoolAvg) {
+export function computeSubjectFlags(track, normalized, highSchoolAvg, englishTest = {}) {
   const flags = [];
   const t = THRESHOLDS[track] || THRESHOLDS.business;
   const avg = Number(highSchoolAvg) || 0;
@@ -21,7 +23,7 @@ export function computeSubjectFlags(track, normalized, highSchoolAvg) {
     flags.push(`Physics/Science (${normalized.physics}%) below typical STEM entry (~${t.physics}%)`);
   }
   if (t.english != null && normalized.english != null && normalized.english < t.english) {
-    flags.push(`English (${normalized.english}%) below typical entry (~${t.english}%)`);
+    flags.push(`English school grade (${normalized.english}%) below typical entry (~${t.english}%)`);
   }
 
   if (
@@ -34,9 +36,7 @@ export function computeSubjectFlags(track, normalized, highSchoolAvg) {
     flags.push('Strong Math vs overall — STEM programs from verified list may fit well');
   }
 
-  if (normalized.emsatMath == null && track === 'tech') {
-    flags.push('EmSAT Math not provided — verify requirement with admissions');
-  }
+  flags.push(...computeEnglishProficiencyFlags(englishTest.type, englishTest.score));
 
   return flags;
 }

@@ -1,5 +1,6 @@
 import universities from '../data/universities.json' with { type: 'json' };
 import { formatSubjectMarksLine } from './normalizeSubjectMarks';
+import { formatEnglishProficiencyLine } from './englishProficiency';
 
 const STREAM_LABELS = {
   moe_advanced: 'UAE MoE Advanced Stream',
@@ -53,16 +54,21 @@ ${contactBlockForMatch(m)}`
 
 function subjectMarksBlock(profile) {
   if (!profile.subjectMarks) {
-    return `- EmSAT Math: ${profile.emsatMath != null ? profile.emsatMath : 'not provided'}`;
+    return `- Subject marks: not provided`;
   }
   return `- Subject marks: ${formatSubjectMarksLine(profile.stream, profile.subjectMarks)}`;
+}
+
+function englishProficiencyBlock(profile) {
+  return `- ${formatEnglishProficiencyLine(profile.englishTestType, profile.englishTestScore)}`;
 }
 
 function profileSummary(profile, track) {
   return `- Preferred emirate: ${profile.emirate === 'all' ? 'All Emirates' : profile.emirate}
 - Target track: ${TRACK_LABELS[track] || track}
 - Curriculum: ${STREAM_LABELS[profile.stream] || profile.stream} | Overall: ${profile.highSchoolAvg}%
-${subjectMarksBlock(profile)}`;
+${subjectMarksBlock(profile)}
+${englishProficiencyBlock(profile)}`;
 }
 
 /** Pick programs mentioned in the student's follow-up question */
@@ -120,6 +126,7 @@ STUDENT PROFILE (authoritative — do not contradict):
 - High school curriculum: ${STREAM_LABELS[profile.stream] || profile.stream}
 - Overall average: ${profile.highSchoolAvg}%
 ${subjectMarksBlock(profile)}
+${englishProficiencyBlock(profile)}
 - Additional interests: ${profile.interest || 'none'}
 - Discovery mode: ${profile.discoveryMode ? 'yes — student used Explore wizard; explain why their chosen track fits their stated interests' : 'no — student picked field directly'}
 ${profile.subTrackMeta ? `- Behavioral sub-sector (RIASEC sorter): ${profile.subTrackMeta.label} — target degree pathway: ${profile.subTrackMeta.displayTitle}` : ''}
@@ -148,7 +155,8 @@ STRICT RULES — violations break trust:
 7. Keep total length scannable — ~200 words unless the student asks for detail.
 8. Do not invent programs or cutoffs not listed above.
 9. Use subject marks vs overall average: if Math/Science exceed overall, highlight STEM-friendly programs from the verified list; if Math/Science are weak for a STEM program, flag foundation/placement — never invent programs outside the list.
-10. Be encouraging and practical for UAE students and parents.`;
+10. UAE admissions use IELTS Academic or TOEFL (not EmSAT). Use the student's English proficiency profile to flag direct entry vs foundation English semesters.
+11. Be encouraging and practical for UAE students and parents.`;
 }
 
 export function buildFollowUpSystemPrompt(profile, matches, track, userQuestion) {

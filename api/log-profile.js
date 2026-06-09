@@ -22,6 +22,8 @@ export default async function handler(req) {
             math_score: data.math_score ?? null,
             physics_score: data.physics_score ?? null,
             english_score: data.english_score ?? null,
+            english_test_type: data.english_test_type ?? null,
+            english_test_score: data.english_test_score ?? null,
             preferred_location: data.preferred_location ?? null,
             selected_track: data.selected_track ?? null,
             ai_roadmap: null,

@@ -459,7 +459,7 @@
     "degreeLevel": "undergraduate",
     "college": "College of Technological Innovation",
     "programName": "BSc in Information Technology / Computing",
-    "criteriaText": "Zayed University federal admissions — competitive. Verify EmSAT and stream requirements.",
+    "criteriaText": "Zayed University federal admissions — competitive. Verify IELTS/TOEFL and stream requirements.",
     "minOverallPercent": 75,
     "acceptedCurricula": [
       "moe_general",
@@ -478,7 +478,7 @@
     "degreeLevel": "undergraduate",
     "college": "College of Business",
     "programName": "BBA programs",
-    "criteriaText": "ZU admission matrix — often requires EmSAT suite.",
+    "criteriaText": "ZU admission matrix — often requires IELTS/TOEFL suite.",
     "minOverallPercent": 70,
     "acceptedCurricula": [
       "moe_general",
@@ -639,7 +639,7 @@
     "degreeLevel": "undergraduate",
     "college": "College of Computing",
     "programName": "BSc in Computer Science / Computer Engineering",
-    "criteriaText": "Highly selective STEM university — Advanced stream and high EmSAT typical.",
+    "criteriaText": "Highly selective STEM university — Advanced stream and high IELTS/TOEFL typical.",
     "minOverallPercent": 90,
     "acceptedCurricula": [
       "moe_advanced",

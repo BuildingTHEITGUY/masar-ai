@@ -15,6 +15,4 @@ export const EMPTY_SUBJECT_MARKS = {
   math: '',
   english: '',
   physics: '',
-  emsatMath: '',
-  emsatEnglish: '',
 };
