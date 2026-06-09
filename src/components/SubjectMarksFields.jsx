@@ -9,7 +9,7 @@ const gridStyle = {
   marginBottom: '16px',
 };
 
-function PercentInput({ label, value, onChange, required, placeholder = 'e.g. 85' }) {
+function PercentInput({ label, value, onChange, required, placeholder = 'e.g. 85', fieldStyle }) {
   return (
     <div>
       <label style={labelStyle}>
@@ -23,13 +23,13 @@ function PercentInput({ label, value, onChange, required, placeholder = 'e.g. 85
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        style={inputStyle}
+        style={fieldStyle}
       />
     </div>
   );
 }
 
-function GradeSelect({ label, value, onChange, required }) {
+function GradeSelect({ label, value, onChange, required, fieldStyle }) {
   return (
     <div>
       <label style={labelStyle}>
@@ -39,7 +39,7 @@ function GradeSelect({ label, value, onChange, required }) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        style={inputStyle}
+        style={fieldStyle}
       >
         <option value="">Select grade</option>
         {ALEVEL_GRADES.map((g) => (
@@ -82,17 +82,20 @@ export default function SubjectMarksFields({ stream, values, onChange, inputStyl
               required
               value={values.math}
               onChange={set('math')}
+              fieldStyle={style}
             />
             <GradeSelect
               label="English A-Level"
               required
               value={values.english}
               onChange={set('english')}
+              fieldStyle={style}
             />
             <GradeSelect
               label="Physics / Science A-Level"
               value={values.physics}
               onChange={set('physics')}
+              fieldStyle={style}
             />
           </>
         ) : (
@@ -102,18 +105,21 @@ export default function SubjectMarksFields({ stream, values, onChange, inputStyl
               required
               value={values.math}
               onChange={set('math')}
+              fieldStyle={style}
             />
             <PercentInput
               label="English grade (%)"
               required
               value={values.english}
               onChange={set('english')}
+              fieldStyle={style}
             />
             <PercentInput
               label={scienceLabel}
               value={values.physics}
               onChange={set('physics')}
               placeholder="Optional"
+              fieldStyle={style}
             />
           </>
         )}
