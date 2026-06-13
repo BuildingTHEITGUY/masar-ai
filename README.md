@@ -12,7 +12,7 @@
 
 *An intelligent academic pathway counselor powered by K2 Think V2's advanced reasoning capabilities*
 
-[🚀 Live Demo](https://masar-ai-nine.vercel.app) • [📖 Documentation](#-the-problem--core-reasoning-focus) • [🎯 Roadmap](#-roadmap--next-milestone-execution)
+[🚀 Live Demo](https://read.buildingtheitguy.com) • [📖 Documentation](#-the-problem--core-reasoning-focus) • [🎯 Roadmap](#-roadmap--next-milestone-execution)
 
 </div>
 
@@ -20,7 +20,9 @@
 
 ## 🌟 Overview
 
-Masar AI is an intelligent, automated academic pathway counselor built specifically for K-12 high school graduates in the United Arab Emirates. Leveraging the advanced, multi-step long Chain-of-Thought (CoT) reasoning capabilities of the **K2 Think V2** model, Masar AI synthesizes diverse high school curriculums, standard benchmark scores (EmSAT), and individual student passions to output compliant, optimized university degree trajectories and localized career maps.
+Masar AI is an intelligent, automated academic pathway counselor built specifically for K-12 high school graduates in the United Arab Emirates. Leveraging the advanced, multi-step long Chain-of-Thought (CoT) reasoning capabilities of the **K2 Think V2** model, Masar AI synthesizes diverse high school curriculums (MoE General/Advanced, CBSE, British, American), **IELTS/TOEFL** English proficiency, subject marks, and individual student passions to output compliant, optimized university degree trajectories and localized career maps.
+
+**Production app:** [read.buildingtheitguy.com](https://read.buildingtheitguy.com)
 
 ---
 
@@ -95,14 +97,14 @@ sequenceDiagram
     participant K2 as K2 Think V2
     participant DB as UAE Framework DB
     
-    S->>UI: Enter Profile (Stream, EmSAT, Interests)
+    S->>UI: Enter Profile (Stream, IELTS/TOEFL, Interests)
     UI->>K2: Submit Query with Context
     K2->>DB: Fetch University Requirements
     DB-->>K2: Return Eligibility Rules
     
     Note over K2: Deep CoT Reasoning Process
     K2->>K2: Step 1: Analyze Stream Compatibility
-    K2->>K2: Step 2: Validate EmSAT Scores
+    K2->>K2: Step 2: Validate English & Subject Marks
     K2->>K2: Step 3: Match Career Interests
     K2->>K2: Step 4: Generate Pathways
     
@@ -134,18 +136,29 @@ sequenceDiagram
 
 ```text
 masar-ai/
-├── 📄 vercel.json            # Edge routing configurations for SPA deployment
+├── 📄 vercel.json            # Edge routing + API functions
 ├── 📄 index.html             # Application entry point
-├── 📦 package.json           # Dependencies & build scripts
+├── 📂 api/
+│   ├── chat.js               # K2 Think streaming + email/Supabase
+│   └── log-profile.js        # Early profile capture
+├── 📂 lib/
+│   └── supabaseStudent.js    # Shared Supabase insert helper
+├── 📦 package.json
 └── 📂 src/
-    ├── 🚀 main.jsx           # React engine initialization
-    ├── 🎯 App.jsx            # Master layout & state coordinator
+    ├── 🚀 main.jsx
+    ├── 🎯 App.jsx            # Layout, matching results, K2 panel
     ├── 📂 data/
-    │   └── 📊 framework.json # UAE university admission data models
-    └── 📂 components/
-        ├── 📝 FormInput.jsx  # Student profile intake component
-        ├── 🧠 Reasoning.jsx  # [Upcoming] Live CoT display
-        └── 🗺️ Roadmap.jsx    # [Upcoming] Career mapping visualization
+    │   ├── programs.json     # UAE undergraduate programs (CAA-aligned)
+    │   ├── universities.json
+    │   └── framework.json
+    ├── 📂 components/
+    │   ├── ExploreWizard.jsx # Interest quiz + behavioral sorter
+    │   ├── K2CounselorPanel.jsx
+    │   ├── FormInput.jsx
+    │   └── ...
+    └── 📂 lib/
+        ├── matchPrograms.js  # Track + interest-aware matching
+        └── buildK2Context.js
 ```
 
 ---
@@ -186,24 +199,31 @@ gantt
     UAE Framework Database       :done, p3, 2026-05-11, 5d
     
     section Phase 2: AI Integration
-    K2 Think V2 API Access       :active, p4, 2026-05-24, 5d
-    Serverless Proxy Route       :p5, after p4, 4d
-    Reasoning Output Terminal    :p6, after p5, 5d
+    K2 Think V2 API Access       :done, p4, 2026-05-24, 5d
+    Serverless Proxy Route       :done, p5, after p4, 4d
+    K2 Counselor + Email Output  :done, p6, after p5, 5d
     
-    section Phase 3: Finalization
+    section Phase 3: Data & Polish
+    Interest-aware matching      :done, p8, 2026-06-01, 5d
+    Custom domain deployment     :done, p9, 2026-06-03, 2d
+    Expand CAA program catalog   :active, p10, 2026-06-05, 14d
     Video Pitch Recording        :crit, p7, 2026-06-10, 4d
     Final Submission             :milestone, 2026-06-14, 0d
 ```
 
 ### ✅ Progress Tracker
 
-- [x] **Phase 1.1** - Create core UI Intake Form components
-- [x] **Phase 1.2** - Setup unified CI/CD automated pipeline via Vercel
-- [x] **Phase 1.3** - Establish local JSON knowledge base for UAE university frameworks
-- [ ] **Phase 2.1** - Receive K2 Think V2 API gateway approval from MBZUAI team
-- [ ] **Phase 2.2** - Build serverless proxy route to orchestrate AI text streaming securely
-- [ ] **Phase 2.3** - Code the dynamic "Reasoning Output Terminal" to visualize AI's CoT logic live
-- [ ] **Phase 3.1** - Record and attach 2-minute project submission video pitch *(Deadline: June 14, 2026)*
+- [x] **Phase 1.1** — Core UI intake + Explore wizard (interests, priorities, behavioral sorter)
+- [x] **Phase 1.2** — CI/CD via Vercel + custom domain **[read.buildingtheitguy.com](https://read.buildingtheitguy.com)**
+- [x] **Phase 1.3** — `programs.json` / `universities.json` knowledge base (57+ programs, 26 institutions)
+- [x] **Phase 2.1** — K2 Think V2 API integration (streaming CoT)
+- [x] **Phase 2.2** — Serverless `/api/chat` + `/api/log-profile` proxy routes
+- [x] **Phase 2.3** — K2 Counselor panel with sanitized roadmap output + follow-up chat
+- [x] **Phase 2.4** — Supabase student logging + Resend email notifications
+- [x] **Phase 2.5** — IELTS/TOEFL English proficiency + subject marks (Math, Physics, English)
+- [x] **Phase 3.1** — Interest-aware matching (AI, Cybersecurity, CS, Data Science sub-tracks)
+- [ ] **Phase 3.2** — Expand CAA-licensed HEI coverage (target 300+ program rows)
+- [ ] **Phase 3.3** — Record and attach 2-minute project submission video pitch *(Deadline: June 14, 2026)*
 
 ---
 
@@ -224,7 +244,7 @@ gantt
 ### Personalized Career Roadmap
 *Receive tailored university programs and career trajectories*
 
-**[🚀 Try Live Demo](https://masar-ai-nine.vercel.app)**
+**[🚀 Try Live Demo](https://read.buildingtheitguy.com)**
 
 </div>
 
@@ -251,7 +271,11 @@ gantt
 </tr>
 <tr>
 <td><strong>Live Demo</strong></td>
-<td><a href="https://masar-ai-nine.vercel.app">masar-ai-nine.vercel.app</a></td>
+<td><a href="https://read.buildingtheitguy.com">read.buildingtheitguy.com</a></td>
+</tr>
+<tr>
+<td><strong>Built by</strong></td>
+<td><a href="https://www.buildingtheitguy.com/index.php/about-me/">Building THE IT GUY</a></td>
 </tr>
 </table>
 
